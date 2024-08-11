@@ -17,13 +17,33 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
 
+devtools::load_all('../tbeptools', helpers = F)
+
 data('fibdata', package = 'tbeptools')
 data('enterodata', package = 'tbeptools')
 ```
 
 ```{r reactives}
-fibmap <- leaflet::leafletProxy('fibmap')
+# epc fib matrix
+fibmatrix <- reactive({
 
+  # inputs
+  areasel2 <- input$areasel2
+  
+  stas <- fibdata %>%
+    dplyr::filter(area == areasel2) %>%
+    dplyr::select(epchc_station) %>%
+    dplyr::distinct() %>%
+    dplyr::pull()
+
+  out <- show_fibmatrix(fibdata, stas = stas, indic = 'fcolif', plotly = T)
+  
+  return(out)
+  
+})
+
+
+# epc fib data to map
 fibtomap <- reactive({
   
   # inputs
@@ -170,6 +190,8 @@ Column {.tabset .tabset-fade data-width=275}
 ### REPORT CARD
 
 ```{r}
+output$fibmatrix <- plotly::renderPlotly(fibmatrix())
+plotly::plotlyOutput('fibmatrix')
 ```
 
 ### Using this tab
