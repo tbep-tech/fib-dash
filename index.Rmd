@@ -14,20 +14,50 @@ css: styles.css
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
-box::use(
-  dplyr[`%>%`]
-)
+source(here::here('R/global.R'))
+source(here::here('R/funcs.R'))
 
-cols <- c('#CC3231', '#E9C318', '#2DC938')
-
-maxyr <- 2023
- 
 data('fibdata', package = 'tbeptools')
 data('enterodata', package = 'tbeptools')
 ```
 
 ```{r reactives}
+fibmap <- leaflet::leafletProxy('fibmap')
 
+fibtomap <- reactive({
+  
+  # inputs
+  yrsel2 <- input$yrsel2
+  mosel2 <- input$mosel2
+  areasel2 <- input$areasel2
+  req(yrsel2)
+
+  mosel2 <- as.numeric(names(mos)[mos == mosel2])
+
+  tomap <- fibtomap_fun(fibdata, yrsel2, mosel2, areasel2)
+  
+  return(tomap)
+  
+})
+
+# epc fib map
+observe({
+
+  # inputs
+  fibtomap <- fibtomap()
+
+  # create map
+  leaflet::leafletProxy("fibmap", data = fibtomap) %>%
+    leaflet::clearMarkers() %>%
+    leaflet::addMarkers(
+      data = fibtomap,
+      lng = ~Longitude,
+      lat = ~Latitude,
+      icon = ~icons[as.numeric(grp)],
+      label = ~lapply(as.list(lab), tbeptools::util_html)
+    )
+  
+})
 ```
 
 ```{r downloadhandlers}
@@ -65,8 +95,8 @@ Column {.tabset .tabset-fade data-width=650}
 
 This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of the Environmental Protection Commission of Hillsborough County (EPCHC) monitoring program.  The latter is specific to evaluating fecal impairments in the Hillsborough and Alafia river basins.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see [FLDOH Healthy Beaches](https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109){target="_blank"}). The dashboard is organized in the following sections:
 
-1) [__BAYWIDE__](#baywide): View annual summaries by major bay segments for the Tampa Bay Benthic Index (TBBI)
-1) [__EPCHC__](#epchc): View summaries of sediment contaminant concentrations
+1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
+1) [__EPCHC__](#epchc): View summaries of EPCHC FIB data for the Hillsborough and Alafia river basins
 1) [__DATA DOWNLOADS__](#data-downloads): Download baywide *Enterococcus* or EPCHC FIB data
 
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/){target="_blank"} on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
@@ -150,7 +180,26 @@ Column {data-width=500}
 ### MAP SUMMARY
 
 ```{r}
+output$fibmap <- leaflet::renderLeaflet({
+  
+  tbeptools::show_fibmap(fibdata, yrsel = 2023, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
+  
+})
 
+fillCol(flex = c(NA, 1),
+  column(12,
+    column(4,
+      sliderInput('yrsel2', 'Select year:', min = 1993, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%'),
+    ), 
+    column(4, 
+      selectInput('mosel2', 'Select month:', choices = mos, selected = 'Jul', width = '200%')     
+    ), 
+    column(4,
+      selectInput('areasel2', 'Select area:', choices = areas, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
+    )
+  ),
+  leaflet::leafletOutput('fibmap')
+)
 ```
 
 4 DATA DOWNLOADS
