@@ -1,0 +1,168 @@
+---
+title: "TAMPA BAY FIB DASHBOARD"
+output: 
+  flexdashboard::flex_dashboard:
+    logo: www/tarponlogo.png
+    social: menu
+    source_code: "https://github.com/tbep-tech/fib-dash"
+    # includes:
+      # in_header: google-analytics.html
+runtime: shiny
+css: styles.css
+---
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+
+box::use(
+  dplyr[`%>%`]
+)
+
+cols <- c('#CC3231', '#E9C318', '#2DC938')
+
+maxyr <- 2023
+ 
+data('fibdata', package = 'tbeptools')
+data('enterodata', package = 'tbeptools')
+```
+
+```{r reactives}
+
+```
+
+```{r downloadhandlers}
+# # download transect table
+# output$dwnld <- downloadHandler(
+#   filename = function(){'benthicdata.csv'},
+#   content = function(file){
+#     
+#     # inputs
+#     dldat <- dldat()
+#     
+#     write.csv(dldat, file, quote = T, row.names = F)
+#     
+#   }
+# )
+```
+
+OVERVIEW
+===========================================================
+
+Column {.tabset .tabset-fade data-width=650}
+-----------------------------------------------------------------------
+
+### USING THE DASHBOARD
+
+<div class = "row">
+<div class = "col-md-2"></div>
+<div class = "col-md-8">
+
+#### WELCOME TO THE TAMPA BAY FIB DASHBOARD!
+
+```{r, echo = F, out.width = '100%', fig.align = 'center'}
+# knitr::include_graphics('www/bannerimage.png')
+```
+
+This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of the Environmental Protection Commission of Hillsborough County (EPCHC) monitoring program.  The latter is specific to evaluating fecal impairments in the Hillsborough and Alafia river basins.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see [FLDOH Healthy Beaches](https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109){target="_blank"}). The dashboard is organized in the following sections:
+
+1) [__BAYWIDE__](#baywide): View annual summaries by major bay segments for the Tampa Bay Benthic Index (TBBI)
+1) [__EPCHC__](#epchc): View summaries of sediment contaminant concentrations
+1) [__DATA DOWNLOADS__](#data-downloads): Download baywide *Enterococcus* or EPCHC FIB data
+
+The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/){target="_blank"} on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
+
+<br>
+```{r, fig.align='center', out.width='30%'}
+knitr::include_graphics('www/plotcontrols.PNG')
+```
+<br>
+
+#### Data sources
+
+Source data used on this website were obtained from multiple sources for the baywide assessment and from the Environmental Protection Commission of Hillsborough County. Data can be obtained using functions from the tbeptools R package described below. Graphics and tables provided on the dashboard are made available for exploratory purposes only.  
+
+#### Website information
+
+<a href="https://tbep-tech.github.io/tbeptools/articles/tbbi.html" target="__blank" rel="noopener noreferrer"><img class="wp-image-14010 alignnone " src="www/tbeptoolshex.png" alt="" width="200" height="200" /></a>
+
+The page source content can be viewed on [Github](https://github.com/tbep-tech/fib-dash){target="_blank"}. Nearly all of the data, tables, and plots were created using functions in the [tbeptools](https://tbep-tech.github.io/tbeptools){target="_blank"} R software package.  Please see the [vignette](https://tbep-tech.github.io/tbeptools/articles/fib.html){target="_blank"} for a detailed overview of how you can use these functions on your own to work with the data. 
+
+Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click){target="_blank"} hashtag.  
+
+<!-- Citation info here: [![DOI](https://zenodo.org/badge/589592689.svg)](https://zenodo.org/badge/latestdoi/589592689){target="_blank"} -->
+
+<a rel='license' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='https://i.creativecommons.org/l/by/4.0/88x31.png' /></a>&nbsp;&nbsp;This website is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'>Creative Commons Attribution 4.0 International License</a>.
+
+</div>
+<div class = "col-md-2"></div>
+</div>
+
+### METHODS
+
+<div class = "row">
+<div class = "col-md-2"></div>
+<div class = "col-md-8">
+
+#### How to understand and use the dashboard
+
+</div>
+<div class = "col-md-2"></div>
+</div>
+
+1 BAYWIDE
+===========================================================
+
+Column {.tabset .tabset-fade data-width=275}
+-----------------------------------------------------------------------
+
+### REPORT CARD
+
+```{r}
+```
+
+### Using this tab
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### MAP SUMMARY
+
+```{r}
+
+```
+
+2 EPCHC
+===========================================================
+
+Column {.tabset .tabset-fade data-width=275}
+-----------------------------------------------------------------------
+
+### REPORT CARD
+
+```{r}
+```
+
+### Using this tab
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### MAP SUMMARY
+
+```{r}
+
+```
+
+4 DATA DOWNLOADS
+===========================================================
+
+Column {.tabset .tabset-fade data-width=650}
+-----------------------------------------------------------------------
+
+### DOWNLOAD
+
+```{r}
+```
+
+### METADATA
+
