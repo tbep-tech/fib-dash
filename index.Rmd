@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
 
-devtools::load_all('../tbeptools', helpers = F)
+# devtools::load_all('../tbeptools', helpers = F)
 
 data('fibdata', package = 'tbeptools')
 data('enterodata', package = 'tbeptools')
@@ -31,12 +31,12 @@ fibmatrix <- reactive({
   areasel2 <- input$areasel2
   
   stas <- fibdata %>%
-    dplyr::filter(area == areasel2) %>%
+    dplyr::filter(area %in% areasel2) %>%
     dplyr::select(epchc_station) %>%
     dplyr::distinct() %>%
     dplyr::pull()
 
-  out <- show_fibmatrix(fibdata, stas = stas, indic = 'fcolif', plotly = T)
+  out <- tbeptools::show_fibmatrix(fibdata, stas = stas, indic = 'fcolif', plotly = T)
   
   return(out)
   
