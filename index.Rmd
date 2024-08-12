@@ -17,10 +17,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
 
-# devtools::load_all('../tbeptools', helpers = F)
-
-data('fibdata', package = 'tbeptools')
-data('enterodata', package = 'tbeptools')
+# devtools::load_all('T:/04_STAFF/MARCUS/03_GIT/tbeptools', helpers = F)
 ```
 
 ```{r reactives}
@@ -36,12 +33,15 @@ fibmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  out <- tbeptools::show_fibmatrix(fibdata, stas = stas, indic = 'fcolif', plotly = T)
+  out <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), indic = 'fcolif', plotly = T))
+  
+  validate(
+    need(!inherits(out, 'try-error'), 'No fecal coliform data available for selection')
+  )
   
   return(out)
   
 })
-
 
 # epc fib data to map
 fibtomap <- reactive({
@@ -50,10 +50,10 @@ fibtomap <- reactive({
   yrsel2 <- input$yrsel2
   mosel2 <- input$mosel2
   areasel2 <- input$areasel2
-  req(yrsel2)
+  req(mosel2)
 
-  mosel2 <- as.numeric(names(mos)[mos == mosel2])
-
+  mosel2 <- lubridate::month(mosel2)
+  
   tomap <- fibtomap_fun(fibdata, yrsel2, mosel2, areasel2)
   
   return(tomap)
@@ -64,18 +64,69 @@ fibtomap <- reactive({
 observe({
 
   # inputs
-  fibtomap <- fibtomap()
+  fibtomap <- try(fibtomap())
 
   # create map
-  leaflet::leafletProxy("fibmap", data = fibtomap) %>%
-    leaflet::clearMarkers() %>%
-    leaflet::addMarkers(
-      data = fibtomap,
-      lng = ~Longitude,
-      lat = ~Latitude,
-      icon = ~icons[as.numeric(grp)],
-      label = ~lapply(as.list(lab), tbeptools::util_html)
-    )
+  if(inherits(fibtomap, 'try-error'))
+    leaflet::leafletProxy("fibmap", data = fibtomap) %>%
+      leaflet::clearMarkers()
+  
+  if(!inherits(fibtomap, 'try-error'))
+    leaflet::leafletProxy("fibmap", data = fibtomap) %>%
+      leaflet::clearMarkers() |> 
+      leaflet::addMarkers(
+        data = fibtomap,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~icons[as.numeric(grp)],
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      )
+    
+})
+```
+
+```{r output}
+# # epc map year selection
+# output$renderyrsel2 <- renderUI({
+#         
+#   # input
+#   areasel2 <- input$areasel2
+#   
+#   minyr <- fibdata |> 
+#     dplyr::filter(area %in% areasel2) |> 
+#     dplyr::filter(!(is.na(ecoli) & is.na(ecocci))) |> 
+#     dplyr::pull(yr) |>
+#     min() 
+#   
+#   sliderInput('yrsel2', 'Select year:', min = minyr, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+#     
+# })
+# 
+# # epc map month selection
+# output$rendermosel2 <- renderUI({
+#   
+#   # input
+#   yrsel2 <- input$yrsel2
+#   areasel2 <- input$areasel2
+#   
+#   req(yrsel2)
+#   
+#   mosel <- fibdata |> 
+#     dplyr::filter(area %in% areasel2) |> 
+#     dplyr::filter(!(is.na(ecoli) & is.na(ecocci))) |> 
+#     dplyr::filter(yr == yrsel2) |> 
+#     dplyr::pull(mo) |> 
+#     unique()
+# 
+#   mosel <- mos[mos %in% mosel]
+#   
+#   selectInput('mosel2', 'Select month:', choices = mosel, selected = mosel[1], width = '200%')
+#   
+# })
+
+output$fibmap <- leaflet::renderLeaflet({
+  
+  tbeptools::show_fibmap(fibdata, yrsel = 2023, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
   
 })
 ```
@@ -187,7 +238,7 @@ Column {data-width=500}
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
-### REPORT CARD
+### FECAL COLIFORM REPORT CARD
 
 ```{r}
 output$fibmatrix <- plotly::renderPlotly(fibmatrix())
@@ -199,23 +250,17 @@ plotly::plotlyOutput('fibmatrix')
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### MAP SUMMARY
+### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY
 
 ```{r}
-output$fibmap <- leaflet::renderLeaflet({
-  
-  tbeptools::show_fibmap(fibdata, yrsel = 2023, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
-  
-})
-
 fillCol(flex = c(NA, 1),
   column(12,
-    column(4,
-      sliderInput('yrsel2', 'Select year:', min = 1993, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%'),
+    column(4, 
+        sliderInput('yrsel2', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
     ), 
     column(4, 
-      selectInput('mosel2', 'Select month:', choices = mos, selected = 'Jul', width = '200%')     
-    ), 
+      sliderInput('mosel2', 'Select month:', min = as.Date(paste0(maxyr, '-01-01')),max = as.Date(paste0(maxyr, '-12-01')), value = as.Date(paste0(maxyr, '-07-01')), timeFormat = "%b")
+    ),
     column(4,
       selectInput('areasel2', 'Select area:', choices = areas, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
     )

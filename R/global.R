@@ -2,12 +2,15 @@ box::use(
   dplyr[`%>%`]
 )
 
+data('fibdata', package = 'tbeptools')
+data('enterodata', package = 'tbeptools')
+
 cols <- c('#CC3231', '#E9C318', '#2DC938')
 
 maxyr <- 2023
 
-mos <- month.abb
-names(mos) <- 1:12
+mos <- as.list(1:12)
+names(mos) <- month.abb
 
 areas <- c('Alafia River', 'Hillsborough River', 'Big Bend', 'Cockroach Bay', 
            'East Lake Outfall', 'Hillsborough Bay', 'Little Manatee River', 'Lower Tampa Bay',
