@@ -113,17 +113,15 @@ h2,h3,h4,h5 {
 /* shiny slider stuff */
 
 .irs-bar {
-  background: #00806E !important
+  background: transparent !important;
+  background-color: transparent !important;
+  border: transparent !important;
 }
-.irs-bar {
-  border-top: 1px #00806E !important
+
+.irs-grid-pol.small {
+  height: 0px;
 }
-.irs-bar-edge {
-  background: #00806E !important
-}
-.irs-bar-edge {
-  border: 1px #00806E !important
-}
+
 .irs-single {
   background: #00806E !important
 }

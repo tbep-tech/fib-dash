@@ -21,6 +21,67 @@ source(here::here('R/funcs.R'))
 ```
 
 ```{r reactives}
+# baywide ent matrix
+entmatrix <- reactive({
+
+  # inputs
+  areasel1 <- input$areasel1
+  
+  stas <- enterodata %>%
+    dplyr::filter(long_name %in% areasel1) %>%
+    dplyr::select(station) %>%
+    dplyr::distinct() %>%
+    dplyr::pull()
+
+  out <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'ecocci', plotly = T))
+  
+  validate(
+    need(!inherits(out, 'try-error'), 'No enterococcus data available for selection')
+  )
+  
+  return(out)
+  
+})
+
+# baywide ent data to map
+enterotomap <- reactive({
+
+   # inputs
+  yrsel1 <- input$yrsel1
+  mosel1 <- input$mosel1
+  areasel1 <- input$areasel1
+
+  mosel1 <- lubridate::month(mosel1)
+
+  tomap <- isolate(enterotomap_fun(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5))
+
+  return(tomap)
+
+})
+
+observe({
+
+  # inputs
+  enterotomap <- try(enterotomap())
+
+  # create map
+  if(inherits(enterotomap, 'try-error'))
+    leaflet::leafletProxy("entmap", data = enterotomap) %>%
+      leaflet::clearMarkers()
+
+  if(!inherits(enterotomap, 'try-error'))
+    leaflet::leafletProxy("entmap", data = enterotomap) %>%
+      leaflet::clearMarkers() |>
+      leaflet::addMarkers(
+        data = enterotomap,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~ecocciicons[as.numeric(grp)],
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      )
+
+})
+
 # epc fib matrix
 fibmatrix <- reactive({
 
@@ -45,20 +106,21 @@ fibmatrix <- reactive({
 
 # epc fib data to map
 fibtomap <- reactive({
-  
+
   # inputs
   yrsel2 <- input$yrsel2
   mosel2 <- input$mosel2
   areasel2 <- input$areasel2
-  req(mosel2)
 
-  mosel2 <- lubridate::month(mosel2)
+  mosel2 <- as.integer(lubridate::month(mosel2))
   
-  tomap <- fibtomap_fun(fibdata, yrsel2, mosel2, areasel2)
+  tomap <- isolate(fibtomap_fun(fibdata, yrsel2, mosel2, areasel2))
   
   return(tomap)
   
 })
+
+fibmap <- leaflet::leafletProxy('fibmap')
 
 # epc fib map
 observe({
@@ -68,17 +130,17 @@ observe({
 
   # create map
   if(inherits(fibtomap, 'try-error'))
-    leaflet::leafletProxy("fibmap", data = fibtomap) %>%
+    fibmap %>%
       leaflet::clearMarkers()
   
   if(!inherits(fibtomap, 'try-error'))
-    leaflet::leafletProxy("fibmap", data = fibtomap) %>%
+    fibmap %>%
       leaflet::clearMarkers() |> 
       leaflet::addMarkers(
         data = fibtomap,
         lng = ~Longitude,
         lat = ~Latitude,
-        icon = ~icons[as.numeric(grp)],
+        icon = ~fibicons[as.numeric(grp)],
         label = ~lapply(as.list(lab), tbeptools::util_html)
       )
     
@@ -86,48 +148,25 @@ observe({
 ```
 
 ```{r output}
-# # epc map year selection
-# output$renderyrsel2 <- renderUI({
-#         
-#   # input
-#   areasel2 <- input$areasel2
-#   
-#   minyr <- fibdata |> 
-#     dplyr::filter(area %in% areasel2) |> 
-#     dplyr::filter(!(is.na(ecoli) & is.na(ecocci))) |> 
-#     dplyr::pull(yr) |>
-#     min() 
-#   
-#   sliderInput('yrsel2', 'Select year:', min = minyr, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
-#     
-# })
-# 
-# # epc map month selection
-# output$rendermosel2 <- renderUI({
-#   
-#   # input
-#   yrsel2 <- input$yrsel2
-#   areasel2 <- input$areasel2
-#   
-#   req(yrsel2)
-#   
-#   mosel <- fibdata |> 
-#     dplyr::filter(area %in% areasel2) |> 
-#     dplyr::filter(!(is.na(ecoli) & is.na(ecocci))) |> 
-#     dplyr::filter(yr == yrsel2) |> 
-#     dplyr::pull(mo) |> 
-#     unique()
-# 
-#   mosel <- mos[mos %in% mosel]
-#   
-#   selectInput('mosel2', 'Select month:', choices = mosel, selected = mosel[1], width = '200%')
-#   
-# })
+# baywide ent matrix
+output$entmatrix <- plotly::renderPlotly(entmatrix())
 
+# baywide ent map
+output$entmap <- leaflet::renderLeaflet({
+
+  tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay'),
+                            wetdry = T, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5)
+
+})
+
+# epc fib matrix
+output$fibmatrix <- plotly::renderPlotly(fibmatrix())
+
+# epc fib map
 output$fibmap <- leaflet::renderLeaflet({
-  
-  tbeptools::show_fibmap(fibdata, yrsel = 2023, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
-  
+
+  tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
+
 })
 ```
 
@@ -216,9 +255,10 @@ Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:m
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
-### REPORT CARD
+### *ENTEROCOCCUS* REPORT CARD
 
 ```{r}
+plotly::plotlyOutput('entmatrix')
 ```
 
 ### Using this tab
@@ -226,10 +266,23 @@ Column {.tabset .tabset-fade data-width=275}
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### MAP SUMMARY
+### *ENTEROCOCCUS* MAP SUMMARY
 
 ```{r}
-
+fillCol(flex = c(NA, 1),
+  column(12,
+    column(4, 
+        sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+    ), 
+    column(4, 
+      sliderInput('mosel1', 'Select month:', min = as.Date(paste0(maxyr, '-01-01')), max = as.Date(paste0(maxyr, '-12-01')), value = as.Date(paste0(maxyr, '-07-01')), timeFormat = "%b")
+    ),
+    column(4,
+      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('Hillsborough Bay', 'Old Tampa Bay'), width = '200%', multiple = T)
+    )
+  ),
+  leaflet::leafletOutput('entmap')
+)
 ```
 
 2 EPCHC
@@ -241,7 +294,6 @@ Column {.tabset .tabset-fade data-width=275}
 ### FECAL COLIFORM REPORT CARD
 
 ```{r}
-output$fibmatrix <- plotly::renderPlotly(fibmatrix())
 plotly::plotlyOutput('fibmatrix')
 ```
 
@@ -262,7 +314,7 @@ fillCol(flex = c(NA, 1),
       sliderInput('mosel2', 'Select month:', min = as.Date(paste0(maxyr, '-01-01')),max = as.Date(paste0(maxyr, '-12-01')), value = as.Date(paste0(maxyr, '-07-01')), timeFormat = "%b")
     ),
     column(4,
-      selectInput('areasel2', 'Select area:', choices = areas, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
+      selectInput('areasel2', 'Select area:', choices = areas2, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
     )
   ),
   leaflet::leafletOutput('fibmap')
