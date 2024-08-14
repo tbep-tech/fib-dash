@@ -22,42 +22,7 @@ areas2 <- c('Alafia River', 'Hillsborough River', 'Big Bend', 'Cockroach Bay',
 
 
 # create custom icon list for fib categories
-ecocciicons <- leaflet::iconList(
-  ecocci_green_wet <- leaflet::makeIcon(iconUrl = system.file('ecoli_green.png', package = 'tbeptools'),
-                                        iconWidth = 18, iconHeight = 18),
-  ecocci_yellow_wet <- leaflet::makeIcon(iconUrl = system.file('ecoli_yellow.png', package = 'tbeptools'),
-                                         iconWidth = 18, iconHeight = 18),
-  ecocci_orange_wet <- leaflet::makeIcon(iconUrl = system.file('ecoli_orange.png', package = 'tbeptools'),
-                                         iconWidth = 18, iconHeight = 18),
-  ecocci_red_wet <- leaflet::makeIcon(iconUrl = system.file('ecoli_red.png', package = 'tbeptools'),
-                                      iconWidth = 18, iconHeight = 18),
-  ecocci_green_dry <- leaflet::makeIcon(iconUrl = system.file('ecocci_green.png', package = 'tbeptools'),
-                                        iconWidth = 18, iconHeight = 18),
-  ecocci_yellow_dry <- leaflet::makeIcon(iconUrl = system.file('ecocci_yellow.png', package = 'tbeptools'),
-                                         iconWidth = 18, iconHeight = 18),
-  ecocci_orange_dry <- leaflet::makeIcon(iconUrl = system.file('ecocci_orange.png', package = 'tbeptools'),
-                                         iconWidth = 18, iconHeight = 18),
-  ecocci_red_dry <- leaflet::makeIcon(iconUrl = system.file('ecocci_red.png', package = 'tbeptools'),
-                                      iconWidth = 18, iconHeight = 18)
-  
-)
+ecocciicons <- tbeptools::util_fibicons('entero')
 
 # create custom icon list for fib categories
-fibicons <- leaflet::iconList(
-  ecoli_green <- leaflet::makeIcon(iconUrl = system.file('ecoli_green.png', package = 'tbeptools'),
-                                   iconWidth = 18, iconHeight = 18),
-  ecoli_yellow <- leaflet::makeIcon(iconUrl = system.file('ecoli_yellow.png', package = 'tbeptools'),
-                                    iconWidth = 18, iconHeight = 18),
-  ecoli_orange <- leaflet::makeIcon(iconUrl = system.file('ecoli_orange.png', package = 'tbeptools'),
-                                    iconWidth = 18, iconHeight = 18),
-  ecoli_red <- leaflet::makeIcon(iconUrl = system.file('ecoli_red.png', package = 'tbeptools'),
-                                 iconWidth = 18, iconHeight = 18),
-  ecocci_green <- leaflet::makeIcon(iconUrl = system.file('ecocci_green.png', package = 'tbeptools'),
-                                    iconWidth = 18, iconHeight = 18),
-  ecocci_yellow <- leaflet::makeIcon(iconUrl = system.file('ecocci_yellow.png', package = 'tbeptools'),
-                                     iconWidth = 18, iconHeight = 18),
-  ecocci_orange <- leaflet::makeIcon(iconUrl = system.file('ecocci_orange.png', package = 'tbeptools'),
-                                     iconWidth = 18, iconHeight = 18),
-  ecocci_red <- leaflet::makeIcon(iconUrl = system.file('ecocci_red.png', package = 'tbeptools'),
-                                  iconWidth = 18, iconHeight = 18)
-)
+fibicons <- tbeptools::util_fibicons('fcolif')

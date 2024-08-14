@@ -33,7 +33,7 @@ entmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  out <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'ecocci', plotly = T))
+  out <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'entero', plotly = T))
   
   validate(
     need(!inherits(out, 'try-error'), 'No enterococcus data available for selection')
@@ -53,7 +53,8 @@ enterotomap <- reactive({
 
   mosel1 <- mos[[mosel1]]
 
-  tomap <- enterotomap_fun(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5)
+  tomap <- tbeptools::anlz_enteromap(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, 
+                                     temporal_window = 2, wet_threshold = 0.5, assf = T)
 
   return(tomap)
 
@@ -114,7 +115,7 @@ fibtomap <- reactive({
 
   mosel2 <- mos[[mosel2]]
   
-  tomap <- fibtomap_fun(fibdata, yrsel2, mosel2, areasel2)
+  tomap <- tbeptools::anlz_fibmap(fibdata, yrsel2, mosel2, areasel2, assf = T)
   
   return(tomap)
   
