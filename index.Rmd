@@ -51,7 +51,7 @@ enterotomap <- reactive({
   mosel1 <- input$mosel1
   areasel1 <- input$areasel1
 
-  mosel1 <- lubridate::month(mosel1)
+  mosel1 <- mos[[mosel1]]
 
   tomap <- isolate(enterotomap_fun(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5))
 
@@ -112,7 +112,7 @@ fibtomap <- reactive({
   mosel2 <- input$mosel2
   areasel2 <- input$areasel2
 
-  mosel2 <- as.integer(lubridate::month(mosel2))
+  mosel2 <- mos[[mosel2]]
   
   tomap <- isolate(fibtomap_fun(fibdata, yrsel2, mosel2, areasel2))
   
@@ -272,10 +272,10 @@ Column {data-width=500}
 fillCol(flex = c(NA, 1),
   column(12,
     column(4, 
-        sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+      sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
     ), 
     column(4, 
-      sliderInput('mosel1', 'Select month:', min = as.Date(paste0(maxyr, '-01-01')), max = as.Date(paste0(maxyr, '-12-01')), value = as.Date(paste0(maxyr, '-07-01')), timeFormat = "%b")
+      shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
     ),
     column(4,
       selectInput('areasel1', 'Select area:', choices = areas1, selected = c('Hillsborough Bay', 'Old Tampa Bay'), width = '200%', multiple = T)
@@ -311,7 +311,7 @@ fillCol(flex = c(NA, 1),
         sliderInput('yrsel2', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
     ), 
     column(4, 
-      sliderInput('mosel2', 'Select month:', min = as.Date(paste0(maxyr, '-01-01')),max = as.Date(paste0(maxyr, '-12-01')), value = as.Date(paste0(maxyr, '-07-01')), timeFormat = "%b")
+      shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
     ),
     column(4,
       selectInput('areasel2', 'Select area:', choices = areas2, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
