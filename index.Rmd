@@ -53,7 +53,7 @@ enterotomap <- reactive({
 
   mosel1 <- mos[[mosel1]]
 
-  tomap <- isolate(enterotomap_fun(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5))
+  tomap <- enterotomap_fun(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5)
 
   return(tomap)
 
@@ -114,7 +114,7 @@ fibtomap <- reactive({
 
   mosel2 <- mos[[mosel2]]
   
-  tomap <- isolate(fibtomap_fun(fibdata, yrsel2, mosel2, areasel2))
+  tomap <- fibtomap_fun(fibdata, yrsel2, mosel2, areasel2)
   
   return(tomap)
   
