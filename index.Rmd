@@ -26,18 +26,31 @@ entmatrix <- reactive({
 
   # inputs
   areasel1 <- input$areasel1
+  segsel1 <- input$segsel1
+  yrsel1 <- input$yrsel1
   
-  stas <- enterodata %>%
-    dplyr::filter(long_name %in% areasel1) %>%
-    dplyr::select(station) %>%
-    dplyr::distinct() %>%
-    dplyr::pull()
+  if(!segsel1){
+    stas <- enterodata %>%
+      dplyr::filter(bay_segment %in% areasel1) %>%
+      dplyr::select(station) %>%
+      dplyr::distinct() %>%
+      dplyr::pull()
 
-  out <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'entero', plotly = T))
+    p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'entero'))
+  
+  }
+  
+  if(segsel1){
+
+    p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1, yrrng = c(NA, maxyr), indic = 'entero'))
+  
+  }
   
   validate(
-    need(!inherits(out, 'try-error'), 'No enterococcus data available for selection')
+    need(!inherits(p, 'try-error'), 'No enterococcus data available for selection')
   )
+  
+  out <- mataddyr_fun(p, yrsel = yrsel1)
   
   return(out)
   
@@ -52,8 +65,9 @@ enterotomap <- reactive({
   areasel1 <- input$areasel1
 
   mosel1 <- mos[[mosel1]]
-
-  tomap <- tbeptools::anlz_enteromap(enterodata, yrsel1, mosel1, areasel1, wetdry = TRUE, precipdata = catchprecip, 
+  areasel <- names(areas1[areas1 %in% areasel1])
+  
+  tomap <- tbeptools::anlz_enteromap(enterodata, yrsel1, mosel1, areasel, wetdry = TRUE, precipdata = catchprecip, 
                                      temporal_window = 2, wet_threshold = 0.5, assf = T)
 
   return(tomap)
@@ -88,6 +102,7 @@ fibmatrix <- reactive({
 
   # inputs
   areasel2 <- input$areasel2
+  yrsel2 <- input$yrsel2
   
   stas <- fibdata %>%
     dplyr::filter(area %in% areasel2) %>%
@@ -95,12 +110,14 @@ fibmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  out <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), indic = 'fcolif', plotly = T))
+  p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), indic = 'fcolif'))
   
   validate(
-    need(!inherits(out, 'try-error'), 'No fecal coliform data available for selection')
+    need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
   )
   
+  out <- mataddyr_fun(p, yrsel = yrsel2)
+    
   return(out)
   
 })
@@ -259,15 +276,22 @@ Column {.tabset .tabset-fade data-width=275}
 ### *ENTEROCOCCUS* REPORT CARD
 
 ```{r}
-plotly::plotlyOutput('entmatrix')
+fillCol(flex = c(NA, 1),
+  shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = F),
+  plotly::plotlyOutput('entmatrix')
+)
 ```
 
 ### Using this tab
 
-Column {data-width=500}
+The report card and maps are based on *Enterococcus* cell concentratoins and can be subset by bay segment.  The map summary by year shows the same report card grade assigned to the entire bay segment and the individual station grade.  The map summary by year and month shows only the station category relative to the legend thresholds for samples identified as occuring during wet (rainy) or dry conditions. 
+
+Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
-### *ENTEROCOCCUS* MAP SUMMARY
+### *ENTEROCOCCUS* MAP SUMMARY - BY YEAR
+
+### *ENTEROCOCCUS* MAP SUMMARY - BY YEAR AND MONTH
 
 ```{r}
 fillCol(flex = c(NA, 1),
@@ -279,7 +303,7 @@ fillCol(flex = c(NA, 1),
       shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
     ),
     column(4,
-      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('Hillsborough Bay', 'Old Tampa Bay'), width = '200%', multiple = T)
+      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB'), width = '200%', multiple = T)
     )
   ),
   leaflet::leafletOutput('entmap')
@@ -300,10 +324,14 @@ plotly::plotlyOutput('fibmatrix')
 
 ### Using this tab
 
-Column {data-width=500}
+The report card is based on fecal coliform and cannot be subset by bay segment.  The map summaries are based on *Enterococcus* and *E. coli* data based on tidal or freshwater sites, respectively. 
+
+Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
-### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY
+### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY - BY YEAR
+
+### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY - BY YEAR AND MONTH
 
 ```{r}
 fillCol(flex = c(NA, 1),
