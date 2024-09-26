@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
-
 # devtools::load_all('T:/04_STAFF/MARCUS/03_GIT/tbeptools', helpers = F)
 ```
 
@@ -56,7 +55,53 @@ entmatrix <- reactive({
   
 })
 
-# baywide ent data to map
+# data for baywide ent map, yr
+yrtomap1 <- reactive({
+  
+  yrsel1 <- input$yrsel1
+  areasel1 <- input$areasel1
+  
+  out <- show_fibmatmapex(enterodata, yrsel = yrsel1, areasel = areasel1, indic = 'entero')
+  
+  return(out)
+    
+}) 
+
+# baywide ent data to map, yr
+observe({
+
+  # inputs
+  yrtomap1 <- try(yrtomap1())
+
+  # create map
+  if(inherits(yrtomap1, 'try-error'))
+    leaflet::leafletProxy("entmapyr") %>%
+      leaflet::clearMarkers() |> 
+      leaflet::clearShapes()
+
+  if(!inherits(yrtomap1, 'try-error'))
+    leaflet::leafletProxy("entmapyr") %>%
+      leaflet::clearMarkers() |>
+      leaflet::clearShapes() |> 
+      leaflet::addMarkers(
+        data = yrtomap1$tomapsta,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~yrtomap1$icons[as.numeric(cat)],
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      ) |> 
+      leaflet::addPolygons(
+        data = yrtomap1$tomapseg,
+        fillColor = ~I(col),
+        fillOpacity = 0.5,
+        color = 'black',
+        weight = 1,
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      )
+
+})
+
+# baywide ent data to map, yr mo
 enterotomap <- reactive({
 
    # inputs
@@ -169,7 +214,15 @@ observe({
 # baywide ent matrix
 output$entmatrix <- plotly::renderPlotly(entmatrix())
 
-# baywide ent map
+# baywide ent map, yr
+output$entmapyr <- leaflet::renderLeaflet({
+
+  tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, areasel = c('HB', 'OTB'),
+                            precipdata = catchprecip, indic = 'entero')
+
+})
+
+# baywide ent map, yr mo
 output$entmap <- leaflet::renderLeaflet({
 
   tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay'),
@@ -273,11 +326,21 @@ Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:m
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
-### *ENTEROCOCCUS* REPORT CARD
+### REPORT CARD
 
 ```{r}
 fillCol(flex = c(NA, 1),
-  shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = F),
+  column(12,
+    column(4,
+      shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = T)
+    ),
+    column(4, 
+      sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+    ), 
+    column(4,
+      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB'), width = '200%', multiple = T)
+    )
+  ),
   plotly::plotlyOutput('entmatrix')
 )
 ```
@@ -289,21 +352,19 @@ The report card and maps are based on *Enterococcus* cell concentratoins and can
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
-### *ENTEROCOCCUS* MAP SUMMARY - BY YEAR
+### MAP BY YEAR
 
-### *ENTEROCOCCUS* MAP SUMMARY - BY YEAR AND MONTH
+```{r}
+leaflet::leafletOutput('entmapyr')
+```
+
+### MAP BY YEAR AND MONTH
 
 ```{r}
 fillCol(flex = c(NA, 1),
   column(12,
     column(4, 
-      sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
-    ), 
-    column(4, 
       shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
-    ),
-    column(4,
-      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB'), width = '200%', multiple = T)
     )
   ),
   leaflet::leafletOutput('entmap')
@@ -316,7 +377,7 @@ fillCol(flex = c(NA, 1),
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
-### FECAL COLIFORM REPORT CARD
+### REPORT CARD
 
 ```{r}
 plotly::plotlyOutput('fibmatrix')
@@ -329,9 +390,9 @@ The report card is based on fecal coliform and cannot be subset by bay segment. 
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
-### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY - BY YEAR
+### MAP BY YEAR
 
-### *ENTEROCOCCUS* AND *E. COLI* MAP SUMMARY - BY YEAR AND MONTH
+### MAP BY YEAR AND MONTH
 
 ```{r}
 fillCol(flex = c(NA, 1),
