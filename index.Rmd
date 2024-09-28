@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
-# devtools::load_all('T:/04_STAFF/MARCUS/03_GIT/tbeptools', helpers = F)
+# devtools::load_all('../tbeptools', helpers = F)
 ```
 
 ```{r reactives}
@@ -61,7 +61,9 @@ yrtomap1 <- reactive({
   yrsel1 <- input$yrsel1
   areasel1 <- input$areasel1
   
-  out <- show_fibmatmapex(enterodata, yrsel = yrsel1, areasel = areasel1, indic = 'entero')
+  req(areasel1)
+  
+  out <- tbeptools::show_fibmatmap(enterodata, yrsel = yrsel1, areasel = areasel1, indic = 'entero', listout = T)
   
   return(out)
     
@@ -217,7 +219,8 @@ output$entmatrix <- plotly::renderPlotly(entmatrix())
 # baywide ent map, yr
 output$entmapyr <- leaflet::renderLeaflet({
 
-  tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, areasel = c('HB', 'OTB'),
+  tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, 
+                            areasel = c('OTB', 'HB', 'MTB', 'LTB', 'BCB', 'MR'),
                             precipdata = catchprecip, indic = 'entero')
 
 })
@@ -225,7 +228,7 @@ output$entmapyr <- leaflet::renderLeaflet({
 # baywide ent map, yr mo
 output$entmap <- leaflet::renderLeaflet({
 
-  tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay'),
+  tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay', 'Middle Tampa Bay', 'Lower Tampa Bay', 'Boca Ciega Bay', 'Manatee River'),
                             wetdry = T, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5)
 
 })
@@ -323,6 +326,17 @@ Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:m
 1 BAYWIDE
 ===========================================================
 
+```{r}
+column(12, 
+  column(4,
+    sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+    ),
+  column(8,
+    selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB', 'MTB', 'LTB', 'BCB', 'MR'), width = '400%', multiple = T)
+  )
+)
+```
+
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
@@ -333,12 +347,6 @@ fillCol(flex = c(NA, 1),
   column(12,
     column(4,
       shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = T)
-    ),
-    column(4, 
-      sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
-    ), 
-    column(4,
-      selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB'), width = '200%', multiple = T)
     )
   ),
   plotly::plotlyOutput('entmatrix')

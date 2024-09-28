@@ -30,3 +30,5 @@ ecocciicons <- tbeptools::util_fibicons('entero')
 
 # create custom icon list for fib categories
 fibicons <- tbeptools::util_fibicons('fcolif')
+
+data(tbsegdetail, package = 'tbeptools')
