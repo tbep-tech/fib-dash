@@ -128,11 +128,11 @@ observe({
 
   # create map
   if(inherits(enterotomap, 'try-error'))
-    leaflet::leafletProxy("entmap", data = enterotomap) %>%
-      leaflet::clearMarkers()
+    leaflet::leafletProxy('entmap') |> 
+      leaflet::clearMarkers() 
 
   if(!inherits(enterotomap, 'try-error'))
-    leaflet::leafletProxy("entmap", data = enterotomap) %>%
+    leaflet::leafletProxy('entmap') |> 
       leaflet::clearMarkers() |>
       leaflet::addMarkers(
         data = enterotomap,
@@ -169,7 +169,47 @@ fibmatrix <- reactive({
   
 })
 
-# epc fib data to map
+# data for epc fib map, yr
+yrtomap2 <- reactive({
+  
+  yrsel2 <- input$yrsel2
+  areasel2 <- input$areasel2
+  
+  req(areasel2)
+  
+  out <- tbeptools::show_fibmatmap(fibdata, yrsel = yrsel2, areasel = areasel2, indic = 'fcolif', listout = T)
+  
+  return(out)
+    
+}) 
+
+# epc fib data to map, yr
+observe({
+
+  # inputs
+  yrtomap2 <- try(yrtomap2())
+
+  # create map
+  if(inherits(yrtomap2, 'try-error'))
+    leaflet::leafletProxy("fibmapyr") %>%
+      leaflet::clearMarkers() |> 
+      leaflet::clearShapes()
+
+  if(!inherits(yrtomap2, 'try-error'))
+    leaflet::leafletProxy("fibmapyr") %>%
+      leaflet::clearMarkers() |>
+      leaflet::clearShapes() |> 
+      leaflet::addMarkers(
+        data = yrtomap2$tomapsta,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~yrtomap2$icons[as.numeric(cat)],
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      )
+
+})
+
+# epc fib data to map, yr mo
 fibtomap <- reactive({
 
   # inputs
@@ -185,8 +225,6 @@ fibtomap <- reactive({
   
 })
 
-fibmap <- leaflet::leafletProxy('fibmap')
-
 # epc fib map
 observe({
 
@@ -195,11 +233,11 @@ observe({
 
   # create map
   if(inherits(fibtomap, 'try-error'))
-    fibmap %>%
+    leaflet::leafletProxy('fibmap') |> 
       leaflet::clearMarkers()
   
   if(!inherits(fibtomap, 'try-error'))
-    fibmap %>%
+    leaflet::leafletProxy('fibmap') |> 
       leaflet::clearMarkers() |> 
       leaflet::addMarkers(
         data = fibtomap,
@@ -236,7 +274,16 @@ output$entmap <- leaflet::renderLeaflet({
 # epc fib matrix
 output$fibmatrix <- plotly::renderPlotly(fibmatrix())
 
-# epc fib map
+# epc fib map, yr
+output$fibmapyr <- leaflet::renderLeaflet({
+
+  tbeptools::show_fibmatmap(fibdata, yrsel = maxyr, 
+                            areasel = c('Alafia River', 'Hillsborough River'),
+                            precipdata = catchprecip, indic = 'fcolif')
+
+})
+
+# epc fib map, yr mo
 output$fibmap <- leaflet::renderLeaflet({
 
   tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
@@ -382,6 +429,17 @@ fillCol(flex = c(NA, 1),
 2 EPCHC
 ===========================================================
 
+```{r}
+column(12,
+  column(4, 
+      sliderInput('yrsel2', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+  ), 
+  column(8,
+    selectInput('areasel2', 'Select area:', choices = areas2, selected = c('Hillsborough River', 'Alafia River'), width = '400%', multiple = T)     
+  )
+)
+```
+
 Column {.tabset .tabset-fade data-width=275}
 -----------------------------------------------------------------------
 
@@ -400,19 +458,17 @@ Column {.tabset .tabset-fade data-width=500}
 
 ### MAP BY YEAR
 
+```{r}
+leaflet::leafletOutput('fibmapyr')
+```
+
 ### MAP BY YEAR AND MONTH
 
 ```{r}
 fillCol(flex = c(NA, 1),
   column(12,
     column(4, 
-        sliderInput('yrsel2', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
-    ), 
-    column(4, 
       shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
-    ),
-    column(4,
-      selectInput('areasel2', 'Select area:', choices = areas2, selected = c('Hillsborough River', 'Alafia River'), width = '200%', multiple = T)     
     )
   ),
   leaflet::leafletOutput('fibmap')
