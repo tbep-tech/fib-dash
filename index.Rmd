@@ -257,6 +257,31 @@ observe({
       )
     
 })
+
+# download data
+dldat <- reactive({
+  
+  typseldl <- input$typseldl
+  yrseldl <- input$yrseldl
+  
+  req(yrseldl)
+  
+  out <- dldatproc_fun(typseldl, yrseldl)
+  
+  return(out)
+  
+})
+  
+# reactable table
+dltab <- reactive({
+  
+  dldat <- dldat()
+
+  out <- dldattab_fun(dldat)
+  
+  return(out)
+  
+})
 ```
 
 ```{r output}
@@ -299,21 +324,35 @@ output$fibmap <- leaflet::renderLeaflet({
                          areasel = c('Alafia River', 'Hillsborough River'))
 
 })
+
+# year slider range for download
+output$yrseldl <- renderUI({
+  
+  typseldl <- input$typseldl
+  
+  if(!grepl('EPCHC', typseldl))
+    minyr <- min(enterodata$yr)
+  else
+    minyr <- min(fibdata$yr)
+  
+    sliderInput('yrseldl', 'Select year range:', min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '200%')
+  
+})
 ```
 
 ```{r downloadhandlers}
-# # download transect table
-# output$dwnld <- downloadHandler(
-#   filename = function(){'benthicdata.csv'},
-#   content = function(file){
-#     
-#     # inputs
-#     dldat <- dldat()
-#     
-#     write.csv(dldat, file, quote = T, row.names = F)
-#     
-#   }
-# )
+# download fib table
+output$dwnld <- downloadHandler(
+  filename = function(){'downloaddata.csv'},
+  content = function(file){
+
+    # inputs
+    dldat <- dldat()
+
+    write.csv(dldat, file, quote = T, row.names = F)
+
+  }
+)
 ```
 
 OVERVIEW
@@ -494,7 +533,92 @@ Column {.tabset .tabset-fade data-width=650}
 ### DOWNLOAD
 
 ```{r}
+output$dltabout <- reactable::renderReactable(dltab())
+fillCol(flex =c(NA, 1, NA),
+  column(12,
+    column(6, 
+      selectInput('typseldl', 'Select type:', choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'EPCHC station score categories', 'EPCHC raw data'), width = '200%')
+    ),
+    column(6,
+      uiOutput('yrseldl')
+    )
+  ),
+  reactable::reactableOutput('dltabout'),
+  shinyWidgets::downloadBttn('dwnld', 'Download data', style = 'simple', block = T, color = 'success')
+)
 ```
 
 ### METADATA
+
+Summarized score categories or raw FIB data are described below. Data provided on the dashboard are made available for exploratory purposes only.
+
+__Baywide segment score categories__: Tampa Bay FIB score categories summarized by bay segment  
+
+* *Year*: Year of the assessment
+* *bay_segment*: Abbreviated name for the bay segment
+     * *OTB*: Old Tampa Bay
+     * *HB*: Hillsborough Bay
+     * *MTB*: Middle Tampa Bay
+     * *LTB*: Lower Tampa Bay
+     * *BCB*: Boca Ciega Bay
+     * *MR*: Manatee River
+* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
+* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year.
+
+__Baywide station score categories__: Tampa Bay FIB score categories summarized by station 
+
+* *Year*: Year of the assessment
+* *Station*: Station name
+* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year. 
+
+__Baywide raw data__: Raw FIB data for Tampa Bay
+
+* *date*: Date of the sample
+* *Year*: Year of the sample
+* *Month*: Month of the sample
+* *bay_segment*: Abbreviated name for the bay segment
+     * *OTB*: Old Tampa Bay
+     * *HB*: Hillsborough Bay
+     * *MTB*: Middle Tampa Bay
+     * *LTB*: Lower Tampa Bay
+     * *BCB*: Boca Ciega Bay
+     * *MR*: Manatee River
+* *Station*: Station name
+* *entero*: *Enterococcus* cell concentration, #/100 mL
+* *entero_censored*: logical if the value in *entero* is at the MDL
+* *MDL*: Method detection limit for *Enterococcus*, #/100 mL
+* *entero_units*: Units for the *Enterococcus* cell concentration
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+
+__EPCHC station score categories__: EPCHC FIB score categories summarized by station
+
+* *Year*: Year of the assessment
+* *EPCHC station*: EPCHC station name
+* *Geometric mean*: Geometric mean of fecal coliform cell concentrations
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal colifrm in a given year. 
+
+__EPCHC raw data__: Raw EPCHC FIB data
+
+* *area*: EPCHC sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
+* *EPCHC Station*: EPCHC station name
+* *class*: Water body class as fresh (3F, 1) or tidal (3M, 2)
+* *SampleTime*: Time of sample in zulu
+* *Year*: Year of sample
+* *Month*: Month of sample
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+* *ecoli*: *E. coli* cell concentration as #/100 mL
+* *ecoli_q*: *E. coli* cell concentration quality flag, see qualifier description tab [here](https://epcbocc.sharepoint.com/:x:/r/sites/Share/_layouts/15/Doc.aspx?sourcedoc=%7BDDE6D985-527A-4651-935A-F3214F755688%7D&file=RWMSpreadsheet_ThroughCurrentReportMonth.xlsx&action=default&mobileredirect=true){target="_blank"}
+* *entero*: *Enterococcus* cell concentration as #/100 mL
+* *entero_q*: *Enterococcus* cell concentration quality flag, see link above
+* *fcolif*: Fecal coliform cell concentration as #/100 mL
+* *fcolif_q*: Fecal coliform cell concentration quality flag, see link above
+
+
 
