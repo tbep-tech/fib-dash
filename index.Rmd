@@ -35,13 +35,15 @@ entmatrix <- reactive({
       dplyr::distinct() %>%
       dplyr::pull()
 
-    p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), indic = 'entero'))
+    p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), 
+                                       indic = 'entero', warn = F))
   
   }
   
   if(segsel1){
 
-    p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1, yrrng = c(NA, maxyr), indic = 'entero'))
+    p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1, 
+                                       yrrng = c(NA, maxyr), indic = 'entero', warn = F))
   
   }
   
@@ -63,7 +65,8 @@ yrtomap1 <- reactive({
   
   req(areasel1)
   
-  out <- tbeptools::show_fibmatmap(enterodata, yrsel = yrsel1, areasel = areasel1, indic = 'entero', listout = T)
+  out <- tbeptools::show_fibmatmap(enterodata, yrsel = yrsel1, areasel = areasel1, 
+                                   indic = 'entero', listout = T, warn = F)
   
   return(out)
     
@@ -111,6 +114,8 @@ enterotomap <- reactive({
   mosel1 <- input$mosel1
   areasel1 <- input$areasel1
 
+  req(mosel1)
+  
   mosel1 <- mos[[mosel1]]
   areasel <- names(areas1[areas1 %in% areasel1])
   
@@ -157,7 +162,8 @@ fibmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), indic = 'fcolif'))
+  p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), 
+                                     indic = 'fcolif', warn = F))
   
   validate(
     need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
@@ -177,7 +183,8 @@ yrtomap2 <- reactive({
   
   req(areasel2)
   
-  out <- tbeptools::show_fibmatmap(fibdata, yrsel = yrsel2, areasel = areasel2, indic = 'fcolif', listout = T)
+  out <- tbeptools::show_fibmatmap(fibdata, yrsel = yrsel2, areasel = areasel2, 
+                                   indic = 'fcolif', listout = T, warn = F)
   
   return(out)
     
@@ -217,6 +224,8 @@ fibtomap <- reactive({
   mosel2 <- input$mosel2
   areasel2 <- input$areasel2
 
+  req(mosel2)
+  
   mosel2 <- mos[[mosel2]]
   
   tomap <- tbeptools::anlz_fibmap(fibdata, yrsel2, mosel2, areasel2, assf = T)
@@ -259,7 +268,7 @@ output$entmapyr <- leaflet::renderLeaflet({
 
   tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, 
                             areasel = c('OTB', 'HB', 'MTB', 'LTB', 'BCB', 'MR'),
-                            precipdata = catchprecip, indic = 'entero')
+                            precipdata = catchprecip, indic = 'entero', warn = F)
 
 })
 
@@ -279,14 +288,15 @@ output$fibmapyr <- leaflet::renderLeaflet({
 
   tbeptools::show_fibmatmap(fibdata, yrsel = maxyr, 
                             areasel = c('Alafia River', 'Hillsborough River'),
-                            precipdata = catchprecip, indic = 'fcolif')
+                            precipdata = catchprecip, indic = 'fcolif', warn = F)
 
 })
 
 # epc fib map, yr mo
 output$fibmap <- leaflet::renderLeaflet({
 
-  tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, areasel = c('Alafia River', 'Hillsborough River'))
+  tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, 
+                         areasel = c('Alafia River', 'Hillsborough River'))
 
 })
 ```
@@ -344,7 +354,7 @@ Source data used on this website were obtained from multiple sources for the bay
 
 #### Website information
 
-<a href="https://tbep-tech.github.io/tbeptools/articles/tbbi.html" target="__blank" rel="noopener noreferrer"><img class="wp-image-14010 alignnone " src="www/tbeptoolshex.png" alt="" width="200" height="200" /></a>
+<a href="https://tbep-tech.github.io/tbeptools/articles/fib.html" target="__blank" rel="noopener noreferrer"><img class="wp-image-14010 alignnone " src="www/tbeptoolshex.png" alt="" width="200" height="200" /></a>
 
 The page source content can be viewed on [Github](https://github.com/tbep-tech/fib-dash){target="_blank"}. Nearly all of the data, tables, and plots were created using functions in the [tbeptools](https://tbep-tech.github.io/tbeptools){target="_blank"} R software package.  Please see the [vignette](https://tbep-tech.github.io/tbeptools/articles/fib.html){target="_blank"} for a detailed overview of how you can use these functions on your own to work with the data. 
 
