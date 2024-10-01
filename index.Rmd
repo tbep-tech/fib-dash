@@ -383,7 +383,7 @@ The plots in this dashboard are interactive and display options can be controlle
 
 <br>
 ```{r, fig.align='center', out.width='30%'}
-knitr::include_graphics('www/plotcontrols.png')
+knitr::include_graphics('www/plotcontrols.PNG')
 ```
 <br>
 
