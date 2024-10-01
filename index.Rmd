@@ -383,7 +383,7 @@ The plots in this dashboard are interactive and display options can be controlle
 
 <br>
 ```{r, fig.align='center', out.width='30%'}
-knitr::include_graphics('www/plotcontrols.PNG')
+knitr::include_graphics('www/plotcontrols.png')
 ```
 <br>
 
@@ -519,7 +519,7 @@ Placing the cursor over a bay segment or station will reveal additional informat
 
 <br>
 ```{r, out.width='30%', fig.align='center'}
-knitr::include_graphics('www/baywideyrmapex.PNG')
+knitr::include_graphics('www/baywideyrmapex.png')
 ```
 <br>
 
@@ -529,7 +529,7 @@ Placing the cursor over a bay segment or station will reveal additional informat
 
 <br>
 ```{r, out.width='40%', fig.align='center'}
-knitr::include_graphics('www/baywideyrmomapex.PNG')
+knitr::include_graphics('www/baywideyrmomapex.png')
 ```
 <br>
 
@@ -594,7 +594,7 @@ Placing the cursor over a station will reveal additional information.
 
 <br>
 ```{r, out.width='40%', fig.align='center'}
-knitr::include_graphics('www/epchcyrmapex.PNG')
+knitr::include_graphics('www/epchcyrmapex.png')
 ```
 <br>
 
@@ -604,7 +604,7 @@ Placing the cursor over a station will reveal additional information.
 
 <br>
 ```{r, out.width='40%', fig.align='center'}
-knitr::include_graphics('www/epchcyrmomapex.PNG')
+knitr::include_graphics('www/epchcyrmomapex.png')
 ```
 <br>
 
