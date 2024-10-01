@@ -370,7 +370,7 @@ Column {.tabset .tabset-fade data-width=650}
 #### WELCOME TO THE TAMPA BAY FIB DASHBOARD!
 
 ```{r, echo = F, out.width = '100%', fig.align = 'center'}
-# knitr::include_graphics('www/bannerimage.png')
+knitr::include_graphics('www/bannerimage.jpg')
 ```
 
 This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of the Environmental Protection Commission of Hillsborough County (EPCHC) monitoring program.  The latter is specific to evaluating fecal impairments in the Hillsborough and Alafia river basins.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see [FLDOH Healthy Beaches](https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109){target="_blank"}). The dashboard is organized in the following sections:
