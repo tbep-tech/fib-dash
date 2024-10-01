@@ -668,14 +668,14 @@ __Baywide segment score categories__: Tampa Bay FIB score categories summarized 
      * *LTB*: Lower Tampa Bay
      * *BCB*: Boca Ciega Bay
      * *MR*: Manatee River
-* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
+* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations #/100 mL
 * *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year.
 
 __Baywide station score categories__: Tampa Bay FIB score categories summarized by station 
 
 * *Year*: Year of the assessment
 * *Station*: Station name
-* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
+* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations #/100 mL
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 * *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year. 
@@ -707,14 +707,14 @@ __EPCHC station score categories__: EPCHC FIB score categories summarized by sta
 * *Geometric mean*: Geometric mean of fecal coliform cell concentrations
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
-* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal colifrm in a given year. 
+* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal coliform in a given year. 
 
 __EPCHC raw data__: Raw EPCHC FIB data
 
 * *area*: EPCHC sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
 * *EPCHC Station*: EPCHC station name
 * *class*: Water body class as fresh (3F, 1) or tidal (3M, 2)
-* *SampleTime*: Time of sample in zulu
+* *SampleTime*: Time of sample
 * *Year*: Year of sample
 * *Month*: Month of sample
 * *Latitude*: Station latitude, WGS84
