@@ -630,7 +630,7 @@ fillCol(flex = c(NA, 1),
 )
 ```
 
-4 DATA DOWNLOADS
+3 DATA DOWNLOADS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
