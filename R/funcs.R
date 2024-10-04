@@ -91,3 +91,51 @@ dldattab_fun <- function(dldat){
   return(out)
   
 }
+
+# enteromap popup plot
+entmappopup_plo <- function(dat, station, yr, mo){
+
+  levs <- tbeptools::util_fiblevs()
+  
+  cols <- c("#2DC938", "#E9C318", "#EE7600", "#CC3231")
+  names(cols) <- levs$enterolbs
+  
+  toplo <- dat |> 
+    dplyr::filter(station == !!station) |> 
+    dplyr::mutate(
+      Conditions = ifelse(wet_sample, 'Wet', 'Dry'),
+      Conditions = factor(Conditions),
+      Threshold = cut(entero, breaks = levs$enterolev, right = F, levs$enterolbs)
+    ) |> 
+    dplyr::filter(!is.na(Threshold))
+  
+  # ln <- lubridate::make_date(yr, mo, 1)
+
+  out <- ggplot2::ggplot(toplo, ggplot2::aes(x = date, y = entero)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point(ggplot2::aes(shape = Conditions, color = Threshold), size = 3) +
+    # ggplot2::geom_vline(xintercept = ln, linetype = 'dashed') +
+    ggplot2::scale_shape_manual(values = c('Wet' = 16, 'Dry' = 17)) +
+    ggplot2::scale_color_manual(values = cols, drop = F) +
+    ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15))) +
+    ggplot2::theme_minimal(base_size = 14) +
+    ggplot2::theme(
+      panel.grid.minor = ggplot2::element_blank(), 
+      legend.position = 'bottom', 
+      plot.title = ggplot2::element_text(size = 9),
+      legend.title = ggplot2::element_text(size = 12),
+      axis.title.y = ggplot2::element_text(size = 12)
+    ) +
+    ggplot2::labs(
+      title = paste('Station:', station),
+      shape = 'Sampling conditions',
+      color = 'Threshold',
+      x = NULL,
+      y = 'Enterococcus (#/100mL)'
+    )
+  
+  out <- plotly::ggplotly(out)
+  
+  return(out)
+  
+}

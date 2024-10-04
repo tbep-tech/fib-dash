@@ -5,6 +5,10 @@ box::use(
 data('fibdata', package = 'tbeptools')
 data('enterodata', package = 'tbeptools')
 data('catchprecip', package = 'tbeptools')
+data('tbsegdetail', package = 'tbeptools')
+
+enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_window = 2, wet_threshold = 0.5)
+# fibwetdry <- tbeptools::anlz_fibwetdry(fibdata, catchprecip, temporal_window = 2, wet_threshold = 0.5)
 
 cols <- c('#CC3231', '#E9C318', '#2DC938')
 
@@ -30,5 +34,3 @@ ecocciicons <- tbeptools::util_fibicons('entero')
 
 # create custom icon list for fib categories
 fibicons <- tbeptools::util_fibicons('fcolif')
-
-data(tbsegdetail, package = 'tbeptools')

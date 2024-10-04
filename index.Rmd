@@ -144,9 +144,39 @@ observe({
         lng = ~Longitude,
         lat = ~Latitude,
         icon = ~ecocciicons[as.numeric(grp)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
+        label = ~lapply(as.list(lab), tbeptools::util_html), 
+        layerId = ~station
       )
 
+})
+
+# entmap popup modal
+observeEvent(input$entmap_marker_click, {
+
+  showModal(modalDialog(
+      plotly::plotlyOutput('entmappopup'),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+
+})
+
+# create plot on entmap click
+entmappopup <- eventReactive(input$entmap_marker_click, {
+  
+  yrsel1 <- input$yrsel1
+  mosel1 <- input$mosel1
+  station <- input$entmap_marker_click$id
+
+  req(mosel1)
+  mosel1 <- mos[[mosel1]]
+  
+  out <- entmappopup_plo(enterowetdry, station, yrsel1, mosel1)
+  
+  return(out)
+  
 })
 
 # epc fib matrix
@@ -533,6 +563,15 @@ knitr::include_graphics('www/baywideyrmomapex.png')
 ```
 <br>
 
+Finally, clicking on a station will create an interactive popup plot for the complete time series of *Enterococcus* concentrations at that location.  The popup plot can be closed by clicking outside the plot area.
+
+<br>
+```{r, out.width='100%', fig.align='center'}
+knitr::include_graphics('www/baywidemodalex.png')
+```
+<br>
+
+
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
@@ -545,11 +584,13 @@ leaflet::leafletOutput('entmapyr')
 ### MAP BY YEAR AND MONTH
 
 ```{r}
+output$entmappopup <- plotly::renderPlotly(entmappopup())
 fillCol(flex = c(NA, 1),
   column(12,
     column(4, 
       shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
-    )
+    ),
+    column(8, 'Click on a station to view a complete time series')
   ),
   leaflet::leafletOutput('entmap')
 )
