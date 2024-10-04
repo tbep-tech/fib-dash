@@ -139,3 +139,70 @@ entmappopup_plo <- function(dat, station, yr, mo){
   return(out)
   
 }
+
+# fibmap popup plot
+fibmappopup_plo <- function(dat, station, yr, mo){
+  
+  levs <- tbeptools::util_fiblevs()
+
+  toplo <- dat |> 
+    dplyr::filter(epchc_station == !!station) 
+  
+  clss <- unique(toplo$class)
+  
+  # sort conditional if freshwater or marine
+  if(clss %in% c('1', '3F')){
+    indic <- 'ecoli'
+    ylb <- 'E. coli (#/100mL)'
+    ttl <- paste('Station:', station, '(freshwater)')
+    shp <- 17
+    brks <- levs$ecolilev
+    labs <- levs$ecolilbs
+  }
+  if(clss %in% c('2', '3M')){
+    indic <- 'entero'
+    ylb <- 'Enterococcus (#/100mL)'
+    ttl <- paste('Station:', station, '(marine)')
+    shp <- 16
+    brks <- levs$enterolev
+    labs <- levs$enterolbs
+  }
+  
+  toplo <- toplo |> 
+    dplyr::rename(Value = !!indic) |>
+    dplyr::mutate(
+      Threshold = cut(Value, breaks = brks, right = F, labs), 
+      date = as.Date(SampleTime)
+    ) |> 
+    dplyr::filter(!is.na(Threshold))
+  
+  cols <- c("#2DC938", "#E9C318", "#EE7600", "#CC3231")
+  names(cols) <- labs
+  
+  # ln <- lubridate::make_date(yr, mo, 1)
+
+  out <- ggplot2::ggplot(toplo, ggplot2::aes(x = date, y = Value)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point(ggplot2::aes(color = Threshold), size = 3, shape = shp) +
+    # ggplot2::geom_vline(xintercept = ln, linetype = 'dashed') +
+    ggplot2::scale_color_manual(values = cols, drop = F) +
+    ggplot2::theme_minimal(base_size = 14) +
+    ggplot2::theme(
+      panel.grid.minor = ggplot2::element_blank(), 
+      legend.position = 'bottom', 
+      plot.title = ggplot2::element_text(size = 9),
+      legend.title = ggplot2::element_text(size = 12),
+      axis.title.y = ggplot2::element_text(size = 12)
+    ) +
+    ggplot2::labs(
+      title = ttl,
+      color = 'Threshold',
+      x = NULL,
+      y = ylb
+    )
+  
+  out <- plotly::ggplotly(out)
+  
+  return(out)
+  
+}

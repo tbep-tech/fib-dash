@@ -283,9 +283,39 @@ observe({
         lng = ~Longitude,
         lat = ~Latitude,
         icon = ~fibicons[as.numeric(grp)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
+        label = ~lapply(as.list(lab), tbeptools::util_html), 
+        layerId = ~epchc_station
       )
     
+})
+
+# fibmap popup modal
+observeEvent(input$fibmap_marker_click, {
+
+  showModal(modalDialog(
+      plotly::plotlyOutput('fibmappopup'),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+
+})
+
+# create plot on fibmap click
+fibmappopup <- eventReactive(input$fibmap_marker_click, {
+  
+  yrsel2 <- input$yrsel2
+  mosel2 <- input$mosel2
+  station <- input$fibmap_marker_click$id
+
+  req(mosel2)
+  mosel2 <- mos[[mosel2]]
+  
+  out <- fibmappopup_plo(fibdata, station, yrsel2, mosel2)
+  
+  return(out)
+  
 })
 
 # download data
@@ -563,14 +593,13 @@ knitr::include_graphics('www/baywideyrmomapex.png')
 ```
 <br>
 
-Finally, clicking on a station will create an interactive popup plot for the complete time series of *Enterococcus* concentrations at that location.  The popup plot can be closed by clicking outside the plot area.
+Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* concentrations at that location.  The popup plot can be closed by clicking outside the plot area.
 
 <br>
 ```{r, out.width='100%', fig.align='center'}
 knitr::include_graphics('www/baywidemodalex.png')
 ```
 <br>
-
 
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
@@ -649,6 +678,14 @@ knitr::include_graphics('www/epchcyrmomapex.png')
 ```
 <br>
 
+Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
+
+<br>
+```{r, out.width='100%', fig.align='center'}
+knitr::include_graphics('www/epchcmodalex.png')
+```
+<br>
+
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
 
@@ -661,11 +698,13 @@ leaflet::leafletOutput('fibmapyr')
 ### MAP BY YEAR AND MONTH
 
 ```{r}
+output$fibmappopup <- plotly::renderPlotly(fibmappopup())
 fillCol(flex = c(NA, 1),
   column(12,
     column(4, 
       shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
-    )
+    ),
+    column(8, 'Click on a station to view a complete time series')
   ),
   leaflet::leafletOutput('fibmap')
 )
