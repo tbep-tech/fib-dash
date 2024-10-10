@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
-# devtools::load_all('../tbeptools', helpers = F)
+devtools::load_all('../tbeptools', helpers = F)
 ```
 
 ```{r reactives}
@@ -546,9 +546,7 @@ Column {.tabset .tabset-fade data-width=275}
 ```{r}
 fillCol(flex = c(NA, 1),
   column(12,
-    column(4,
-      shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = T)
-    )
+    shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = T, width = '100%')
   ),
   plotly::plotlyOutput('entmatrix')
 )
