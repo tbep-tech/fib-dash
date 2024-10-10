@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
-devtools::load_all('../tbeptools', helpers = F)
+# devtools::load_all('../tbeptools', helpers = F)
 ```
 
 ```{r reactives}
