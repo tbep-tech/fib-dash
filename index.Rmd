@@ -385,6 +385,26 @@ output$fibmap <- leaflet::renderLeaflet({
 
 })
 
+# manco fib matrix
+output$mancofibmatrix <- plotly::renderPlotly(mancofibmatrix())
+
+# manco fib map, yr
+output$mancofibmapyr <- leaflet::renderLeaflet({
+
+  tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr, 
+                            areasel = c('Little Manatee River'),
+                            precipdata = catchprecip, indic = 'fcolif', warn = F)
+
+})
+
+# manco fib map, yr mo
+output$mancofibmap <- leaflet::renderLeaflet({
+
+  tbeptools::show_fibmap(mancofibdata, yrsel = maxyr, mosel = 7, 
+                         areasel = c('Little Manatee River'))
+
+})
+
 # year slider range for download
 output$yrseldl <- renderUI({
   
@@ -436,7 +456,8 @@ knitr::include_graphics('www/bannerimage.jpg')
 This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of the Environmental Protection Commission of Hillsborough County (EPCHC) monitoring program.  The latter is specific to evaluating fecal impairments in the Hillsborough and Alafia river basins.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see [FLDOH Healthy Beaches](https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109){target="_blank"}). The dashboard is organized in the following sections:
 
 1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
-1) [__EPCHC__](#epchc): View summaries of EPCHC FIB data for the Hillsborough and Alafia River basins
+1) [__HILLSBOROUGH COUNTY__](#hillsborough-county): View summaries of Environmental Protection Commission of Hillsborough County (EPCHC) FIB data for the Hillsborough and Alafia River basins
+1) [__MANATEE COUNTY__](#manatee): View summaries of Manatee County FIB data for select monitoring locations
 1) [__DATA DOWNLOADS__](#data-downloads): Download baywide *Enterococcus* or EPCHC FIB data
 
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/){target="_blank"} on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
@@ -481,7 +502,7 @@ The FIBs used in this dashboard are *Enterococcus* cell concentrations for the b
 
 #### Report card score categories
 
-Both report cards on the baywide and EPCHC tabs use similar methods for defining overall risk categories for the FIBs.  The scores are applied to individual monitoring stations or as a baywide total and describe the likelihood that the samples in a given year exceed a relevant cell concentration threshold.  The thresholds are 400 CFU / 100 mL of *Enterococcus* for the baywide assessments and 130 CFU / 100 mL of fecal coliform for the EPCHC assessments. The score categories are as follows: 
+The report cards on each page use similar methods for defining overall risk categories for the FIBs.  The scores are applied to individual monitoring stations or as a baywide total and describe the likelihood that the samples in a given year exceed a relevant cell concentration threshold.  The thresholds are 400 CFU / 100 mL of *Enterococcus* for the baywide assessments and 130 CFU / 100 mL of fecal coliform for the EPCHC and Manatee County assessments. The score categories are as follows: 
 
 * <span style="color:#2DC938">__A__</span>: < 10% likelihood that the samples exceed the threshold
 * <span style="color:#E9C318">__B__</span>: 10-30% likelihood that the samples exceed the threshold
@@ -489,13 +510,13 @@ Both report cards on the baywide and EPCHC tabs use similar methods for defining
 * <span style="color:#CC3231">__D__</span>: 50-75% likelihood that the samples exceed the threshold
 * <span style="color:#800080">__E__</span>: > 75% likelihood that the samples exceed the threshold
 
-For the baywide assessments, the score categories are assigned to both individual stations and for each bay segment, whereas scores are only assigned to stations for the EPCHC data.  The stations for the baywide assessments were chosen specifically as downstream endpoints that drain directly into each bay segment, whereas the EPCHC stations are more distributed throughout the watershed.  The bay segment score categories are based on the aggregate of all samples from each station that drain into that segment.
+For the baywide assessments, the score categories are assigned to both individual stations and for each bay segment, whereas scores are only assigned to stations for the EPCHC data.  The stations for the baywide assessments were chosen specifically as downstream endpoints that drain directly into each bay segment, whereas the EPCHC and Manatee County stations are more distributed throughout the watershed.  The bay segment score categories are based on the aggregate of all samples from each station that drain into that segment.
 
 #### Map summaries
 
-The maps on each tab show year or year/month summaries for FIBs.  The annual maps show the same score categories for the report cards described above for each station and bay segment for the baywide assessments and for stations only for the EPCHC data. 
+The maps on each tab show year or year/month summaries for FIBs.  The annual maps show the same score categories for the report cards described above for each station and bay segment for the baywide assessments and for stations only for the EPCHC and Manatee County data. 
 
-The year/month maps show the sample results for each station for a more detailed view of the data in each year.  The year/month summaries show the concentrations at each station using different threshold categories than the scores described above and separate the data differently depending on the baywide or EPCHC datasets. 
+The year/month maps show the sample results for each station for a more detailed view of the data in each year.  The year/month summaries show the concentrations at each station using different threshold categories than the scores described above and separate the data differently depending on the dataset. 
 
 The baywide dataset year/month maps show *Enterococcus* concentrations separately as wet or dry samples based on whether a sample was collected after a significant amount of rain occurred prior to sampling or if dry conditions were observed.  The thresholds below are then applied to both wet/dry samples:
 
@@ -504,16 +525,16 @@ The baywide dataset year/month maps show *Enterococcus* concentrations separatel
 * <span style="color:#EE7600">__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
 * <span style="color:#CC3231">__Red__</span>: Cell concentrations > 999 CFU / 100 mL
 
-Similar thresholds are applied to station samples for the year/month maps for the EPCHC data.  However, samples are not distinguished as wet/dry and the FIB varies depending on the location of the sample.  *Enterococcus* is used for tidally-influenced locations and *E. coli* is used for freshwater locations.
+Similar thresholds are applied to station samples for the year/month maps for the EPCHC and Manatee County data.  However, samples are not distinguished as wet/dry and the FIB varies depending on the location of the sample.  *Enterococcus* is used for tidally-influenced locations and *E. coli* is used for freshwater locations.
 
-Tidally-influenced *Enterococcus* thresholds for EPCHC year/month maps: 
+Tidally-influenced *Enterococcus* thresholds for EPCHC/Manatee County year/month maps: 
 
 * <span style="color:#2DC938">__Green__</span>: Cell concentrations < 35 CFU / 100 mL
 * <span style="color:#E9C318">__Yellow__</span>: Cell concentrations 35 - 129 CFU / 100 mL
 * <span style="color:#EE7600">__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
 * <span style="color:#CC3231">__Red__</span>: Cell concentrations > 999 CFU / 100 mL
 
-Freshwater *E. coli* thresholds for EPCHC year/month maps: 
+Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps: 
 
 * <span style="color:#2DC938">__Green__</span>: Cell concentrations < 126 CFU / 100 mL
 * <span style="color:#E9C318">__Yellow__</span>: Cell concentrations 126 - 409 CFU / 100 mL
@@ -623,7 +644,7 @@ fillCol(flex = c(NA, 1),
 )
 ```
 
-2 EPCHC
+2 HILLSBOROUGH COUNTY
 ===========================================================
 
 ```{r}
@@ -708,7 +729,92 @@ fillCol(flex = c(NA, 1),
 )
 ```
 
-3 DATA DOWNLOADS
+3 MANATEE COUNTY
+===========================================================
+
+```{r}
+column(12,
+  column(4, 
+      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+  ), 
+  column(8,
+    selectInput('areasel3', 'Select area:', choices = areas3, selected = c('Little Manatee River'), width = '400%', multiple = T)     
+  )
+)
+```
+
+Column {.tabset .tabset-fade data-width=275}
+-----------------------------------------------------------------------
+
+### REPORT CARD
+
+```{r}
+plotly::plotlyOutput('mancofibmatrix')
+```
+
+### Using this tab
+
+The report card and maps are based on fecal coliform, *Enterococcus*, and *E. Coli* cell concentrations using Manatee County data with results for individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
+
+<!-- The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Hillsborough and Alafia River tributary watersheds are shown. These were chosen based on state-designated bacterial impairments and efforts under the Basin Management Action Plans (BMAPs). Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key. -->
+
+The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the Manatee County dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the Manatee County because the stations represent broader sampling areas in the watershed.
+
+The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
+
+The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each individual station for the selected year. These are the same values shown in the report card using fecal coliform concentrations.
+
+Placing the cursor over a station will reveal additional information. 
+
+<!-- <br> -->
+<!-- ```{r, out.width='40%', fig.align='center'} -->
+<!-- knitr::include_graphics('www/epchcyrmapex.png') -->
+<!-- ``` -->
+<!-- <br> -->
+
+The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* and *E. Coli* concentration categories for the selected year and month. Tidally-influenced sampling stations use *Enterococcus* (circles) and freshwater sampling stations use *E. coli* (triangles). See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
+
+Placing the cursor over a station will reveal additional information. 
+
+<!-- <br> -->
+<!-- ```{r, out.width='40%', fig.align='center'} -->
+<!-- knitr::include_graphics('www/epchcyrmomapex.png') -->
+<!-- ``` -->
+<!-- <br> -->
+
+Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
+
+<!-- <br> -->
+<!-- ```{r, out.width='100%', fig.align='center'} -->
+<!-- knitr::include_graphics('www/epchcmodalex.png') -->
+<!-- ``` -->
+<!-- <br> -->
+
+Column {.tabset .tabset-fade data-width=500}
+-----------------------------------------------------------------------
+
+### MAP BY YEAR
+
+```{r}
+leaflet::leafletOutput('mancofibmapyr')
+```
+
+### MAP BY YEAR AND MONTH
+
+```{r}
+output$mancofibmappopup <- plotly::renderPlotly(mancofibmappopup())
+fillCol(flex = c(NA, 1),
+  column(12,
+    column(4, 
+      shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%')
+    ),
+    column(8, 'Click on a station to view a complete time series')
+  ),
+  leaflet::leafletOutput('mancofibmap')
+)
+```
+
+4 DATA DOWNLOADS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
