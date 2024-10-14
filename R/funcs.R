@@ -145,13 +145,16 @@ fibmappopup_plo <- function(dat, station, yr, mo){
   
   levs <- tbeptools::util_fiblevs()
 
+  lkup <- c(station = 'epchc_station', station = 'manco_station')
+  
   toplo <- dat |> 
-    dplyr::filter(epchc_station == !!station) 
-  
+    dplyr::rename(dplyr::any_of(lkup)) |> 
+    dplyr::filter(station == !!station) 
+
   clss <- unique(toplo$class)
-  
+
   # sort conditional if freshwater or marine
-  if(clss %in% c('1', '3F')){
+  if(clss %in% c('1', '3F', 'Fresh')){
     indic <- 'ecoli'
     ylb <- 'E. coli (#/100mL)'
     ttl <- paste('Station:', station, '(freshwater)')
@@ -159,7 +162,7 @@ fibmappopup_plo <- function(dat, station, yr, mo){
     brks <- levs$ecolilev
     labs <- levs$ecolilbs
   }
-  if(clss %in% c('2', '3M')){
+  if(clss %in% c('2', '3M', 'Marine')){
     indic <- 'entero'
     ylb <- 'Enterococcus (#/100mL)'
     ttl <- paste('Station:', station, '(marine)')
@@ -168,6 +171,12 @@ fibmappopup_plo <- function(dat, station, yr, mo){
     labs <- levs$enterolbs
   }
   
+  # wrangle manco
+  if(clss %in% c('Fresh', 'Marine'))
+    toplo <- toplo |> 
+      dplyr::filter(var %in% indic) |> 
+      dplyr::rename(!!indic := 'val')
+
   toplo <- toplo |> 
     dplyr::rename(Value = !!indic) |>
     dplyr::mutate(

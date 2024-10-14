@@ -284,7 +284,7 @@ observe({
         lat = ~Latitude,
         icon = ~fibicons[as.numeric(grp)],
         label = ~lapply(as.list(lab), tbeptools::util_html), 
-        layerId = ~epchc_station
+        layerId = ~station
       )
     
 })
@@ -313,6 +313,145 @@ fibmappopup <- eventReactive(input$fibmap_marker_click, {
   mosel2 <- mos[[mosel2]]
   
   out <- fibmappopup_plo(fibdata, station, yrsel2, mosel2)
+  
+  return(out)
+  
+})
+
+# manco fib matrix
+mancofibmatrix <- reactive({
+
+  # inputs
+  areasel3 <- input$areasel3
+  yrsel3 <- input$yrsel3
+  
+  stas <- mancofibdata %>%
+    dplyr::filter(area %in% areasel3) %>%
+    dplyr::select(manco_station) %>%
+    dplyr::distinct() %>%
+    dplyr::pull()
+
+  p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(NA, maxyr), 
+                                     indic = 'fcolif', warn = F))
+  
+  validate(
+    need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
+  )
+  
+  out <- mataddyr_fun(p, yrsel = yrsel3)
+    
+  return(out)
+  
+})
+
+# data for manco fib map, yr
+yrtomap3 <- reactive({
+  
+  yrsel3 <- input$yrsel3
+  areasel3 <- input$areasel3
+  
+  req(areasel3)
+  
+  out <- tbeptools::show_fibmatmap(mancofibdata, yrsel = yrsel3, areasel = areasel3, 
+                                   indic = 'fcolif', listout = T, warn = F)
+  
+  return(out)
+    
+}) 
+
+# manco fib data to map, yr
+observe({
+
+  # inputs
+  yrtomap3 <- try(yrtomap3())
+
+  # create map
+  if(inherits(yrtomap3, 'try-error'))
+    leaflet::leafletProxy("mancofibmapyr") %>%
+      leaflet::clearMarkers() |> 
+      leaflet::clearShapes()
+
+  if(!inherits(yrtomap3, 'try-error'))
+    leaflet::leafletProxy("mancofibmapyr") %>%
+      leaflet::clearMarkers() |>
+      leaflet::clearShapes() |> 
+      leaflet::addMarkers(
+        data = yrtomap3$tomapsta,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~yrtomap3$icons[as.numeric(cat)],
+        label = ~lapply(as.list(lab), tbeptools::util_html)
+      )
+
+})
+
+# manco fib data to map, yr mo
+mancofibtomap <- reactive({
+
+  # inputs
+  yrsel3 <- input$yrsel3
+  mosel3 <- input$mosel3
+  areasel3 <- input$areasel3
+
+  req(mosel3)
+  
+  mosel3 <- mos[[mosel3]]
+
+  tomap <- tbeptools::anlz_fibmap(mancofibdata, yrsel3, mosel3, areasel3, assf = T)
+  
+  return(tomap)
+  
+})
+
+# manco fib map
+observe({
+
+  # inputs
+  mancofibtomap <- try(mancofibtomap())
+
+  # create map
+  if(inherits(mancofibtomap, 'try-error'))
+    leaflet::leafletProxy('mancofibmap') |> 
+      leaflet::clearMarkers()
+
+  if(!inherits(mancofibtomap, 'try-error'))
+    leaflet::leafletProxy('mancofibmap') |> 
+      leaflet::clearMarkers() |> 
+      leaflet::addMarkers(
+        data = mancofibtomap,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        icon = ~fibicons[as.numeric(grp)],
+        label = ~lapply(as.list(lab), tbeptools::util_html), 
+        layerId = ~station
+      )
+    
+})
+
+# manco fibmap popup modal
+observeEvent(input$mancofibmap_marker_click, {
+
+  showModal(modalDialog(
+      plotly::plotlyOutput('mancofibmappopup'),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+
+})
+
+# create plot on manco fibmap click
+mancofibmappopup <- eventReactive(input$mancofibmap_marker_click, {
+  
+  yrsel3 <- input$yrsel3
+  mosel3 <- input$mosel3
+  station <- input$mancofibmap_marker_click$id
+
+  req(mosel3)
+  mosel3 <- mos[[mosel3]]
+
+  out <- fibmappopup_plo(mancofibdata, station, yrsel3, mosel3)
   
   return(out)
   
@@ -391,7 +530,7 @@ output$mancofibmatrix <- plotly::renderPlotly(mancofibmatrix())
 # manco fib map, yr
 output$mancofibmapyr <- leaflet::renderLeaflet({
 
-  tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr, 
+  tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr - 2, 
                             areasel = c('Little Manatee River'),
                             precipdata = catchprecip, indic = 'fcolif', warn = F)
 
@@ -400,7 +539,7 @@ output$mancofibmapyr <- leaflet::renderLeaflet({
 # manco fib map, yr mo
 output$mancofibmap <- leaflet::renderLeaflet({
 
-  tbeptools::show_fibmap(mancofibdata, yrsel = maxyr, mosel = 7, 
+  tbeptools::show_fibmap(mancofibdata, yrsel = maxyr - 2, mosel = 7, 
                          areasel = c('Little Manatee River'))
 
 })
@@ -735,7 +874,7 @@ fillCol(flex = c(NA, 1),
 ```{r}
 column(12,
   column(4, 
-      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr - 2, value = maxyr - 2, step = 1, sep = '', width = '200%')
   ), 
   column(8,
     selectInput('areasel3', 'Select area:', choices = areas3, selected = c('Little Manatee River'), width = '400%', multiple = T)     
