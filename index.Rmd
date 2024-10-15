@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 source(here::here('R/global.R'))
 source(here::here('R/funcs.R'))
-# devtools::load_all('../tbeptools', helpers = F)
+devtools::load_all('../tbeptools', helpers = F)
 ```
 
 ```{r reactives}
@@ -531,7 +531,7 @@ output$mancofibmatrix <- plotly::renderPlotly(mancofibmatrix())
 output$mancofibmapyr <- leaflet::renderLeaflet({
 
   tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr - 2, 
-                            areasel = c('Little Manatee River'),
+                            areasel = c('Braden River', 'Manatee River'),
                             precipdata = catchprecip, indic = 'fcolif', warn = F)
 
 })
@@ -540,7 +540,7 @@ output$mancofibmapyr <- leaflet::renderLeaflet({
 output$mancofibmap <- leaflet::renderLeaflet({
 
   tbeptools::show_fibmap(mancofibdata, yrsel = maxyr - 2, mosel = 7, 
-                         areasel = c('Little Manatee River'))
+                         areasel = c('Braden River', 'Manatee River'))
 
 })
 
@@ -874,10 +874,10 @@ fillCol(flex = c(NA, 1),
 ```{r}
 column(12,
   column(4, 
-      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr - 2, value = maxyr - 2, step = 1, sep = '', width = '200%')
+      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr, value = maxyr - 2, step = 1, sep = '', width = '200%')
   ), 
   column(8,
-    selectInput('areasel3', 'Select area:', choices = areas3, selected = c('Little Manatee River'), width = '400%', multiple = T)     
+    selectInput('areasel3', 'Select area:', choices = areas3, selected = c('Braden River', 'Manatee River'), width = '400%', multiple = T)     
   )
 )
 ```

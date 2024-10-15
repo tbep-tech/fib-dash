@@ -29,13 +29,9 @@ areas2 <- c('Alafia River', 'Hillsborough River', 'Big Bend', 'Cockroach Bay',
            'Valrico Lake')
 
 areas3 <- c("Big Slough", "Bowlees Creek", "Braden River", "Bud Slough", 
-            "Cedar Creek", "Clay Gully", "Cooper Creek", "Curiosity Creek", 
-            "Frog Creek", "Gamble Creek", "Gap Creek", "Gates Creek", "Gilley Creek", 
-            "Hickory Hammock Creek", "Lake Manatee", "Little Manatee River", 
-            "Lower Manatee River", "Lower Tampa Bay", "Manatee River Estuary", 
-            "Mcmullen Creek", "Mill Creek", "Mud Lake Slough", "Myakka River", 
-            "Nonsense Creek", "Palma Sola Bay", "Piney Point Creek", "Rattlesnake Slough", 
-            "Sugarhouse Creek", "Upper Manatee River", "Ward Lake", "Williams Creek")
+            "Clay Gully", "Frog Creek", "Gap Creek", "Little Manatee River", 
+            "Lower Tampa Bay", "Manatee River", "Mcmullen Creek", "Mud Lake Slough", 
+            "Myakka River", "Palma Sola Bay", "Piney Point Creek")
 
 # create custom icon list for fib categories
 ecocciicons <- tbeptools::util_fibicons('entero')
