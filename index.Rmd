@@ -601,7 +601,7 @@ This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide asse
 
 1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
 1) [__HILLSBOROUGH COUNTY__](#hillsborough-county): View summaries of Environmental Protection Commission of Hillsborough County (EPCHC) FIB data for the Hillsborough and Alafia River basins
-1) [__MANATEE COUNTY__](#manatee): View summaries of Manatee County FIB data for select monitoring locations
+1) [__MANATEE COUNTY__](#manatee-county): View summaries of Manatee County FIB data for select monitoring locations
 1) [__DATA DOWNLOADS__](#data-downloads): Download baywide *Enterococcus* or EPCHC FIB data
 
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/){target="_blank"} on the top with different options for viewing the data.  For example, click the camera icon to download a plot.

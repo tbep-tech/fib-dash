@@ -108,13 +108,14 @@ entmappopup_plo <- function(dat, station, yr, mo){
       Threshold = cut(entero, breaks = levs$enterolev, right = F, levs$enterolbs)
     ) |> 
     dplyr::filter(!is.na(Threshold))
-  
-  # ln <- lubridate::make_date(yr, mo, 1)
+
+  ln <- toplo |> 
+    dplyr::filter(yr %in% !!yr & mo %in% !!mo) |> 
+    dplyr::pull(date)
 
   out <- ggplot2::ggplot(toplo, ggplot2::aes(x = date, y = entero)) +
     ggplot2::geom_line() +
     ggplot2::geom_point(ggplot2::aes(shape = Conditions, color = Threshold), size = 3) +
-    # ggplot2::geom_vline(xintercept = ln, linetype = 'dashed') +
     ggplot2::scale_shape_manual(values = c('Wet' = 16, 'Dry' = 17)) +
     ggplot2::scale_color_manual(values = cols, drop = F) +
     ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(shape = 15))) +
@@ -133,8 +134,10 @@ entmappopup_plo <- function(dat, station, yr, mo){
       x = NULL,
       y = 'Enterococcus (#/100mL)'
     )
-  
-  out <- plotly::ggplotly(out)
+
+  out <- plotly::ggplotly(out) |> 
+    plotly::add_segments(x = ~as.numeric(ln), xend = ~as.numeric(ln), y = 0, yend = 2 * max(toplo$entero, na.rm = T), 
+                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none')
   
   return(out)
   
@@ -188,12 +191,13 @@ fibmappopup_plo <- function(dat, station, yr, mo){
   cols <- c("#2DC938", "#E9C318", "#EE7600", "#CC3231")
   names(cols) <- labs
   
-  # ln <- lubridate::make_date(yr, mo, 1)
+  ln <- toplo |> 
+    dplyr::filter(yr %in% !!yr & mo %in% !!mo) |> 
+    dplyr::pull(date)
 
   out <- ggplot2::ggplot(toplo, ggplot2::aes(x = date, y = Value)) +
     ggplot2::geom_line() +
     ggplot2::geom_point(ggplot2::aes(color = Threshold), size = 3, shape = shp) +
-    # ggplot2::geom_vline(xintercept = ln, linetype = 'dashed') +
     ggplot2::scale_color_manual(values = cols, drop = F) +
     ggplot2::theme_minimal(base_size = 14) +
     ggplot2::theme(
@@ -210,7 +214,9 @@ fibmappopup_plo <- function(dat, station, yr, mo){
       y = ylb
     )
   
-  out <- plotly::ggplotly(out)
+  out <- plotly::ggplotly(out) |> 
+    plotly::add_segments(x = ~as.numeric(ln), xend = ~as.numeric(ln), y = 0, yend = 2 * max(toplo$Value, na.rm = T), 
+                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none')
   
   return(out)
   
