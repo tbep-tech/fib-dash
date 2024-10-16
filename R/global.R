@@ -12,6 +12,9 @@ enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_wind
 
 cols <- c('#CC3231', '#E9C318', '#2DC938')
 
+yrmin1 <- 2002
+yrmin2 <- 1976
+yrmin3 <- 1997
 maxyr <- 2023
 
 lwid <- 1.5

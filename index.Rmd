@@ -35,7 +35,7 @@ entmatrix <- reactive({
       dplyr::distinct() %>%
       dplyr::pull()
 
-    p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(NA, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(yrmin1, maxyr), 
                                        indic = 'entero', warn = F))
   
   }
@@ -43,7 +43,7 @@ entmatrix <- reactive({
   if(segsel1){
 
     p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1, 
-                                       yrrng = c(NA, maxyr), indic = 'entero', warn = F))
+                                       yrrng = c(yrmin1, maxyr), indic = 'entero', warn = F))
   
   }
   
@@ -192,7 +192,7 @@ fibmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(NA, maxyr), 
+  p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, maxyr), 
                                      indic = 'fcolif', warn = F))
   
   validate(
@@ -331,7 +331,7 @@ mancofibmatrix <- reactive({
     dplyr::distinct() %>%
     dplyr::pull()
 
-  p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(NA, maxyr), 
+  p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
                                      indic = 'fcolif', warn = F))
   
   validate(
@@ -695,7 +695,7 @@ Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps:
 ```{r}
 column(12, 
   column(4,
-    sliderInput('yrsel1', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+    sliderInput('yrsel1', 'Select year:', min = yrmin1, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
     ),
   column(8,
     selectInput('areasel1', 'Select area:', choices = areas1, selected = c('HB', 'OTB', 'MTB', 'LTB', 'BCB', 'MR'), width = '400%', multiple = T)
@@ -794,7 +794,7 @@ fillCol(flex = c(NA, 1),
 ```{r}
 column(12,
   column(4, 
-      sliderInput('yrsel2', 'Select year:', min = 2001, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
+      sliderInput('yrsel2', 'Select year:', min = yrmin2, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%')
   ), 
   column(8,
     selectInput('areasel2', 'Select area:', choices = areas2, selected = c('Hillsborough River', 'Alafia River'), width = '400%', multiple = T)     
@@ -879,7 +879,7 @@ fillCol(flex = c(NA, 1),
 ```{r}
 column(12,
   column(4, 
-      sliderInput('yrsel3', 'Select year:', min = 1995, max = maxyr, value = maxyr - 2, step = 1, sep = '', width = '200%')
+      sliderInput('yrsel3', 'Select year:', min = yrmin3, max = maxyr, value = maxyr - 2, step = 1, sep = '', width = '200%')
   ), 
   column(8,
     selectInput('areasel3', 'Select area:', choices = areas3, selected = c('Braden River', 'Manatee River'), width = '400%', multiple = T)     
