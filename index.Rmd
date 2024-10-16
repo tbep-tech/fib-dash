@@ -372,16 +372,21 @@ observe({
       leaflet::clearShapes()
 
   if(!inherits(yrtomap3, 'try-error'))
-    leaflet::leafletProxy("mancofibmapyr") %>%
-      leaflet::clearMarkers() |>
-      leaflet::clearShapes() |> 
-      leaflet::addMarkers(
-        data = yrtomap3$tomapsta,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~yrtomap3$icons[as.numeric(cat)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
-      )
+    if(nrow(yrtomap3$tomapsta) == 0)
+      leaflet::leafletProxy("mancofibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
+    else
+      leaflet::leafletProxy("mancofibmapyr") %>%
+        leaflet::clearMarkers() |>
+        leaflet::clearShapes() |> 
+        leaflet::addMarkers(
+          data = yrtomap3$tomapsta,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~yrtomap3$icons[as.numeric(cat)],
+          label = ~lapply(as.list(lab), tbeptools::util_html)
+        )
 
 })
 
