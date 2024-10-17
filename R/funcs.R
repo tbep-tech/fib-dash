@@ -36,16 +36,30 @@ dldatproc_fun <- function(typseldl, yrseldl){
     dplyr::rename(Station = station) |> 
     dplyr::select(-time, -time_zone, -long_name, -qualifier, -LabComments)
   
-  if(typseldl == 'EPCHC station score categories')
+  if(typseldl == 'Hillsborough County station score categories')
     out <- tbeptools::anlz_fibmatrix(fibdata, stas = unique(fibdata$epchc_station), yrrng = yrseldl, 
                                      indic = 'fcolif', warn = F) |> 
-    dplyr::rename(`EPCHC station` = grp)
+    dplyr::rename(`Station` = grp)
   
-  if(typseldl == 'EPCHC raw data')
+  if(typseldl == 'Hillsborough County raw data')
     out <- fibdata |> 
-    dplyr::rename(`EPCHC Station` = epchc_station) |> 
+    dplyr::rename(`Station` = epchc_station) |> 
     dplyr::select(-Total_Depth_m, -Sample_Depth_m, -totcol, -totcol_q)
   
+  if(typseldl == 'Manatee County station score categories')
+    out <- tbeptools::anlz_fibmatrix(mancofibdata, stas = unique(mancofibdata$manco_station), yrrng = yrseldl, 
+                                     indic = 'fcolif', warn = F) |> 
+      dplyr::rename(`Station` = grp)
+  
+  if(typseldl == 'Manatee County raw data')
+    out <- mancofibdata |> 
+      dplyr::filter(!is.na(val)) |> 
+      dplyr::rename(
+        `Station` = manco_station
+      ) |> 
+      dplyr::select(-Sample_Depth_m) |> 
+      dplyr::select(area, dplyr::everything())
+
   out <- out |> 
     dplyr::filter(yr >= yrseldl[1] & yr <= yrseldl[2]) |> 
     dplyr::rename(
@@ -55,14 +69,14 @@ dldatproc_fun <- function(typseldl, yrseldl){
   
   if(!grepl('raw', typseldl))
     out <- out |> 
-    dplyr::filter(!is.na(gmean)) |> 
-    dplyr::rename(
-      `Geometric mean` = gmean,
-      `Score category` = cat
-    )
+      dplyr::filter(!is.na(gmean)) |> 
+      dplyr::rename(
+        `Geometric mean` = gmean,
+        `Score category` = cat
+      )
   else
     out <- out |> 
-    dplyr::rename(Month = mo)
+      dplyr::rename(Month = mo)
   
   req(!is.null(out))
   

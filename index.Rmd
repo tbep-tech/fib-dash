@@ -554,10 +554,12 @@ output$yrseldl <- renderUI({
   
   typseldl <- input$typseldl
   
-  if(!grepl('EPCHC', typseldl))
+  if(!grepl('Hillsborough|Manatee', typseldl))
     minyr <- min(enterodata$yr)
-  else
+  if(grepl('Hillsborough', typseldl))
     minyr <- min(fibdata$yr)
+  if(grepl('Manatee', typseldl))
+    minyr <- min(mancofibdata$yr)
   
     sliderInput('yrseldl', 'Select year range:', min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '200%')
   
@@ -602,7 +604,7 @@ This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide asse
 1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
 1) [__HILLSBOROUGH COUNTY__](#hillsborough-county): View summaries of Environmental Protection Commission of Hillsborough County (EPCHC) FIB data for the Hillsborough and Alafia River basins
 1) [__MANATEE COUNTY__](#manatee-county): View summaries of Manatee County FIB data for select monitoring locations
-1) [__DATA DOWNLOADS__](#data-downloads): Download baywide *Enterococcus* or EPCHC FIB data
+1) [__DATA DOWNLOADS__](#data-downloads): Download baywide, Hillsborough County, or Manatee County data
 
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/){target="_blank"} on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
 
@@ -971,7 +973,7 @@ output$dltabout <- reactable::renderReactable(dltab())
 fillCol(flex =c(NA, 1, NA),
   column(12,
     column(6, 
-      selectInput('typseldl', 'Select type:', choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'EPCHC station score categories', 'EPCHC raw data'), width = '200%')
+      selectInput('typseldl', 'Select type:', choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data'), width = '200%')
     ),
     column(6,
       uiOutput('yrseldl')
@@ -1028,19 +1030,19 @@ __Baywide raw data__: Raw FIB data for Tampa Bay
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 
-__EPCHC station score categories__: EPCHC FIB score categories summarized by station
+__Hillsborough County station score categories__: Hillsborough County FIB score categories summarized by station
 
 * *Year*: Year of the assessment
-* *EPCHC station*: EPCHC station name
+* *Station*: Hillsborough County station name
 * *Geometric mean*: Geometric mean of fecal coliform cell concentrations
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 * *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal coliform in a given year. 
 
-__EPCHC raw data__: Raw EPCHC FIB data
+__Hillsborough County raw data__: Raw Hillsborough County FIB data
 
-* *area*: EPCHC sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
-* *EPCHC Station*: EPCHC station name
+* *area*: Hillsborough County sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
+* *Station*: Hillsborough County station name
 * *class*: Water body class as fresh (3F, 1) or tidal (3M, 2)
 * *SampleTime*: Time of sample
 * *Year*: Year of sample
