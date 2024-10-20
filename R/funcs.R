@@ -73,7 +73,9 @@ dldatproc_fun <- function(typseldl, yrseldl){
       dplyr::rename(
         `Geometric mean` = gmean,
         `Score category` = cat
-      )
+      ) |> 
+      dplyr::filter(!is.na(`Geometric mean`))
+  
   else
     out <- out |> 
       dplyr::rename(Month = mo)
