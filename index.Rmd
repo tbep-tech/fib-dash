@@ -555,11 +555,11 @@ output$yrseldl <- renderUI({
   typseldl <- input$typseldl
   
   if(!grepl('Hillsborough|Manatee', typseldl))
-    minyr <- min(enterodata$yr)
+    minyr <- yrmin1
   if(grepl('Hillsborough', typseldl))
-    minyr <- min(fibdata$yr)
+    minyr <- yrmin2
   if(grepl('Manatee', typseldl))
-    minyr <- min(mancofibdata$yr)
+    minyr <- yrmin3
   
     sliderInput('yrseldl', 'Select year range:', min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '200%')
   
