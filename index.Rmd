@@ -902,9 +902,9 @@ plotly::plotlyOutput('mancofibmatrix')
 
 The report card and maps are based on fecal coliform, *Enterococcus*, and *E. Coli* cell concentrations using Manatee County data with results for individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
 
-<!-- The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Hillsborough and Alafia River tributary watersheds are shown. These were chosen based on state-designated bacterial impairments and efforts under the Basin Management Action Plans (BMAPs). Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key. -->
+The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Braden and Manatee Rivers are shown. Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key.
 
-The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the Manatee County dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the Manatee County because the stations represent broader sampling areas in the watershed.
+The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the Manatee County dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the Manatee County data because the stations represent broader sampling areas not appriopriate for evaluating bay segments.
 
 The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
 
@@ -912,29 +912,29 @@ The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each i
 
 Placing the cursor over a station will reveal additional information. 
 
-<!-- <br> -->
-<!-- ```{r, out.width='40%', fig.align='center'} -->
-<!-- knitr::include_graphics('www/epchcyrmapex.png') -->
-<!-- ``` -->
-<!-- <br> -->
+<br>
+```{r, out.width='40%', fig.align='center'}
+knitr::include_graphics('www/mancoyrmapex.png')
+```
+<br>
 
 The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* and *E. Coli* concentration categories for the selected year and month. Tidally-influenced sampling stations use *Enterococcus* (circles) and freshwater sampling stations use *E. coli* (triangles). See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
 
 Placing the cursor over a station will reveal additional information. 
 
-<!-- <br> -->
-<!-- ```{r, out.width='40%', fig.align='center'} -->
-<!-- knitr::include_graphics('www/epchcyrmomapex.png') -->
-<!-- ``` -->
-<!-- <br> -->
+<br>
+```{r, out.width='40%', fig.align='center'}
+knitr::include_graphics('www/mancoyrmomapex.png')
+```
+<br>
 
 Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
 
-<!-- <br> -->
-<!-- ```{r, out.width='100%', fig.align='center'} -->
-<!-- knitr::include_graphics('www/epchcmodalex.png') -->
-<!-- ``` -->
-<!-- <br> -->
+<br>
+```{r, out.width='100%', fig.align='center'}
+knitr::include_graphics('www/mancomodalex.png')
+```
+<br>
 
 Column {.tabset .tabset-fade data-width=500}
 -----------------------------------------------------------------------
