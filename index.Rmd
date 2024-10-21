@@ -154,7 +154,7 @@ observe({
 observeEvent(input$entmap_marker_click, {
 
   showModal(modalDialog(
-      plotly::plotlyOutput('entmappopup'),
+      plotly::plotlyOutput('entmappopup', height = "500px"),
       easyClose = T,
       fade = F,
       footer = NULL, 
@@ -293,7 +293,7 @@ observe({
 observeEvent(input$fibmap_marker_click, {
 
   showModal(modalDialog(
-      plotly::plotlyOutput('fibmappopup'),
+      plotly::plotlyOutput('fibmappopup', height = "500px"),
       easyClose = T,
       fade = F,
       footer = NULL, 
@@ -437,7 +437,7 @@ observe({
 observeEvent(input$mancofibmap_marker_click, {
 
   showModal(modalDialog(
-      plotly::plotlyOutput('mancofibmappopup'),
+      plotly::plotlyOutput('mancofibmappopup', height = "500px"),
       easyClose = T,
       fade = F,
       footer = NULL, 
