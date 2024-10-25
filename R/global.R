@@ -41,3 +41,6 @@ ecocciicons <- tbeptools::util_fibicons('entero')
 
 # create custom icon list for fib categories
 fibicons <- tbeptools::util_fibicons('fcolif')
+
+# plotly modebar items to remove
+modrm <- c('autoScale', 'select2d', 'lasso2d')

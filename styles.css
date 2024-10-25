@@ -50,6 +50,13 @@ h2,h3,h4,h5 {
   background-image: none !important;
 }
 
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
+    color: #ffffff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #00806E;
+}
+
 /* sidebar */
 
 .sidebar {
@@ -132,6 +139,16 @@ h2,h3,h4,h5 {
 
 .irs-from {
   background: #00806E !important
+}
+
+.js-irs-6 .irs-bar-edge, .js-irs-6 .irs-bar {
+  background: #00806E!important; 
+  border: 1px #00806E !important;
+}
+
+/* background color of selected option for shiny selectInput */
+.selectize-dropdown .option.selected {
+  background: #00806E !important;
 }
 
 /* tabset top border */
