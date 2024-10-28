@@ -58,6 +58,28 @@ ui <- page_navbar(
       overflow-y: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
+    },
+    .modal-backdrop.show {
+      z-index: 2056 !important;
+    }
+    .modal.show {
+      z-index: 2057 !important;
+    }
+    .modal-dialog {
+      z-index: 2057 !important;
+    }
+    .resizable-column {
+      z-index: 1000;  /* Base z-index for normal state */
+    }
+    .resizable-column .card-fullscreen,
+    .resizable-column .bslib-card.card-fullscreen,
+    .resizable-column .bslib-navs-underline,
+    .resizable-column .nav-tabs-container {
+      z-index: 1055 !important;
+    }
+    /* Ensure the modal is always on top */
+    body.modal-open .modal {
+      z-index: 2057 !important;
     }
   ")
     ),
@@ -253,17 +275,17 @@ The __MAP BY YEAR__ tab shows a map of the report card grades assigned each bay 
 
 Placing the cursor over a bay segment or station will reveal additional information. 
 
-<img src='baywideyrmapex.png' style='width: 30%; display: block; margin: 0 auto;'>   
+<img src='baywideyrmapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
 
 The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* concentration categories for the selected year and month. Samples are identified as occurring during wet (circles) or dry (triangles) conditions. See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
 
 Placing the cursor over a bay segment or station will reveal additional information. 
 
-<img src='baywideyrmomapex.png' style='width: 40%; display: block; margin: 0 auto;'>   
+<img src='baywideyrmomapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
 
 Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* concentrations at that location.  The popup plot can be closed by clicking outside the plot area.
 
-<img src='baywidemodalex.png' style='width: 100%; display: block; margin: 0 auto;'> 
+<img src='baywidemodalex.png' style='width: 550px; display: block; margin: 0 auto;'> 
 "              
           )
         )
@@ -281,8 +303,11 @@ Finally, clicking on a station on the year/month map will create an interactive 
         ),
         nav_panel(
           "MAP BY YEAR AND MONTH",
-          shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '200%'),
-          # column(8, 'Click on a station to view a complete time series')
+          div(
+            style = "display: flex; align-items: center; gap: 1rem;",
+            shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+            span('Click on a station to view a complete time series')
+          ),
           leaflet::leafletOutput('entmap')
           )
         )
