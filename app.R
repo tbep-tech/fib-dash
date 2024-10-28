@@ -22,37 +22,45 @@ ui <- page_navbar(
     # tags$head(
     #   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
     # ), 
+    # Add Google Analytics and custom CSS
     tags$style("
-      .resizable-row {
-        display: flex;
-        min-height: 300px;
-        gap: 0.25rem;
-        height: calc(100vh - 100px);
-      }
-      .resizable-column {
-        resize: horizontal;
-        overflow: hidden;
-        min-width: 200px;
-        max-width: 90%;
-      }
-      .right-column {
-        flex: 1;
-        min-width: 200px;
-      }
-      .card {
-        height: 100%;
-        border: 1px solid rgba(0,0,0,.125);  
-        display: flex;
-        flex-direction: column;
-      }
-      .card-scroll {
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-      "
-    )
-  ),
+    .fill-height {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+      padding: 1rem;  /* Add padding to fill-height */
+    }
+    .resizable-row {
+      display: flex;
+      gap: 1rem;  /* Increased gap to match card spacing */
+      flex: 1;
+      min-height: 0;
+      padding: 0;  /* Remove padding from resizable-row */
+    }
+    .resizable-column {
+      resize: horizontal;
+      overflow: hidden;
+      min-width: 200px;
+      max-width: 90%;
+    }
+    .right-column {
+      flex: 1;
+      min-width: 200px;
+    }
+    .card {
+      height: 100%;
+      border: 1px solid rgba(0,0,0,.125);  
+      display: flex;
+      flex-direction: column;
+    }
+    .card-scroll {
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  ")
+    ),
   
   # Add logo
   nav_item(
@@ -61,6 +69,7 @@ ui <- page_navbar(
   
   # First nav item - Overview
   nav_panel(
+    class = 'fill-height',
     title = "OVERVIEW",
     div(
       class = 'resizable-row',
@@ -177,6 +186,33 @@ Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps:
   # Second nav item - Baywide
   nav_panel(
     title = "1 BAYWIDE",
+    class = 'fill-height',
+    layout_columns(
+      fill = F,
+      card(
+        height = 'auto',
+        width = 12,
+        div(
+          style = 'display: flex; gap: 0rem; align-items: flex-end;',
+          div(
+            style = 'width: 33.33%;',
+            div(
+              style = "display: flex; flex-direction: column;",
+              div(style = "height: 25px;", "Select year:"), 
+              sliderInput('yrsel1', NULL, min = yrmin1, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+            )
+          ),
+          div(
+            style = 'width: 66.66%;',
+            div(
+              style = 'display: flex; flex-direction: column;',
+              div(style = "height: 50px;", "Select area:"), 
+              selectInput('areasel1', NULL, choices = areas1, selected = c('HB', 'OTB', 'MTB', 'LTB', 'BCB', 'MR'), multiple = T, width = '100%'),
+            )
+          )
+        )
+      )
+    ),
     div(
       class = 'resizable-row',
       div(
@@ -191,8 +227,8 @@ Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps:
               fillCol(flex = c(NA, 1),
                 column(12,
                   shinyWidgets::materialSwitch('segsel1', 'By bay segment?', value = T, width = '100%')
-                )#,
-                # plotly::plotlyOutput('entmatrix')
+                ),
+                plotly::plotlyOutput('entmatrix')
               )
             ),
             nav_panel(
