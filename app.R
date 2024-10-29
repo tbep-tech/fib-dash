@@ -81,6 +81,17 @@ ui <- page_navbar(
     body.modal-open .modal {
       z-index: 2057 !important;
     }
+    .leaflet-top,
+    .leaflet-bottom,
+    .leaflet-left,
+    .leaflet-right,
+    .leaflet-control-container,
+    .leaflet-control-zoom,
+    .leaflet-control-attribution,
+    .leaflet-control-layers,
+    .leaflet-pane {
+      z-index: 800 !important;
+    }
   ")
     ),
   
