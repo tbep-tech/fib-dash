@@ -329,31 +329,94 @@ Finally, clicking on a station on the year/month map will create an interactive 
   # Third nav item - Hillsborough County
   nav_panel(
     title = "2 HILLSBOROUGH COUNTY",
+    class = 'fill-height',
     layout_columns(
-      col_widths = c(4, 8),
+      fill = F,
       card(
-        card_header("ANALYSIS"),
-        navset_tab(
+        height = 'auto',
+        width = 12,
+        div(
+          style = 'display: flex; gap: 0rem; align-items: flex-end;',
+          div(
+            style = 'width: 33.33%;',
+            div(
+              style = "display: flex; flex-direction: column;",
+              div(style = "height: 25px;", "Select year:"), 
+              sliderInput('yrsel2', NULL, min = yrmin2, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+            )
+          ),
+          div(
+            style = 'width: 66.66%;',
+            div(
+              style = 'display: flex; flex-direction: column;',
+              div(style = "height: 50px;", "Select area:"), 
+              selectInput('areasel2', NULL, choices = areas2, selected = c('Hillsborough River', 'Alafia River'), multiple = T, width = '100%'),
+            )
+          )
+        )
+      )
+    ),
+    div(
+      class = 'resizable-row',
+      div(
+        class = 'resizable-column',
+        style = 'width: 33.33%',
+        navset_card_underline(
+          full_screen = TRUE,
           nav_panel(
             "REPORT CARD",
-            "Hillsborough report card"
+            plotly::plotlyOutput('fibmatrix', height = '100%')
           ),
           nav_panel(
-            "USAGE",
-            "Usage instructions"
+            "Using this tab",
+            markdown(
+            "
+The report card and maps are based on fecal coliform, *Enterococcus*, and *E. Coli* cell concentrations using EPCHC data with results for individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
+
+The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Hillsborough and Alafia River tributary watersheds are shown. These were chosen based on state-designated bacterial impairments and efforts under the Basin Management Action Plans (BMAPs). Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key.
+
+The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the EPCHC dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the EPCHC because the stations represent broader sampling areas in the watershed.
+
+The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
+
+The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each individual station for the selected year. These are the same values shown in the report card using fecal coliform concentrations.
+
+Placing the cursor over a station will reveal additional information. 
+
+<img src='epchcyrmapex.png' style='width: 250px; display: block; margin: 0 auto;'>  
+
+The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* and *E. Coli* concentration categories for the selected year and month. Tidally-influenced sampling stations use *Enterococcus* (circles) and freshwater sampling stations use *E. coli* (triangles). See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
+
+Placing the cursor over a station will reveal additional information. 
+
+<img src='epchcyrmomapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
+
+Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
+
+<img src='epchcmodalex.png' style='width: 550px; display: block; margin: 0 auto;'> 
+"              
+            )
           )
         )
       ),
-      card(
-        card_header("VISUALIZATION"),
-        navset_tab(
+      
+      div(
+        class='right-column', 
+        style = 'width: 66.66%',
+        navset_card_underline(
+          full_screen = T,
           nav_panel(
             "MAP BY YEAR",
-            "Hillsborough yearly map"
+            leaflet::leafletOutput('fibmapyr')
           ),
           nav_panel(
             "MAP BY YEAR AND MONTH",
-            "Hillsborough monthly map"
+            div(
+              style = "display: flex; align-items: center; gap: 1rem;",
+              shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+              span('Click on a station to view a complete time series')
+            ),
+            leaflet::leafletOutput('fibmap')
           )
         )
       )
@@ -700,7 +763,7 @@ server <- function(input, output, session) {
   
   # fibmap popup modal
   observeEvent(input$fibmap_marker_click, {
-    
+
     showModal(modalDialog(
       plotly::plotlyOutput('fibmappopup', height = "500px"),
       easyClose = T,
@@ -717,10 +780,10 @@ server <- function(input, output, session) {
     yrsel2 <- input$yrsel2
     mosel2 <- input$mosel2
     station <- input$fibmap_marker_click$id
-    
+
     req(mosel2)
     mosel2 <- mos[[mosel2]]
-    
+
     out <- fibmappopup_plo(fibdata, station, yrsel2, mosel2)
     
     return(out)
