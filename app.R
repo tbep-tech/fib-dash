@@ -243,7 +243,7 @@ Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps:
             div(
               style = 'display: flex; flex-direction: column;',
               div(style = "height: 50px;", "Select area:"), 
-              selectInput('areasel1', NULL, choices = areas1, selected = c('HB', 'OTB', 'MTB', 'LTB', 'BCB', 'MR'), multiple = T, width = '100%'),
+              selectizeInput('areasel1', NULL, choices = areas1, selected = c('HB', 'OTB', 'MTB', 'LTB', 'BCB', 'MR'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
             )
           )
         )
@@ -350,7 +350,7 @@ Finally, clicking on a station on the year/month map will create an interactive 
             div(
               style = 'display: flex; flex-direction: column;',
               div(style = "height: 50px;", "Select area:"), 
-              selectInput('areasel2', NULL, choices = areas2, selected = c('Hillsborough River', 'Alafia River'), multiple = T, width = '100%'),
+              selectizeInput('areasel2', NULL, choices = areas2, selected = c('Hillsborough River', 'Alafia River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
             )
           )
         )

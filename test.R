@@ -43,78 +43,35 @@ ui <- page_navbar(
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
-
+      /* New styles for input container */
+      .input-container {
+        margin-bottom: 1rem;
+      }
+      .input-card {
+        height: auto !important;
+      }
     ")
   ),
   
-  # Rest of the UI code remains exactly the same...
   nav_item(
     tags$img(src = "tarponlogo.png", height = "30px", style = "margin-right: 10px;")
   ),
   
   nav_panel(
-    class = 'fill-height',
-    title = "OVERVIEW",
-    div(
-      class = 'resizable-row',
-      div(
-        class = 'resizable-column',
-        style = 'width: 66.66%',
-        card(
-          card_header("USING THE DASHBOARD"),
-          full_screen = TRUE,
-          height = '100%',
-          div(
-            class = 'card-scroll',
-            markdown(
-              "text"
-            )
-          ))
-      ),
-      div(
-        class='right-column', 
-        style = 'width: 33.33%',
-        card(
-          height = '100%',
-          full_screen = TRUE,
-          card_header("METHODS"),
-          div(
-            class = 'card-scroll',
-            markdown(
-              "text"
-            )
-          )
-        )
-      )
-    )
-  ),
-  
-  nav_panel(
     title = "1 BAYWIDE",
     class = 'fill-height',
-    layout_columns(
-      fill = F,
+    
+    # Replace layout_columns with layout_column_wrap
+    div(class = "input-container",
       card(
-        height = 'auto',
-        width = 12,
-        div(
-          style = 'display: flex; gap: 0rem; align-items: flex-end;',
-          div(
-            style = 'width: 33.33%;',
-            div(
-              style = "display: flex; flex-direction: column;",
-              div(style = "height: 25px;", "Select year:"), 
-              sliderInput('yrsel1', NULL, min = 1975, max = 2023, value = 2023, step = 1, sep = '', width = '90%')
-            )
-          ),
-          div(
-            style = 'width: 66.66%;',
-            div(
-              style = 'display: flex; flex-direction: column;',
-              div(style = "height: 50px;", "Select area:"), 
-              selectInput('areasel1', NULL, choices = c('HB', 'OTB'), selected = c('HB', 'OTB'), multiple = T, width = '100%'),
-            )
-          )
+        class = "input-card",
+        layout_column_wrap(
+          width = 1/2,
+          heights_equal = "row",
+          style = "gap: 0.5rem;",
+          sliderInput('yrsel1', NULL, min = 1975, max = 2023, value = 2023, step = 1, sep = '', width = '90%'),
+          selectizeInput('areasel1', NULL, choices = c('HB', 'OTB', 'LTB', 'MTB', 'HR', 'MCB', 'LA', 'WB'), 
+                     selected = c('HB', 'OTB'), multiple = T, width = '100%', options = list(dropdownParent = 'body'))
         )
       )
     ),
@@ -128,14 +85,13 @@ ui <- page_navbar(
           full_screen = TRUE,
           nav_panel(
             "Tab 1",
-              plotlyOutput("examplePlot1", height = "100%")
+              'text'
             ),
           nav_panel(
             "Tab 2",
-              plotlyOutput("examplePlot2", height = "100%")
+            'text'
             )
           )
-
         ),
       div(
         class='right-column', 
@@ -166,22 +122,7 @@ ui <- page_navbar(
 )
 
 server <- function(input, output, session) {
-  output$examplePlot1 <- renderPlotly({
-    set.seed(123)
-    x <- rnorm(100)
-    y <- x + rnorm(100, sd = 0.5)
-    
-    plot_ly(x = x, y = y, type = "scatter", mode = "markers")
-  })
-  
-  output$examplePlot2 <- renderPlotly({
-    set.seed(456)
-    x <- rnorm(100)
-    y <- x * 2 + rnorm(100, sd = 0.5)
-    
-    plot_ly(x = x, y = y, type = "scatter", mode = "markers")
-
-  })
+  NULL
 }
 
 shinyApp(ui, server)
