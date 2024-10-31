@@ -1002,6 +1002,9 @@ server <- function(input, output, session) {
     
   })
   
+  # epc fib map popup
+  output$fibmappopup <- plotly::renderPlotly(fibmappopup())
+  
   # manco fib matrix
   output$mancofibmatrix <- plotly::renderPlotly(mancofibmatrix())
   
@@ -1021,6 +1024,9 @@ server <- function(input, output, session) {
                            areasel = c('Braden River', 'Manatee River'))
     
   })
+  
+  # manco fib map popup
+  output$mancofibmappopup <- plotly::renderPlotly(mancofibmappopup())
   
   # year slider range for download
   output$yrseldl <- renderUI({
