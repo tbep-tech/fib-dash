@@ -105,7 +105,7 @@ dldattab_fun <- function(dldat){
                                 align = 'left'
                               ),
                               filterable = T,
-                              defaultPageSize = 15
+                              defaultPageSize = 10
   )
   
   return(out)
