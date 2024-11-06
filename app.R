@@ -1,6 +1,5 @@
 library(shiny)
 library(bslib)
-library(markdown)
 
 # Source required files (commented out as we don't have access to them)
 source(here::here('R/global.R'))
@@ -14,6 +13,7 @@ ga_tag <- tags$head(
 ui <- page_navbar(
   title = "TAMPA BAY FIB DASHBOARD",
   id = "main-nav",
+  # bg = '#00806E',
   
   # initialize shinyjs for JavaScript handling
   shinyjs::useShinyjs(),
