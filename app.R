@@ -13,6 +13,10 @@ ga_tag <- tags$head(
 
 ui <- page_navbar(
   title = "TAMPA BAY FIB DASHBOARD",
+  id = "main-nav",
+  
+  # initialize shinyjs for JavaScript handling
+  shinyjs::useShinyjs(),
   
   # Add Google Analytics and custom CSS
   header = tagList(
@@ -31,6 +35,7 @@ ui <- page_navbar(
   nav_panel(
     class = 'fill-height',
     title = "OVERVIEW",
+    value = 'overview',
     navset_card_underline(
       full_screen = TRUE,
       height = '100%',
@@ -49,6 +54,7 @@ ui <- page_navbar(
   # Second nav item - Baywide
   nav_panel(
     title = "1 BAYWIDE",
+    value = 'baywide',
     class = 'fill-height',
     layout_columns(
       fill = F,
@@ -121,6 +127,7 @@ ui <- page_navbar(
   # Third nav item - Hillsborough County
   nav_panel(
     title = "2 HILLSBOROUGH COUNTY",
+    value = 'hillsborough-county', 
     class = 'fill-height',
     layout_columns(
       fill = F,
@@ -192,6 +199,7 @@ ui <- page_navbar(
   # Fourth nav item - Manatee County
   nav_panel(
     title = "3 MANATEE COUNTY",
+    value = 'manatee-county',
     class = 'fill-height',
     layout_columns(
       fill = F,
@@ -263,6 +271,7 @@ ui <- page_navbar(
   # Fifth nav item - Data Downloads
   nav_panel(
     title = "4 DATA DOWNLOADS",
+    value = 'data-downloads',
     navset_card_underline(
       full_screen = TRUE,
       height = '100%',
@@ -781,6 +790,21 @@ server <- function(input, output, session) {
     
   })
 
+  # JavaScript to observe hashchange events
+  shinyjs::runjs("
+      $(document).on('click', 'a', function() {
+        var href = $(this).attr('href');
+        if (href.startsWith('#')) {
+          Shiny.setInputValue('navigate', href.substring(1));
+        }
+      });
+  ")
+  
+  # observe hash change and navigate to the corresponding panel
+  observeEvent(input$navigate, {
+    updateNavbarPage(session, "main-nav", selected = input$navigate)
+  })
+
   # baywide ent matrix
   output$entmatrix <- plotly::renderPlotly(entmatrix())
   
@@ -881,7 +905,6 @@ server <- function(input, output, session) {
       
     }
   )
-  
   
 }
 
