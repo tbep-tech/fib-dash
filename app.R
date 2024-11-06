@@ -1,7 +1,5 @@
 library(shiny)
 library(bslib)
-library(leaflet)
-library(here)
 library(markdown)
 
 # Source required files (commented out as we don't have access to them)
@@ -110,111 +108,11 @@ ui <- page_navbar(
       nav_panel(
         title = "USING THE DASHBOARD",
         class = 'card-scroll',
-        markdown(
-"          
-<div class = 'row'>
-<div class = 'col-md-2'></div>
-<div class = 'col-md-8'>
-
-<h2 style = 'text-align: center;'>WELCOME TO THE TAMPA BAY FIB DASHBOARD!</h2>
-            
-<img src='bannerimage.png' style='width: 80%; display: block; margin: 0 auto;'>  
-<br>
-            
-This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of the Environmental Protection Commission of Hillsborough County (EPCHC) monitoring program.  The latter is specific to evaluating fecal impairments in the Hillsborough and Alafia river basins.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see <a href='https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109' target = '_blank'>FLDOH Healthy Beaches</a> and <a href='https://pinellas.wateratlas.usf.edu/maps/coastal-water-quality-map/' target='_blank'>Pinellas County Recreational Water Quality Map</a>). The dashboard is organized in the following sections:
-            
-1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
-1) [__HILLSBOROUGH COUNTY__](#hillsborough-county): View summaries of Environmental Protection Commission of Hillsborough County (EPCHC) FIB data for the Hillsborough and Alafia River basins
-1) [__MANATEE COUNTY__](#manatee-county): View summaries of Manatee County FIB data for select monitoring locations
-1) [__DATA DOWNLOADS__](#data-downloads): Download baywide, Hillsborough County, or Manatee County data
-                    
-The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a <a href='https://help.plot.ly/zoom-pan-hover-controls/' target='_blank'>control menu</a> on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
-                    
-<img src='plotcontrols.PNG' style='width: 30%; display: block; margin: 0 auto;'>   
-<br>
-
-<h2 style = 'text-align: center;'>DATA SOURCES</h2>
-                      
-Source data used on this website were obtained from multiple sources for the baywide assessment and from the Environmental Protection Commission of Hillsborough County. Data can be obtained using functions from the tbeptools R package described below. Graphics and tables provided on the dashboard are made available for exploratory purposes only.  
-                    
-<h2 style = 'text-align: center;'>WEBSITE INFO</h2>
-                      
-<a href='https://tbep-tech.github.io/tbeptools/articles/fib.html' target='_blank' rel='noopener noreferrer'><img class='wp-image-14010 alignnone ' src='tbeptoolshex.png' alt='' width='200' height='200' /></a>
-                      
-The page source content can be viewed on <a href='https://github.com/tbep-tech/fib-dash' target='_blank'>Github</a>. Nearly all of the data, tables, and plots were created using functions in the <a href='https://tbep-tech.github.io/tbeptools' target='_blank'>tbeptools</a> R software package.  Please see the <a href='https://tbep-tech.github.io/tbeptools/articles/fib.html' target='_blank'>vignette</a> for a detailed overview of how you can use these functions on your own to work with the data. 
-                    
-Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). Like this app? Share it on social media using the <a href='https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click' target='_blank'>#TampaBayOpenSci</a> hashtag.  
-                      
-Citation info here: <a href='https://doi.org/10.5281/zenodo.13881473' target='_blank'><img src='https://zenodo.org/badge/841089887.svg' alt='DOI'></a>
-                      
-<a rel='license' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='https://i.creativecommons.org/l/by/4.0/88x31.png' /></a>&nbsp;&nbsp;This website is licensed under a <a rel='license' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'>Creative Commons Attribution 4.0 International License</a>.
-
-</div>
-<div class = 'col-md-2'></div>
-</div>
-"
-        )   
+        shiny::includeMarkdown('www/overview.md')   
       ),
-    nav_panel(
-      title = 'METHODS', 
-      markdown(
-"
-<div class = 'row'>
-<div class = 'col-md-2'></div>
-<div class = 'col-md-8'>
-
-#### How to understand and use the dashboard
-
-Fecal Indicator Bacteria (FIB) provide information on the potential exposure risk from contact recreation or fish/shellfish consumption from surface waters with high fecal loads.  These indicators are imperfect and provide only a general overview of the potential risk.  Presence of FIBs does not necessarily indicate the presence of fecal pathogens, but their presence can be used to prioritize areas for further investigation or remediation. 
-
-The FIBs used in this dashboard are *Enterococcus* cell concentrations for the baywide assessment and a mix of pathogens for the EPCHC data. For the latter, these include fecal coliform for the report card and fecal coliform, *Enterococcus*, and *E. Coli* for the map summaries depending on which map is shown.
-
-#### Report card score categories
-
-The report cards on each page use similar methods for defining overall risk categories for the FIBs.  The scores are applied to individual monitoring stations or as a baywide total and describe the likelihood that the samples in a given year exceed a relevant cell concentration threshold.  The thresholds are 400 CFU / 100 mL of *Enterococcus* for the baywide assessments and 130 CFU / 100 mL of fecal coliform for the EPCHC and Manatee County assessments. The score categories are as follows: 
-
-* <span style='color:#2DC938'>__A__</span>: < 10% likelihood that the samples exceed the threshold
-* <span style='color:#E9C318'>__B__</span>: 10-30% likelihood that the samples exceed the threshold
-* <span style='color:#EE7600'>__C__</span>: 30-50% likelihood that the samples exceed the threshold
-* <span style='color:#CC3231'>__D__</span>: 50-75% likelihood that the samples exceed the threshold
-* <span style='color:#800080'>__E__</span>: > 75% likelihood that the samples exceed the threshold
-
-For the baywide assessments, the score categories are assigned to both individual stations and for each bay segment, whereas scores are only assigned to stations for the EPCHC data.  The stations for the baywide assessments were chosen specifically as downstream endpoints that drain directly into each bay segment, whereas the EPCHC and Manatee County stations are more distributed throughout the watershed.  The bay segment score categories are based on the aggregate of all samples from each station that drain into that segment.
-
-#### Map summaries
-
-The maps on each tab show year or year/month summaries for FIBs.  The annual maps show the same score categories for the report cards described above for each station and bay segment for the baywide assessments and for stations only for the EPCHC and Manatee County data. 
-
-The year/month maps show the sample results for each station for a more detailed view of the data in each year.  The year/month summaries show the concentrations at each station using different threshold categories than the scores described above and separate the data differently depending on the dataset. 
-
-The baywide dataset year/month maps show *Enterococcus* concentrations separately as wet or dry samples based on whether a sample was collected after a significant amount of rain occurred prior to sampling or if dry conditions were observed.  The thresholds below are then applied to both wet/dry samples:
-  
-* <span style='color:#2DC938'>__Green__</span>: Cell concentrations < 35 CFU / 100 mL
-* <span style='color:#E9C318'>__Yellow__</span>: Cell concentrations 35 - 129 CFU / 100 mL
-* <span style='color:#EE7600'>__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
-* <span style='color:#CC3231'>__Red__</span>: Cell concentrations > 999 CFU / 100 mL
-
-Similar thresholds are applied to station samples for the year/month maps for the EPCHC and Manatee County data.  However, samples are not distinguished as wet/dry and the FIB varies depending on the location of the sample.  *Enterococcus* is used for tidally-influenced locations and *E. coli* is used for freshwater locations.
-
-Tidally-influenced *Enterococcus* thresholds for EPCHC/Manatee County year/month maps: 
-  
-* <span style='color:#2DC938'>__Green__</span>: Cell concentrations < 35 CFU / 100 mL
-* <span style='color:#E9C318'>__Yellow__</span>: Cell concentrations 35 - 129 CFU / 100 mL
-* <span style='color:#EE7600'>__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
-* <span style='color:#CC3231'>__Red__</span>: Cell concentrations > 999 CFU / 100 mL
-
-Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps: 
-  
-* <span style='color:#2DC938'>__Green__</span>: Cell concentrations < 126 CFU / 100 mL
-* <span style='color:#E9C318'>__Yellow__</span>: Cell concentrations 126 - 409 CFU / 100 mL
-* <span style='color:#EE7600'>__Orange__</span>: Cell concentrations 410 - 999 CFU / 100 mL
-* <span style='color:#CC3231'>__Red__</span>: Cell concentrations > 999 CFU / 100 mL
-
-</div>
-<div class = 'col-md-2'></div>
-</div>
-"
-        )
+      nav_panel(
+        title = 'METHODS', 
+        shiny::includeMarkdown('www/methods.md')
       )
     )
   ),
@@ -263,45 +161,10 @@ Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps:
             ),
           nav_panel(
             "Using this tab",
-            markdown(
-"
-The report card and maps are based on *Enterococcus* cell concentrations with results for bay segments and individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
-
-The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider.  By default, all areas are shown.  To remove an area, select it from the menu and hit the backspace key.
-
-The __REPORT CARD__ tab shows the overall score category each year for sampled locations in the bay.  The row for the selected year from the slider at the top of the page is outlined in black. By default, the bay segment scores are shown. The bay segment abbreviations are as follows: 
-
-* __OTB__: Old Tampa Bay
-* __HB__: Hillsborough Bay
-* __MTB__: Middle Tampa Bay
-* __BCB__: Boca Ciega Bay
-* __LTB__: Lower Tampa Bay
-* __MR__: Manatee River
-
-Stations that apply to each bay segment can be shown instead by toggling the switch above the report card.
-
-The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
-
-The __MAP BY YEAR__ tab shows a map of the report card grades assigned each bay segment and the individual station grades for the selected year. These are the same values shown in the report card.
-
-Placing the cursor over a bay segment or station will reveal additional information. 
-
-<img src='baywideyrmapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
-
-The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* concentration categories for the selected year and month. Samples are identified as occurring during wet (circles) or dry (triangles) conditions. See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
-
-Placing the cursor over a bay segment or station will reveal additional information. 
-
-<img src='baywideyrmomapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
-
-Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* concentrations at that location.  The popup plot can be closed by clicking outside the plot area.
-
-<img src='baywidemodalex.png' style='width: 550px; display: block; margin: 0 auto;'> 
-"              
+            shiny::includeMarkdown('www/baywideusing.md')
           )
         )
-      )
-    ),
+      ),
   
     div(
       class='right-column', 
@@ -369,58 +232,33 @@ Finally, clicking on a station on the year/month map will create an interactive 
           ),
           nav_panel(
             "Using this tab",
-            markdown(
-            "
-The report card and maps are based on fecal coliform, *Enterococcus*, and *E. Coli* cell concentrations using EPCHC data with results for individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
-
-The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Hillsborough and Alafia River tributary watersheds are shown. These were chosen based on state-designated bacterial impairments and efforts under the Basin Management Action Plans (BMAPs). Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key.
-
-The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the EPCHC dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the EPCHC because the stations represent broader sampling areas in the watershed.
-
-The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
-
-The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each individual station for the selected year. These are the same values shown in the report card using fecal coliform concentrations.
-
-Placing the cursor over a station will reveal additional information. 
-
-<img src='epchcyrmapex.png' style='width: 250px; display: block; margin: 0 auto;'>  
-
-The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* and *E. Coli* concentration categories for the selected year and month. Tidally-influenced sampling stations use *Enterococcus* (circles) and freshwater sampling stations use *E. coli* (triangles). See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
-
-Placing the cursor over a station will reveal additional information. 
-
-<img src='epchcyrmomapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
-
-Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
-
-<img src='epchcmodalex.png' style='width: 550px; display: block; margin: 0 auto;'> 
-"              
-            )
-          )
-        )
-      ),
-      
-      div(
-        class='right-column', 
-        style = 'width: 66.66%',
-        navset_card_underline(
-          full_screen = T,
-          nav_panel(
-            "MAP BY YEAR",
-            leaflet::leafletOutput('fibmapyr')
-          ),
-          nav_panel(
-            "MAP BY YEAR AND MONTH",
-            div(
-              style = "display: flex; align-items: center; gap: 1rem;",
-              shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-              span('Click on a station to view a complete time series')
-            ),
-            leaflet::leafletOutput('fibmap')
+            shiny::includeMarkdown('www/hillsboroughusing.md')
           )
         )
       )
+    ),
+      
+    div(
+      class='right-column', 
+      style = 'width: 66.66%',
+      navset_card_underline(
+        full_screen = T,
+        nav_panel(
+          "MAP BY YEAR",
+          leaflet::leafletOutput('fibmapyr')
+        ),
+        nav_panel(
+          "MAP BY YEAR AND MONTH",
+          div(
+            style = "display: flex; align-items: center; gap: 1rem;",
+            shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+            span('Click on a station to view a complete time series')
+          ),
+          leaflet::leafletOutput('fibmap')
+        )
+      )
     )
+    
   ),
   
   # Fourth nav item - Manatee County
@@ -466,33 +304,7 @@ Finally, clicking on a station on the year/month map will create an interactive 
           ),
           nav_panel(
             "Using this tab",
-            markdown(
-            "
-The report card and maps are based on fecal coliform, *Enterococcus*, and *E. Coli* cell concentrations using Manatee County data with results for individual sampling stations. Please view the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the score categories in the report card and the map summaries. 
-
-The displayed data for all of the graphics on this page can be selected using the year slider and area selections at the top.  The year/month map tab includes an additional month slider. By default, only sampling stations in the Braden and Manatee Rivers are shown. Add more sampling areas from the dropdown menu. To remove an area, select it from the menu and hit the backspace key.
-
-The __REPORT CARD__ tab shows the overall score category each year for fecal coliform concentrations at stations in the Manatee County dataset.  The row for the selected year from the slider at the top of the page is outlined in black. The stations apply to the areas chosen from the drop down at the top of the page. Bay segment summaries cannot be shown for the Manatee County data because the stations represent broader sampling areas not appriopriate for evaluating bay segments.
-
-The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
-
-The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each individual station for the selected year. These are the same values shown in the report card using fecal coliform concentrations.
-
-Placing the cursor over a station will reveal additional information. 
-
-<img src='mancoyrmapex.png' style='width: 250px; display: block; margin: 0 auto;'>  
-
-The __MAP BY YEAR AND MONTH__ tab shows a map of *Enterococcus* and *E. Coli* concentration categories for the selected year and month. Tidally-influenced sampling stations use *Enterococcus* (circles) and freshwater sampling stations use *E. coli* (triangles). See the __METHODS__ tab on the [__OVERVIEW__](#overview) page for a description of the concentration thresholds.
-
-Placing the cursor over a station will reveal additional information. 
-
-<img src='mancoyrmomapex.png' style='width: 250px; display: block; margin: 0 auto;'>   
-
-Finally, clicking on a station on the year/month map will create an interactive popup plot for the complete time series of *Enterococcus* or *E. Coli* concentrations at that location. The popup plot can be closed by clicking outside the plot area.
-
-<img src='mancomodalex.png' style='width: 550px; display: block; margin: 0 auto;'> 
-"              
-            )
+            shiny::includeMarkdown('www/manateeusing.md')
           )
         )
       ),
@@ -552,111 +364,7 @@ Finally, clicking on a station on the year/month map will create an interactive 
       ),
       nav_panel(
         "METADATA",
-        markdown(
-        "
-<div class = 'row'>
-<div class = 'col-md-2'></div>
-<div class = 'col-md-8'>
-
-Summarized score categories or raw FIB data are described below with each dataset described based on the download options in the previous tab. Data provided on the dashboard are made available for exploratory purposes only.
-
-__Baywide segment score categories__: Tampa Bay FIB score categories summarized by bay segment  
-
-* *Year*: Year of the assessment
-* *bay_segment*: Abbreviated name for the bay segment
-     * *OTB*: Old Tampa Bay
-     * *HB*: Hillsborough Bay
-     * *MTB*: Middle Tampa Bay
-     * *LTB*: Lower Tampa Bay
-     * *BCB*: Boca Ciega Bay
-     * *MR*: Manatee River
-* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations #/100 mL
-* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year.
-
-__Baywide station score categories__: Tampa Bay FIB score categories summarized by station 
-
-* *Year*: Year of the assessment
-* *Station*: Station name
-* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations #/100 mL
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 130 CFU / 100 mL for *Enterococcus* in a given year. 
-
-__Baywide raw data__: Raw FIB data for Tampa Bay
-
-* *date*: Date of the sample
-* *Year*: Year of the sample
-* *Month*: Month of the sample
-* *bay_segment*: Abbreviated name for the bay segment
-     * *OTB*: Old Tampa Bay
-     * *HB*: Hillsborough Bay
-     * *MTB*: Middle Tampa Bay
-     * *LTB*: Lower Tampa Bay
-     * *BCB*: Boca Ciega Bay
-     * *MR*: Manatee River
-* *Station*: Station name
-* *entero*: *Enterococcus* cell concentration, #/100 mL
-* *entero_censored*: logical if the value in *entero* is at the MDL
-* *MDL*: Method detection limit for *Enterococcus*, #/100 mL
-* *entero_units*: Units for the *Enterococcus* cell concentration
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-
-__Hillsborough County station score categories__: Hillsborough County FIB score categories summarized by station
-
-* *Year*: Year of the assessment
-* *Station*: Hillsborough County station name
-* *Geometric mean*: Geometric mean of fecal coliform cell concentrations
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal coliform in a given year. 
-
-__Hillsborough County raw data__: Raw Hillsborough County FIB data
-
-* *area*: Hillsborough County sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
-* *Station*: Hillsborough County station name
-* *class*: Water body class as fresh (3F, 1) or tidal (3M, 2)
-* *SampleTime*: Time of sample
-* *Year*: Year of sample
-* *Month*: Month of sample
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-* *ecoli*: *E. coli* cell concentration as #/100 mL
-* *ecoli_q*: *E. coli* cell concentration quality flag, see qualifier description tab [here](https://epcbocc.sharepoint.com/:x:/r/sites/Share/_layouts/15/Doc.aspx?sourcedoc=%7BDDE6D985-527A-4651-935A-F3214F755688%7D&file=RWMSpreadsheet_ThroughCurrentReportMonth.xlsx&action=default&mobileredirect=true){target='_blank'}
-* *entero*: *Enterococcus* cell concentration as #/100 mL
-* *entero_q*: *Enterococcus* cell concentration quality flag, see link above
-* *fcolif*: Fecal coliform cell concentration as #/100 mL
-* *fcolif_q*: Fecal coliform cell concentration quality flag, see link above
-
-__Manatee County station score categories__: Manatee County FIB score categories summarized by station
-
-* *Year*: Year of the assessment
-* *Station*: Manatee County station name
-* *Geometric mean*: Geometric mean of fecal coliform cell concentrations
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for fecal coliform in a given year. 
-
-__Manatee County raw data__: Raw Manatee County FIB data
-
-* *area*: Manatee County sampling area - Big Slough, Bowlees Creek, Braden River, Bud Slough, Clay Gully, Frog Creek, Gap Creek, Little Manatee River, Lower Tampa Bay, Manatee River, Mcmullen Creek, Mud Lake Slough, Myakka River, Palma Sola Bay, or Piney Point Creek
-* *Station*: Manatee County station name
-* *SampleTime*: Time of sample
-* *class*: Water body class as Estuary or Fresh
-* *Year*: Year of sample
-* *Month*: Month of sample
-* *Latitude*: Station latitude, WGS84
-* *Longitude*: Station longitude, WGS84
-* *var*: Indicator as ecoli for *E. coli*, entero for *Enterococcus*, fcolif for fecal coliform, and totcol for total coliform
-* *val*: Cell concentration
-* *uni*: Units for the cell concentration
-* *qual*: Quality flag for the cell concentration
-
-</div>
-<div class = 'col-md-2'></div>
-</div>
-"
-        )
+        shiny::includeMarkdown('www/metadata.md')
       )
     )
   ),
