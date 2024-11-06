@@ -17,81 +17,10 @@ ui <- page_navbar(
   # Add Google Analytics and custom CSS
   header = tagList(
     ga_tag,
-    # tags$head(
-    #   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
-    # ), 
-    # Add Google Analytics and custom CSS
-    tags$style("
-    .fill-height {
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 60px);
-      overflow: hidden;
-      padding: 1rem;  /* Add padding to fill-height */
-    }
-    .resizable-row {
-      display: flex;
-      gap: 1rem;  /* Increased gap to match card spacing */
-      flex: 1;
-      min-height: 0;
-      padding: 0;  /* Remove padding from resizable-row */
-    }
-    .resizable-column {
-      resize: horizontal;
-      overflow: hidden;
-      min-width: 200px;
-      max-width: 90%;
-    }
-    .right-column {
-      flex: 1;
-      min-width: 200px;
-    }
-    .card {
-      height: 100%;
-      border: 1px solid rgba(0,0,0,.125);  
-      display: flex;
-      flex-direction: column;
-    }
-    .card-scroll {
-      overflow-y: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    },
-    .modal-backdrop.show {
-      z-index: 2056 !important;
-    }
-    .modal.show {
-      z-index: 2057 !important;
-    }
-    .modal-dialog {
-      z-index: 2057 !important;
-    }
-    .resizable-column {
-      z-index: 1000;  /* Base z-index for normal state */
-    }
-    .resizable-column .card-fullscreen,
-    .resizable-column .bslib-card.card-fullscreen,
-    .resizable-column .bslib-navs-underline,
-    .resizable-column .nav-tabs-container {
-      z-index: 1055 !important;
-    }
-    /* Ensure the modal is always on top */
-    body.modal-open .modal {
-      z-index: 2057 !important;
-    }
-    .leaflet-top,
-    .leaflet-bottom,
-    .leaflet-left,
-    .leaflet-right,
-    .leaflet-control-container,
-    .leaflet-control-zoom,
-    .leaflet-control-attribution,
-    .leaflet-control-layers,
-    .leaflet-pane {
-      z-index: 800 !important;
-    }
-  ")
-    ),
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+    )
+  ),
   
   # Add logo
   nav_item(
@@ -235,30 +164,29 @@ ui <- page_navbar(
             shiny::includeMarkdown('www/hillsboroughusing.md')
           )
         )
-      )
-    ),
+      ),
       
-    div(
-      class='right-column', 
-      style = 'width: 66.66%',
-      navset_card_underline(
-        full_screen = T,
-        nav_panel(
-          "MAP BY YEAR",
-          leaflet::leafletOutput('fibmapyr')
-        ),
-        nav_panel(
-          "MAP BY YEAR AND MONTH",
-          div(
-            style = "display: flex; align-items: center; gap: 1rem;",
-            shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-            span('Click on a station to view a complete time series')
+      div(
+        class='right-column', 
+        style = 'width: 66.66%',
+        navset_card_underline(
+          full_screen = T,
+          nav_panel(
+            "MAP BY YEAR",
+            leaflet::leafletOutput('fibmapyr')
           ),
-          leaflet::leafletOutput('fibmap')
+          nav_panel(
+            "MAP BY YEAR AND MONTH",
+            div(
+              style = "display: flex; align-items: center; gap: 1rem;",
+              shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+              span('Click on a station to view a complete time series')
+            ),
+            leaflet::leafletOutput('fibmap')
+          )
         )
       )
     )
-    
   ),
   
   # Fourth nav item - Manatee County

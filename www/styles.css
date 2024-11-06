@@ -1,52 +1,51 @@
 /* Rubik */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600;700&display=swap');
-
-/* Frutiger Light approximate */
-@import url("//fonts.googleapis.com/css?family=Lato:100,300,500,700,900");
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&display=swap');
 
 /* DIN condensed approximate */
-@import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
 /* Whole document: */
 
 body{
   font-family: 'Roboto';
-  font-size: 17px;
   font-weight: 400;
+  font-size: 18px;
+  color: #636363;
 }
 
 /* header styles */
 
-h1{
-  font-family: 'Rubik';
-  font-weight: 700;
+h1,h2,h3,h4,h5 {
+  font-weight: 500;
   color: #005293;
+  font-family: 'Rubik',Helvetica,Arial,Lucida,sans-serif;
 }
-
-h2,h3,h4,h5 {
-  font-family: 'Roboto';
-  font-weight: 800;
-  color: #00806E
+h1 {
+	font-size:40px;
+}
+h2 {
+	font-size:32px;
+}
+h3 {
+	font-size:24px;
+}
+h4 {
+	font-size:18px;
+}
+h5 {
+	font-size:16px;
+}
+h6 {
+	font-size:14px;
 }
 
 /* top navbar styles */
 
 .navbar {
-  background-color:#00806E; !important
+  background-color:#00806E;
   border-color: black;
   font-family: 'Roboto'; /* main tab fonts */
   font-weight: 300;
-}
-
-.navbar-brand { /* dashboard title */
-  font-family: 'Roboto Condensed';
-  font-weight: bold;
-}
-
-.navbar-nav li a:hover, .navbar-nav > .active > a {
-  color: #fff !important;
-  background-color:#5c4a42!important;
-  background-image: none !important;
 }
 
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
@@ -54,6 +53,17 @@ h2,h3,h4,h5 {
     text-decoration: none;
     outline: 0;
     background-color: #00806E;
+}
+
+.navbar-brand { /* dashboard title */
+  font-weight: bold;
+  color: #005293;
+}
+
+.navbar-nav li a:hover, .navbar-nav > .active > a {
+  color: #fff !important;
+  background-color:#5c4a42!important;
+  background-image: none !important;
 }
 
 /* sidebar */
@@ -68,76 +78,64 @@ h2,h3,h4,h5 {
   background-color: #95898430; /* gray with alpha */
 }
 
-#editor-map { /* this sets map editor height dynamically if in sidebar */
-  height: calc(100vh - 60px) !important;
-}
-
-#map { /* this sets map height dynamically if in sidebar */
-  height: calc(100vh - 60px) !important;
-}
-
 /* sub sections */
 
 .level3 {
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
 }
 
 .chart-title {
   font-family: 'Roboto';
   font-weight: 300;
   font-style: italic;
-  color: #00000;
+  color: #958984;
 }
 
 .nav-tabs {
   font-family: 'Roboto';
   font-weight: 300;
   font-style: italic;
-  color: #00000;
+  color: #958984;
 }
 
 .control-label {
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
 }
 
 .shiny-text-output {
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
 }
 
 .material-switch {
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
 }
 
 /* shiny slider stuff */
 
-.irs-bar {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: transparent !important;
+.irs-line {
+  background: #E5E5E5 !important;
+  border: 1px #E5E5E5 !important;
 }
 
-.irs-grid-pol.small {
-  height: 0px;
+.irs-handle {
+  background: #00806E !important;
 }
 
-.irs-single {
-  background: #00806E !important
+.irs-single, .irs-from, .irs-to {
+  background: #00806E!important; 
 }
 
-.irs-to {
-  background: #00806E !important
-}
-
-.irs-from {
-  background: #00806E !important
+.irs-bar-edge, .irs-bar{
+  background: #E5E5E5 !important; 
+  border: 1px #E5E5E5 !important;
 }
 
 .js-irs-6 .irs-bar-edge, .js-irs-6 .irs-bar {
@@ -146,6 +144,7 @@ h2,h3,h4,h5 {
 }
 
 /* background color of selected option for shiny selectInput */
+
 .selectize-dropdown .option.selected {
   background: #00806E !important;
 }
@@ -180,7 +179,7 @@ h2,h3,h4,h5 {
 .leaflet-control { /* leaflet legends, control boxes */
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
 }
 
 /* removes all but one trace from the rangeslider */
@@ -193,94 +192,55 @@ h2,h3,h4,h5 {
 .caption {
   font-family: 'Roboto';
   font-weight: 300;
-  color: #00000;
+  color: #958984;
   font-style: italic;
 }
 
-/* reactable fixed columns*/
-
-.sticky {
-  position: sticky !important;
-  background: #fff;
-  z-index: 1;
-}
-
-.left-col-1 {
-  left: 0px;
-}
-
-.left-col-2 {
-  left: 170px;
-  border-right: 1px solid #eee !important;
-}
-
-.left-col-3 {
-  left: 370px;
-  border-right: 1px solid #eee !important;
-}
-
-.left-col-1-bord {
-  left: 0px;
-  border-right: 1px solid #eee !important;
-}
-
-.right-col-1 {
-  right: 0px;
-}
-
-.right-col-2 {
-  right: 85px;
-  border-left: 1px solid #eee !important;
-}
-
-.right-col-3 {
-  right: 225px;
-  border-left: 1px solid #eee !important;
-}
-
-.right-col-2a {
-  right: 100px;}
-
-.right-col-3a {
-  right: 200px;
-  border-left: 1px solid #eee !important;
-}
-
-/* wrapper class for centering images */
-#wrapper{
- text-align:center;
-}
-
-.center {
-  display: block;
-  text-align:center;
-}
-
 /* change link colors to match wordpress */
-a:link {
-  color: #ea6f17;
-  background-color: transparent;
-  text-decoration: none;
+a {
+    color: #db5b25;
+    font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif;
+    font-weight: 500;
+	text-decoration:none;
 }
 
 a:visited {
-  color: #ea6f17;
-  background-color: transparent;
-  text-decoration: none;
+  color: #db5b25;
 }
 
 a:hover {
-  color: #0078db;
-  background-color: transparent;
-  text-decoration: none;
+  color: #f57d05;
 }
 
-/* for scrollable and resizable cards */
+/* tabset pills */
+.nav-pills>li>a {
+    border-radius: 4px;
+    color: #ffffff!important;
+    font-size: 16px;
+    font-family: 'Rubik',Helvetica,Arial,Lucida,sans-serif!important;
+    background-color: #F0AD4E;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+.nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #ea6f17;
+     }
+     
+/* from Shiny assistant */
+.fill-height {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  padding: 1rem;  /* Add padding to fill-height */
+}
 .resizable-row {
   display: flex;
-  min-height: 300px;
-  gap: 0.25rem;
-  height: calc(100vh - 100px);
+  gap: 1rem;  /* Increased gap to match card spacing */
+  flex: 1;
+  min-height: 0;
+  padding: 0;  /* Remove padding from resizable-row */
 }
 .resizable-column {
   resize: horizontal;
@@ -302,4 +262,37 @@ a:hover {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+},
+.modal-backdrop.show {
+  z-index: 2056 !important;
+}
+.modal.show {
+  z-index: 2057 !important;
+}
+.modal-dialog {
+  z-index: 2057 !important;
+}
+.resizable-column {
+  z-index: 1000;  /* Base z-index for normal state */
+}
+.resizable-column .card-fullscreen,
+.resizable-column .bslib-card.card-fullscreen,
+.resizable-column .bslib-navs-underline,
+.resizable-column .nav-tabs-container {
+  z-index: 1055 !important;
+}
+/* Ensure the modal is always on top */
+body.modal-open .modal {
+  z-index: 2057 !important;
+}
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-left,
+.leaflet-right,
+.leaflet-control-container,
+.leaflet-control-zoom,
+.leaflet-control-attribution,
+.leaflet-control-layers,
+.leaflet-pane {
+  z-index: 800 !important;
 }
