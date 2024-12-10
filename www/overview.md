@@ -21,7 +21,10 @@ The plots in this dashboard are interactive and display options can be controlle
 
 <h2 style = 'text-align: center;'>DATA SOURCES</h2>
                       
-Source data used on this website were obtained from multiple sources for the baywide assessment and from the Environmental Protection Commission of Hillsborough County. Data can be obtained using functions from the tbeptools R package described below. Graphics and tables provided on the dashboard are made available for exploratory purposes only.  
+Source data used on this website were obtained from multiple sources for the baywide assessment.  Additional data are from the <a href='https://www.epchc.org/' target='_blank'>Environmental Protection Commission of Hillsborough County</a> and the <a href='https://www.mymanatee.org/departments/natural_resources' target='_blank'>Manatee County Natural Resources Department</a>. Data can be obtained using functions from the tbeptools R package described below or from the [__DATA DOWNLOADS__](#data-downloads) tab. Graphics and tables provided on the dashboard are made available for exploratory purposes only.  
+
+<img src='logos.png' style='width: 50%; display: block; margin: 0 auto;'>   
+<br>
                     
 <h2 style = 'text-align: center;'>WEBSITE INFO</h2>
                       
