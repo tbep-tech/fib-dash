@@ -108,6 +108,7 @@ ui <- page_navbar(
         full_screen = T,
         nav_panel(
           "MAP BY YEAR",
+          shinyWidgets::materialSwitch('addsta1', 'Add station labels', value = T),
           leaflet::leafletOutput('entmapyr')
         ),
         nav_panel(
@@ -115,6 +116,7 @@ ui <- page_navbar(
           div(
             style = "display: flex; align-items: center; gap: 1rem;",
             shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+            shinyWidgets::materialSwitch('addsta2', 'Add station labels', value = T),
             span('Click on a station to view a complete time series')
           ),
           leaflet::leafletOutput('entmap')
@@ -180,6 +182,7 @@ ui <- page_navbar(
           full_screen = T,
           nav_panel(
             "MAP BY YEAR",
+            shinyWidgets::materialSwitch('addsta3', 'Add station labels', value = T),
             leaflet::leafletOutput('fibmapyr')
           ),
           nav_panel(
@@ -187,6 +190,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; align-items: center; gap: 1rem;",
               shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+              shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
               span('Click on a station to view a complete time series')
             ),
             leaflet::leafletOutput('fibmap')
@@ -252,6 +256,7 @@ ui <- page_navbar(
           full_screen = T,
           nav_panel(
             "MAP BY YEAR",
+            shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
             leaflet::leafletOutput('mancofibmapyr')
           ),
           nav_panel(
@@ -259,6 +264,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; align-items: center; gap: 1rem;",
               shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
               span('Click on a station to view a complete time series')
             ),
             leaflet::leafletOutput('mancofibmap')
@@ -383,29 +389,43 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(yrtomap1, 'try-error'))
-      leaflet::leafletProxy("entmapyr") %>%
-      leaflet::clearMarkers() |> 
-      leaflet::clearShapes()
+      our <- leaflet::leafletProxy("entmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
     
-    if(!inherits(yrtomap1, 'try-error'))
-      leaflet::leafletProxy("entmapyr") %>%
-      leaflet::clearMarkers() |>
-      leaflet::clearShapes() |> 
-      leaflet::addMarkers(
-        data = yrtomap1$tomapsta,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~yrtomap1$icons[as.numeric(cat)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
-      ) |> 
-      leaflet::addPolygons(
-        data = yrtomap1$tomapseg,
-        fillColor = ~I(col),
-        fillOpacity = 0.5,
-        color = 'black',
-        weight = 1,
-        label = ~lapply(as.list(lab), tbeptools::util_html)
-      )
+    if(!inherits(yrtomap1, 'try-error')){
+      out <- leaflet::leafletProxy("entmapyr") %>%
+        leaflet::clearMarkers() |>
+        leaflet::clearShapes() |> 
+        leaflet::addMarkers(
+          data = yrtomap1$tomapsta,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~yrtomap1$icons[as.numeric(cat)],
+          label = ~lapply(as.list(lab), tbeptools::util_html)
+        ) |> 
+        leaflet::addPolygons(
+          data = yrtomap1$tomapseg,
+          fillColor = ~I(col),
+          fillOpacity = 0.5,
+          color = 'black',
+          weight = 1,
+          label = ~lapply(as.list(lab), tbeptools::util_html)
+        )
+    
+      if(input$addsta1)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap1$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
     
   })
   
@@ -436,20 +456,34 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(enterotomap, 'try-error'))
-      leaflet::leafletProxy('entmap') |> 
-      leaflet::clearMarkers() 
+      out <- leaflet::leafletProxy('entmap') |> 
+        leaflet::clearMarkers() 
 
-    if(!inherits(enterotomap, 'try-error'))
-      leaflet::leafletProxy('entmap') |> 
-      leaflet::clearMarkers() |>
-      leaflet::addMarkers(
-        data = enterotomap,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~ecocciicons[as.numeric(grp)],
-        label = ~lapply(as.list(lab), tbeptools::util_html), 
-        layerId = ~station
-      )
+    if(!inherits(enterotomap, 'try-error')){
+      out <- leaflet::leafletProxy('entmap') |> 
+        leaflet::clearMarkers() |>
+        leaflet::addMarkers(
+          data = enterotomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~ecocciicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+      
+      if(input$addsta2)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = enterotomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
     
   })
   
@@ -531,21 +565,35 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(yrtomap2, 'try-error'))
-      leaflet::leafletProxy("fibmapyr") %>%
-      leaflet::clearMarkers() |> 
-      leaflet::clearShapes()
+      out <- leaflet::leafletProxy("fibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
     
-    if(!inherits(yrtomap2, 'try-error'))
-      leaflet::leafletProxy("fibmapyr") %>%
-      leaflet::clearMarkers() |>
-      leaflet::clearShapes() |> 
-      leaflet::addMarkers(
-        data = yrtomap2$tomapsta,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~yrtomap2$icons[as.numeric(cat)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
-      )
+    if(!inherits(yrtomap2, 'try-error')){
+      out <- leaflet::leafletProxy("fibmapyr") %>%
+        leaflet::clearMarkers() |>
+        leaflet::clearShapes() |> 
+        leaflet::addMarkers(
+          data = yrtomap2$tomapsta,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~yrtomap2$icons[as.numeric(cat)],
+          label = ~lapply(as.list(lab), tbeptools::util_html)
+        )
+      
+      if(input$addsta3)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap2$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
     
   })
   
@@ -575,21 +623,35 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(fibtomap, 'try-error'))
-      leaflet::leafletProxy('fibmap') |> 
-      leaflet::clearMarkers()
+      out <- leaflet::leafletProxy('fibmap') |> 
+        leaflet::clearMarkers()
     
-    if(!inherits(fibtomap, 'try-error'))
-      leaflet::leafletProxy('fibmap') |> 
-      leaflet::clearMarkers() |> 
-      leaflet::addMarkers(
-        data = fibtomap,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~fibicons[as.numeric(grp)],
-        label = ~lapply(as.list(lab), tbeptools::util_html), 
-        layerId = ~station
-      )
+    if(!inherits(fibtomap, 'try-error')){
+      out <- leaflet::leafletProxy('fibmap') |> 
+        leaflet::clearMarkers() |> 
+        leaflet::addMarkers(
+          data = fibtomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~fibicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+     
+      if(input$addsta4)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = fibtomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
     
+    return(out)
+      
   })
   
   # fibmap popup modal
@@ -670,26 +732,40 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(yrtomap3, 'try-error'))
-      leaflet::leafletProxy("mancofibmapyr") %>%
-      leaflet::clearMarkers() |> 
-      leaflet::clearShapes()
+      out <- leaflet::leafletProxy("mancofibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
     
-    if(!inherits(yrtomap3, 'try-error'))
+    if(!inherits(yrtomap3, 'try-error')){
       if(nrow(yrtomap3$tomapsta) == 0)
-        leaflet::leafletProxy("mancofibmapyr") %>%
-      leaflet::clearMarkers() |> 
-      leaflet::clearShapes()
-    else
-      leaflet::leafletProxy("mancofibmapyr") %>%
-      leaflet::clearMarkers() |>
-      leaflet::clearShapes() |> 
-      leaflet::addMarkers(
-        data = yrtomap3$tomapsta,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~yrtomap3$icons[as.numeric(cat)],
-        label = ~lapply(as.list(lab), tbeptools::util_html)
-      )
+        out <- leaflet::leafletProxy("mancofibmapyr") %>%
+          leaflet::clearMarkers() |> 
+          leaflet::clearShapes()
+      else
+        out <- leaflet::leafletProxy("mancofibmapyr") %>%
+          leaflet::clearMarkers() |>
+          leaflet::clearShapes() |> 
+          leaflet::addMarkers(
+            data = yrtomap3$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            icon = ~yrtomap3$icons[as.numeric(cat)],
+            label = ~lapply(as.list(lab), tbeptools::util_html)
+          )
+      
+      if(input$addsta5)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap3$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
     
   })
   
@@ -719,20 +795,34 @@ server <- function(input, output, session) {
     
     # create map
     if(inherits(mancofibtomap, 'try-error'))
-      leaflet::leafletProxy('mancofibmap') |> 
-      leaflet::clearMarkers()
+      out <- leaflet::leafletProxy('mancofibmap') |> 
+        leaflet::clearMarkers()
     
-    if(!inherits(mancofibtomap, 'try-error'))
-      leaflet::leafletProxy('mancofibmap') |> 
-      leaflet::clearMarkers() |> 
-      leaflet::addMarkers(
-        data = mancofibtomap,
-        lng = ~Longitude,
-        lat = ~Latitude,
-        icon = ~fibicons[as.numeric(grp)],
-        label = ~lapply(as.list(lab), tbeptools::util_html), 
-        layerId = ~station
-      )
+    if(!inherits(mancofibtomap, 'try-error')){
+      out <- leaflet::leafletProxy('mancofibmap') |> 
+        leaflet::clearMarkers() |> 
+        leaflet::addMarkers(
+          data = mancofibtomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~fibicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+      
+      if(input$addsta6)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = mancofibtomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
     
   })
   
@@ -813,7 +903,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, 
                               areasel = c('OTB', 'HB', 'MTB', 'LTB', 'BCB', 'MR'),
-                              precipdata = catchprecip, indic = 'entero', warn = F)
+                              precipdata = catchprecip, indic = 'entero', warn = F, addsta = T)
     
   })
   
@@ -821,7 +911,7 @@ server <- function(input, output, session) {
   output$entmap <- leaflet::renderLeaflet({
     
     tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay', 'Middle Tampa Bay', 'Lower Tampa Bay', 'Boca Ciega Bay', 'Manatee River'),
-                              wetdry = T, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5)
+                              wetdry = T, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5, addsta = T)
     
   })
   
@@ -836,7 +926,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(fibdata, yrsel = maxyr, 
                               areasel = c('Alafia River', 'Hillsborough River'),
-                              precipdata = catchprecip, indic = 'fcolif', warn = F)
+                              precipdata = catchprecip, indic = 'fcolif', warn = F, addsta = T)
     
   })
   
@@ -844,7 +934,7 @@ server <- function(input, output, session) {
   output$fibmap <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, 
-                           areasel = c('Alafia River', 'Hillsborough River'))
+                           areasel = c('Alafia River', 'Hillsborough River'), addsta = T)
     
   })
   
@@ -859,7 +949,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr - 2, 
                               areasel = c('Braden River', 'Manatee River'),
-                              precipdata = catchprecip, indic = 'fcolif', warn = F)
+                              precipdata = catchprecip, indic = 'fcolif', warn = F, addsta = T)
     
   })
   
@@ -867,7 +957,7 @@ server <- function(input, output, session) {
   output$mancofibmap <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmap(mancofibdata, yrsel = maxyr - 2, mosel = 7, 
-                           areasel = c('Braden River', 'Manatee River'))
+                           areasel = c('Braden River', 'Manatee River'), addsta = T)
     
   })
   
