@@ -365,36 +365,27 @@ server <- function(input, output, session) {
     return(out)
     
   })
-  
-  # data for baywide ent map, yr
-  yrtomap1 <- reactive({
+
+  # baywide map proxise  
+  entmapyr_proxy <- leaflet::leafletProxy('entmapyr')
+  entmap_proxy <- leaflet::leafletProxy('entmap')
+
+  observeEvent(list(input$yrsel1, input$areasel1, input$addsta1, input$mosel1, input$addsta2), {
     
-    yrsel1 <- input$yrsel1
-    areasel1 <- input$areasel1
+    ##
+    # baywide ent data to map, yr
     
-    req(areasel1)
-    
-    out <- tbeptools::show_fibmatmap(enterodata, yrsel = yrsel1, areasel = areasel1, 
-                                     indic = 'entero', listout = T, warn = F)
-    
-    return(out)
-    
-  }) 
-  
-  # baywide ent data to map, yr
-  observe({
-    
-    # inputs
-    yrtomap1 <- try(yrtomap1())
+    yrtomap1 <- try(tbeptools::show_fibmatmap(enterodata, yrsel = input$yrsel1, areasel = input$areasel1, 
+                                                         indic = 'entero', listout = T, warn = F))
     
     # create map
     if(inherits(yrtomap1, 'try-error'))
-      our <- leaflet::leafletProxy("entmapyr") %>%
+      entmapyr_proxy %>%
         leaflet::clearMarkers() |> 
         leaflet::clearShapes()
     
     if(!inherits(yrtomap1, 'try-error')){
-      out <- leaflet::leafletProxy("entmapyr") %>%
+      entmapyr_proxy  %>%
         leaflet::clearMarkers() |>
         leaflet::clearShapes() |> 
         leaflet::addMarkers(
@@ -414,7 +405,7 @@ server <- function(input, output, session) {
         )
     
       if(input$addsta1)
-        out <- out |> 
+        entmapyr_proxy |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap1$tomapsta,
             lng = ~Longitude,
@@ -425,42 +416,22 @@ server <- function(input, output, session) {
       
     }
     
-    return(out)
+    ##
+    # baywide ent data to map, yr mo
+
+    mosel1 <- mos[[input$mosel1]]
+    areasel <- names(areas1[areas1 %in% input$areasel1])
     
-  })
-  
-  # baywide ent data to map, yr mo
-  enterotomap <- reactive({
-    
-    # inputs
-    yrsel1 <- input$yrsel1
-    mosel1 <- input$mosel1
-    areasel1 <- input$areasel1
-    
-    req(mosel1)
-    
-    mosel1 <- mos[[mosel1]]
-    areasel <- names(areas1[areas1 %in% areasel1])
-    
-    tomap <- tbeptools::anlz_enteromap(enterodata, yrsel1, mosel1, areasel, wetdry = TRUE, precipdata = catchprecip, 
-                                       temporal_window = 2, wet_threshold = 0.5, assf = T)
-    
-    return(tomap)
-    
-  })
-  
-  observe({
-    
-    # inputs
-    enterotomap <- try(enterotomap())
+    enterotomap <- try(tbeptools::anlz_enteromap(enterodata, input$yrsel1, mosel1, areasel, wetdry = TRUE, precipdata = catchprecip, 
+                                                 temporal_window = 2, wet_threshold = 0.5, assf = T))
     
     # create map
     if(inherits(enterotomap, 'try-error'))
-      out <- leaflet::leafletProxy('entmap') |> 
+      entmap_proxy |> 
         leaflet::clearMarkers() 
-
+    
     if(!inherits(enterotomap, 'try-error')){
-      out <- leaflet::leafletProxy('entmap') |> 
+      entmap_proxy |> 
         leaflet::clearMarkers() |>
         leaflet::addMarkers(
           data = enterotomap,
@@ -472,7 +443,7 @@ server <- function(input, output, session) {
         )
       
       if(input$addsta2)
-        out <- out |> 
+        entmap_proxy |> 
           leaflet::addLabelOnlyMarkers(
             data = enterotomap,
             lng = ~Longitude,
@@ -482,9 +453,7 @@ server <- function(input, output, session) {
           )
       
     }
-    
-    return(out)
-    
+      
   })
   
   # entmap popup modal
