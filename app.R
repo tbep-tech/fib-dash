@@ -341,14 +341,14 @@ server <- function(input, output, session) {
         dplyr::pull()
 
       p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(yrmin1, maxyr),
-                                         indic = 'entero', warn = F))
+                                         warn = F))
 
     }
 
     if(segsel1){
 
       p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1,
-                                         yrrng = c(yrmin1, maxyr), indic = 'entero', warn = F))
+                                         yrrng = c(yrmin1, maxyr), warn = F))
 
     }
 
@@ -376,7 +376,7 @@ server <- function(input, output, session) {
     # baywide ent data to map, yr
     
     yrtomap1 <- try(tbeptools::show_fibmatmap(enterodata, yrsel = input$yrsel1, areasel = input$areasel1, 
-                                                         indic = 'entero', listout = T, warn = F))
+                                                         listout = T, warn = F))
     
     # create map
     if(inherits(yrtomap1, 'try-error'))
@@ -499,7 +499,7 @@ server <- function(input, output, session) {
       dplyr::pull()
     
     p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, maxyr), 
-                                       indic = 'fcolif', warn = F))
+                                       warn = F))
     
     validate(
       need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
@@ -520,7 +520,7 @@ server <- function(input, output, session) {
     req(areasel2)
     
     out <- tbeptools::show_fibmatmap(fibdata, yrsel = yrsel2, areasel = areasel2, 
-                                     indic = 'fcolif', listout = T, warn = F)
+                                     listout = T, warn = F)
     
     return(out)
     
@@ -661,12 +661,13 @@ server <- function(input, output, session) {
     
     stas <- mancofibdata %>%
       dplyr::filter(area %in% areasel3) %>%
+      dplyr::filter(var %in% 'entero') %>% 
       dplyr::select(manco_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
     
     p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
-                                       indic = 'fcolif', warn = F))
+                                       warn = F))
     
     validate(
       need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
@@ -687,7 +688,7 @@ server <- function(input, output, session) {
     req(areasel3)
     
     out <- tbeptools::show_fibmatmap(mancofibdata, yrsel = yrsel3, areasel = areasel3, 
-                                     indic = 'fcolif', listout = T, warn = F)
+                                     listout = T, warn = F)
     
     return(out)
     
@@ -872,7 +873,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, 
                               areasel = c('OTB', 'HB', 'MTB', 'LTB', 'BCB', 'MR'),
-                              precipdata = catchprecip, indic = 'entero', warn = F, addsta = T)
+                              precipdata = catchprecip, warn = F, addsta = T)
     
   })
   
@@ -895,7 +896,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(fibdata, yrsel = maxyr, 
                               areasel = c('Alafia River', 'Hillsborough River'),
-                              precipdata = catchprecip, indic = 'fcolif', warn = F, addsta = T)
+                              precipdata = catchprecip, warn = F, addsta = T)
     
   })
   
@@ -918,7 +919,7 @@ server <- function(input, output, session) {
     
     tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr - 2, 
                               areasel = c('Braden River', 'Manatee River'),
-                              precipdata = catchprecip, indic = 'fcolif', warn = F, addsta = T)
+                              precipdata = catchprecip, warn = F, addsta = T)
     
   })
   

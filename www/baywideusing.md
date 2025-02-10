@@ -15,7 +15,7 @@ Stations that apply to each bay segment can be shown instead by toggling the swi
 
 The report card is also interactive and can be zoomed by clicking the mouse and dragging to an area of interest.  Reset the plot by double-clicking.  An image of the report card can be saved by clicking the camera icon that is shown above the report card when the cursor is over the plot. 
 
-The __MAP BY YEAR__ tab shows a map of the report card grades assigned each bay segment and the individual station grades for the selected year. These are the same values shown in the report card.
+The __MAP BY YEAR__ tab shows a map of the report card grades assigned to each bay segment and the individual station grades for the selected year. These are the same values shown in the report card.
 
 Placing the cursor over a bay segment or station will reveal additional information. 
 

@@ -13,7 +13,7 @@ enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_wind
 cols <- c('#CC3231', '#E9C318', '#2DC938')
 
 yrmin1 <- 2002
-yrmin2 <- 1976
+yrmin2 <- 2001
 yrmin3 <- 1997
 maxyr <- 2023
 
@@ -40,7 +40,7 @@ areas3 <- c("Big Slough", "Bowlees Creek", "Braden River", "Bud Slough",
 ecocciicons <- tbeptools::util_fibicons('entero')
 
 # create custom icon list for fib categories
-fibicons <- tbeptools::util_fibicons('fcolif')
+fibicons <- tbeptools::util_fibicons('entero&ecoli')
 
 # plotly modebar items to remove
 modrm <- c('autoScale', 'select2d', 'lasso2d')

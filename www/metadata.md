@@ -66,7 +66,7 @@ __Hillsborough County raw data__: Raw Hillsborough County FIB data
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 * *ecoli*: *E. coli* cell concentration as #/100 mL
-* *ecoli_q*: *E. coli* cell concentration quality flag, see qualifier description tab [here](https://epcbocc.sharepoint.com/:x:/r/sites/Share/_layouts/15/Doc.aspx?sourcedoc=%7BDDE6D985-527A-4651-935A-F3214F755688%7D&file=RWMSpreadsheet_ThroughCurrentReportMonth.xlsx&action=default&mobileredirect=true){target='_blank'}
+* *ecoli_q*: *E. coli* cell concentration quality flag, see qualifier description tab [here](https://epcbocc.sharepoint.com/:x:/r/sites/Share/_layouts/15/Doc.aspx?sourcedoc=%7BDDE6D985-527A-4651-935A-F3214F755688%7D&file=RWMSpreadsheet_ThroughCurrentReportMonth.xlsx&action=default&mobileredirect=true){target="_blank"}
 * *entero*: *Enterococcus* cell concentration as #/100 mL
 * *entero_q*: *Enterococcus* cell concentration quality flag, see link above
 * *fcolif*: Fecal coliform cell concentration as #/100 mL
