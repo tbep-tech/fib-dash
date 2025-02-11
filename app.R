@@ -217,7 +217,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; flex-direction: column;",
               div(style = "height: 25px;", "Select year:"), 
-              sliderInput('yrsel3', NULL, min = yrmin3, max = maxyr, value = maxyr - 2, step = 1, sep = '', width = '90%')
+              sliderInput('yrsel3', NULL, min = yrmin3, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
             )
           ),
           div(
@@ -497,7 +497,7 @@ server <- function(input, output, session) {
       dplyr::select(epchc_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
-    
+
     p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, maxyr), 
                                        warn = F))
     
@@ -661,11 +661,10 @@ server <- function(input, output, session) {
     
     stas <- mancofibdata %>%
       dplyr::filter(area %in% areasel3) %>%
-      dplyr::filter(var %in% 'entero') %>% 
       dplyr::select(manco_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
-    
+
     p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
                                        warn = F))
     
@@ -686,7 +685,7 @@ server <- function(input, output, session) {
     areasel3 <- input$areasel3
     
     req(areasel3)
-    
+
     out <- tbeptools::show_fibmatmap(mancofibdata, yrsel = yrsel3, areasel = areasel3, 
                                      listout = T, warn = F)
     
@@ -917,7 +916,7 @@ server <- function(input, output, session) {
   # manco fib map, yr
   output$mancofibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr - 2, 
+    tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr, 
                               areasel = c('Braden River', 'Manatee River'),
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -926,7 +925,7 @@ server <- function(input, output, session) {
   # manco fib map, yr mo
   output$mancofibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(mancofibdata, yrsel = maxyr - 2, mosel = 7, 
+    tbeptools::show_fibmap(mancofibdata, yrsel = maxyr, mosel = 7, 
                            areasel = c('Braden River', 'Manatee River'), addsta = T)
     
   })

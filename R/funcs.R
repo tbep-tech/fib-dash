@@ -26,13 +26,13 @@ dldatproc_fun <- function(typseldl, yrseldl){
   
   if(typseldl == 'Baywide segment score categories')
     out <- tbeptools::anlz_fibmatrix(enterodata, bay_segment = unlist(areas1), yrrng = yrseldl, 
-                                     indic = 'entero', warn = F) |> 
+                                     warn = F) |> 
     dplyr::rename(bay_segment = grp) |> 
     dplyr::select(-Latitude, -Longitude)
   
   if(typseldl ==  'Baywide station score categories')
     out <- tbeptools::anlz_fibmatrix(enterodata, stas = unique(enterodata$station), yrrng = yrseldl, 
-                                     indic = 'entero', warn = F) |> 
+                                     warn = F) |> 
     dplyr::rename(Station = grp)
   
   if(typseldl == 'Baywide raw data')
@@ -42,7 +42,7 @@ dldatproc_fun <- function(typseldl, yrseldl){
   
   if(typseldl == 'Hillsborough County station score categories')
     out <- tbeptools::anlz_fibmatrix(fibdata, stas = unique(fibdata$epchc_station), yrrng = yrseldl, 
-                                     indic = 'fcolif', warn = F) |> 
+                                     warn = F) |> 
     dplyr::rename(`Station` = grp)
   
   if(typseldl == 'Hillsborough County raw data')
@@ -52,7 +52,7 @@ dldatproc_fun <- function(typseldl, yrseldl){
   
   if(typseldl == 'Manatee County station score categories')
     out <- tbeptools::anlz_fibmatrix(mancofibdata, stas = unique(mancofibdata$manco_station), yrrng = yrseldl, 
-                                     indic = 'fcolif', warn = F) |> 
+                                     warn = F) |> 
       dplyr::rename(`Station` = grp)
   
   if(typseldl == 'Manatee County raw data')

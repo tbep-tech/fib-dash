@@ -14,7 +14,7 @@ cols <- c('#CC3231', '#E9C318', '#2DC938')
 
 yrmin1 <- 2002
 yrmin2 <- 2001
-yrmin3 <- 1997
+yrmin3 <- 2013
 maxyr <- 2023
 
 lwid <- 1.5
@@ -31,10 +31,10 @@ areas2 <- c('Alafia River', 'Hillsborough River', 'Big Bend', 'Cockroach Bay',
            'McKay Bay', 'Middle Tampa Bay', 'Old Tampa Bay', 'Palm River', 'Tampa Bypass Canal',
            'Valrico Lake')
 
-areas3 <- c("Big Slough", "Bowlees Creek", "Braden River", "Bud Slough", 
+areas3 <- c("Bowlees Creek", "Braden River", 
             "Clay Gully", "Frog Creek", "Gap Creek", "Little Manatee River", 
-            "Lower Tampa Bay", "Manatee River", "Mcmullen Creek", "Mud Lake Slough", 
-            "Myakka River", "Palma Sola Bay", "Piney Point Creek")
+            "Manatee River", "Mcmullen Creek", 
+            "Myakka River", "Palma Sola Bay")
 
 # create custom icon list for fib categories
 ecocciicons <- tbeptools::util_fibicons('entero')
