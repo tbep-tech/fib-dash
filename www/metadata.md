@@ -60,7 +60,7 @@ __Hillsborough County station score categories__: Hillsborough County FIB score 
 
 __Hillsborough County raw data__: Raw Hillsborough County FIB data
 
-* *area*: Hillsborough County sampling area - Alafia River, Alafia River Tributary, Big Bend, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
+* *area*: Hillsborough County sampling area - Alafia River, Alafia River Tributary, Cockroach Bay, Cockroach Bay Tributary, East Lake Outfall, Hillsborough Bay,  Hillsborough Bay Tributary, Hillsborough River, Hillsborough River Tributary, Lake Roberta, Lake Thonotosassa, Lake Thonotosassa Tributary, Little Manatee River, Little Manatee River Tributary, Lower Tampa Bay, McKay Bay, McKay Bay Tributary, Middle Tampa Bay, Middle Tampa Bay Tributary, Old Tampa Bay, Old Tampa Bay Tributary, Palm River, Palm River Tributary, Tampa Bypass Canal, Tampa Bypass Canal Tributary, Valrico Lake
 * *Station*: Hillsborough County station name
 * *class*: Site classification as marine (3M, 2) or freshwater (3F, 1)
 * *SampleTime*: Time of sample

@@ -26,7 +26,7 @@ areas1 <- list("BCB", "HB", "LTB", "MR", "MTB", "OTB")
 names(areas1) <- c("Boca Ciega Bay", "Hillsborough Bay", "Lower Tampa Bay", "Manatee River", 
                              "Middle Tampa Bay", "Old Tampa Bay")
 
-areas2 <- c('Alafia River', 'Hillsborough River', 'Big Bend', 'Cockroach Bay', 
+areas2 <- c('Alafia River', 'Hillsborough River', 'Cockroach Bay', 
            'East Lake Outfall', 'Hillsborough Bay', 'Little Manatee River', 'Lower Tampa Bay',
            'McKay Bay', 'Middle Tampa Bay', 'Old Tampa Bay', 'Palm River', 'Tampa Bypass Canal',
            'Valrico Lake')
