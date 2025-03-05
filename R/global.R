@@ -5,6 +5,7 @@ box::use(
 data('enterodata', package = 'tbeptools')
 data('fibdata', package = 'tbeptools')
 data('mancofibdata', package = 'tbeptools')
+data('pascofibdata', package = 'tbeptools')
 data('catchprecip', package = 'tbeptools')
 data('tbsegdetail', package = 'tbeptools')
 
@@ -15,6 +16,7 @@ cols <- c('#CC3231', '#E9C318', '#2DC938')
 yrmin1 <- 2002
 yrmin2 <- 2001
 yrmin3 <- 2013
+yrmin4 <- 2017
 maxyr <- 2023
 
 lwid <- 1.5
@@ -35,6 +37,9 @@ areas3 <- c("Bowlees Creek", "Braden River",
             "Clay Gully", "Frog Creek", "Gap Creek", "Little Manatee River", 
             "Manatee River", "Mcmullen Creek", 
             "Myakka River", "Palma Sola Bay")
+
+areas4 <- c("Anclote River", "Bear Creek", "Cypress Creek", "Hillsborough River", 
+            "New River", "Pithlachascotee River", "Trout Creek")
 
 # create custom icon list for fib categories
 ecocciicons <- tbeptools::util_fibicons('entero')

@@ -10,9 +10,8 @@
 This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide assessment and for data collected as part of specific monitoring programs that support Basin Management Action Plans.  The assessments are meant to inform progress remediating fecal impairments or to support prioritization of areas for further investigation. They are not meant to support beach monitoring efforts or closures for recreational uses - alternative reporting products are available for that purpose (see <a href='https://www.floridahealth.gov/environmental-health/beach-water-quality/county-detail.html?County=Pinellas&Zip=33701-3109' target = '_blank'>FLDOH Healthy Beaches</a> and <a href='https://tampabay.wateratlas.usf.edu/maps/recreational-water-quality-map/' target='_blank'>Tampa Bay Recreational Water Quality Map</a>). The dashboard is organized in the following sections:
             
 1) [__BAYWIDE__](#baywide): View baywide summaries of *Enterococcus* data at select monitoring locations for each bay segment
-1) [__HILLSBOROUGH COUNTY__](#hillsborough-county): View summaries of Environmental Protection Commission of Hillsborough County (EPCHC) FIB data for the Hillsborough and Alafia River basins
-1) [__MANATEE COUNTY__](#manatee-county): View summaries of Manatee County FIB data for select monitoring locations
-1) [__DATA DOWNLOADS__](#data-downloads): Download baywide, Hillsborough County, or Manatee County data
+1) [__BY COUNTY__](#by-county): View summaries of Hillsborough, Manatee, Pasco, or Polk County data
+1) [__DATA DOWNLOADS__](#data-downloads): Download baywide or county data
                     
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a <a href='https://help.plot.ly/zoom-pan-hover-controls/' target='_blank'>control menu</a> on the top with different options for viewing the data.  For example, click the camera icon to download a plot.
                     

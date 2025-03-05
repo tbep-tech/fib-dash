@@ -126,152 +126,233 @@ ui <- page_navbar(
     )
   ),
 
-  # Third nav item - Hillsborough County
-  nav_panel(
-    title = "2 HILLSBOROUGH COUNTY",
-    value = 'hillsborough-county', 
-    class = 'fill-height',
-    layout_columns(
-      fill = F,
-      card(
-        height = 'auto',
-        width = 12,
-        div(
-          style = 'display: flex; gap: 0rem; align-items: flex-end;',
-          div(
-            style = 'width: 33.33%;',
-            div(
-              style = "display: flex; flex-direction: column;",
-              div(style = "height: 25px;", "Select year:"), 
-              sliderInput('yrsel2', NULL, min = yrmin2, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
-            )
-          ),
-          div(
-            style = 'width: 66.66%;',
-            div(
-              style = 'display: flex; flex-direction: column;',
-              div(style = "height: 50px;", "Select area:"), 
-              selectizeInput('areasel2', NULL, choices = areas2, selected = c('Hillsborough River', 'Alafia River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
-            )
-          )
-        )
-      )
-    ),
-    div(
-      class = 'resizable-row',
-      div(
-        class = 'resizable-column',
-        style = 'width: 33.33%',
-        navset_card_underline(
-          full_screen = TRUE,
-          nav_panel(
-            "REPORT CARD",
-            plotly::plotlyOutput('fibmatrix', height = '100%')
-          ),
-          nav_panel(
-            "Using this tab",
-            shiny::includeMarkdown('www/hillsboroughusing.md')
-          )
-        )
-      ),
-      
-      div(
-        class='right-column', 
-        style = 'width: 66.66%',
-        navset_card_underline(
-          full_screen = T,
-          nav_panel(
-            "MAP BY YEAR",
-            shinyWidgets::materialSwitch('addsta3', 'Add station labels', value = T),
-            leaflet::leafletOutput('fibmapyr')
-          ),
-          nav_panel(
-            "MAP BY YEAR AND MONTH",
-            div(
-              style = "display: flex; align-items: center; gap: 1rem;",
-              shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-              shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
-              span('Click on a station to view a complete time series')
-            ),
-            leaflet::leafletOutput('fibmap')
-          )
-        )
-      )
-    )
-  ),
+  # Third nav item as menu for counties
+  nav_menu(
+    title = "2 BY COUNTY",
+    value = 'by-county',
   
-  # Fourth nav item - Manatee County
-  nav_panel(
-    title = "3 MANATEE COUNTY",
-    value = 'manatee-county',
-    class = 'fill-height',
-    layout_columns(
-      fill = F,
-      card(
-        height = 'auto',
-        width = 12,
-        div(
-          style = 'display: flex; gap: 0rem; align-items: flex-end;',
+    # Hillsborough County
+    nav_panel(
+      title = "HILLSBOROUGH COUNTY",
+      value = 'hillsborough-county', 
+      class = 'fill-height',
+      layout_columns(
+        fill = F,
+        card(
+          height = 'auto',
+          width = 12,
           div(
-            style = 'width: 33.33%;',
+            style = 'display: flex; gap: 0rem; align-items: flex-end;',
             div(
-              style = "display: flex; flex-direction: column;",
-              div(style = "height: 25px;", "Select year:"), 
-              sliderInput('yrsel3', NULL, min = yrmin3, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              style = 'width: 33.33%;',
+              div(
+                style = "display: flex; flex-direction: column;",
+                div(style = "height: 25px;", "Select year:"), 
+                sliderInput('yrsel2', NULL, min = yrmin2, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              )
+            ),
+            div(
+              style = 'width: 66.66%;',
+              div(
+                style = 'display: flex; flex-direction: column;',
+                div(style = "height: 50px;", "Select area:"), 
+                selectizeInput('areasel2', NULL, choices = areas2, selected = c('Hillsborough River', 'Alafia River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+              )
             )
-          ),
-          div(
-            style = 'width: 66.66%;',
-            div(
-              style = 'display: flex; flex-direction: column;',
-              div(style = "height: 50px;", "Select area:"), 
-              selectizeInput('areasel3', NULL, choices = areas3, selected = c('Braden River', 'Manatee River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+          )
+        )
+      ),
+      div(
+        class = 'resizable-row',
+        div(
+          class = 'resizable-column',
+          style = 'width: 33.33%',
+          navset_card_underline(
+            full_screen = TRUE,
+            nav_panel(
+              "REPORT CARD",
+              plotly::plotlyOutput('fibmatrix', height = '100%')
+            ),
+            nav_panel(
+              "Using this tab",
+              shiny::includeMarkdown('www/countyusing.md')
+            )
+          )
+        ),
+        
+        div(
+          class='right-column', 
+          style = 'width: 66.66%',
+          navset_card_underline(
+            full_screen = T,
+            nav_panel(
+              "MAP BY YEAR",
+              shinyWidgets::materialSwitch('addsta3', 'Add station labels', value = T),
+              leaflet::leafletOutput('fibmapyr')
+            ),
+            nav_panel(
+              "MAP BY YEAR AND MONTH",
+              div(
+                style = "display: flex; align-items: center; gap: 1rem;",
+                shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
+                span('Click on a station to view a complete time series')
+              ),
+              leaflet::leafletOutput('fibmap')
             )
           )
         )
       )
     ),
-    div(
-      class = 'resizable-row',
-      div(
-        class = 'resizable-column',
-        style = 'width: 33.33%',
-        navset_card_underline(
-          full_screen = TRUE,
-          nav_panel(
-            "REPORT CARD",
-            plotly::plotlyOutput('mancofibmatrix', height = '100%')
-          ),
-          nav_panel(
-            "Using this tab",
-            shiny::includeMarkdown('www/manateeusing.md')
+    
+    # Manatee County
+    nav_panel(
+      title = "MANATEE COUNTY",
+      value = 'manatee-county',
+      class = 'fill-height',
+      layout_columns(
+        fill = F,
+        card(
+          height = 'auto',
+          width = 12,
+          div(
+            style = 'display: flex; gap: 0rem; align-items: flex-end;',
+            div(
+              style = 'width: 33.33%;',
+              div(
+                style = "display: flex; flex-direction: column;",
+                div(style = "height: 25px;", "Select year:"), 
+                sliderInput('yrsel3', NULL, min = yrmin3, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              )
+            ),
+            div(
+              style = 'width: 66.66%;',
+              div(
+                style = 'display: flex; flex-direction: column;',
+                div(style = "height: 50px;", "Select area:"), 
+                selectizeInput('areasel3', NULL, choices = areas3, selected = c('Braden River', 'Manatee River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+              )
+            )
           )
         )
       ),
-      
       div(
-        class='right-column', 
-        style = 'width: 66.66%',
-        navset_card_underline(
-          full_screen = T,
-          nav_panel(
-            "MAP BY YEAR",
-            shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
-            leaflet::leafletOutput('mancofibmapyr')
-          ),
-          nav_panel(
-            "MAP BY YEAR AND MONTH",
-            div(
-              style = "display: flex; align-items: center; gap: 1rem;",
-              shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
-              span('Click on a station to view a complete time series')
+        class = 'resizable-row',
+        div(
+          class = 'resizable-column',
+          style = 'width: 33.33%',
+          navset_card_underline(
+            full_screen = TRUE,
+            nav_panel(
+              "REPORT CARD",
+              plotly::plotlyOutput('mancofibmatrix', height = '100%')
             ),
-            leaflet::leafletOutput('mancofibmap')
+            nav_panel(
+              "Using this tab",
+              shiny::includeMarkdown('www/countyusing.md')
+            )
+          )
+        ),
+        
+        div(
+          class='right-column', 
+          style = 'width: 66.66%',
+          navset_card_underline(
+            full_screen = T,
+            nav_panel(
+              "MAP BY YEAR",
+              shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
+              leaflet::leafletOutput('mancofibmapyr')
+            ),
+            nav_panel(
+              "MAP BY YEAR AND MONTH",
+              div(
+                style = "display: flex; align-items: center; gap: 1rem;",
+                shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
+                span('Click on a station to view a complete time series')
+              ),
+              leaflet::leafletOutput('mancofibmap')
+            )
           )
         )
       )
-    )
+    ),
+    
+    # Pasco County
+    nav_panel(
+      title = "PASCO COUNTY",
+      value = 'pasco-county',
+      class = 'fill-height',
+      layout_columns(
+        fill = F,
+        card(
+          height = 'auto',
+          width = 12,
+          div(
+            style = 'display: flex; gap: 0rem; align-items: flex-end;',
+            div(
+              style = 'width: 33.33%;',
+              div(
+                style = "display: flex; flex-direction: column;",
+                div(style = "height: 25px;", "Select year:"), 
+                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              )
+            ),
+            div(
+              style = 'width: 66.66%;',
+              div(
+                style = 'display: flex; flex-direction: column;',
+                div(style = "height: 50px;", "Select area:"), 
+                selectizeInput('areasel4', NULL, choices = areas4, selected = areas4, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+              )
+            )
+          )
+        )
+      ),
+      div(
+        class = 'resizable-row',
+        div(
+          class = 'resizable-column',
+          style = 'width: 33.33%',
+          navset_card_underline(
+            full_screen = TRUE,
+            nav_panel(
+              "REPORT CARD",
+              plotly::plotlyOutput('pascofibmatrix', height = '100%')
+            ),
+            nav_panel(
+              "Using this tab",
+              shiny::includeMarkdown('www/countyusing.md')
+            )
+          )
+        ),
+        
+        div(
+          class='right-column', 
+          style = 'width: 66.66%',
+          navset_card_underline(
+            full_screen = T,
+            nav_panel(
+              "MAP BY YEAR",
+              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
+              leaflet::leafletOutput('pascofibmapyr')
+            ),
+            nav_panel(
+              "MAP BY YEAR AND MONTH",
+              div(
+                style = "display: flex; align-items: center; gap: 1rem;",
+                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+                span('Click on a station to view a complete time series')
+              ),
+              leaflet::leafletOutput('pascofibmap')
+            )
+          )
+        )
+      )
+    ),
+  
   ),
   
   # Fifth nav item - Data Downloads
@@ -290,7 +371,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; flex-direction: column;",
               div(style = "height: 50px;", "Select type:"), 
-              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data'), width = '95%')
+              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data', 'Pasco County station score categories', 'Pasco County raw data'), width = '95%')
             )
           ),
           div(
@@ -502,7 +583,7 @@ server <- function(input, output, session) {
                                        warn = F))
     
     validate(
-      need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
+      need(!inherits(p, 'try-error'), 'No FIB data available for selection')
     )
     
     out <- mataddyr_fun(p, yrsel = yrsel2)
@@ -669,7 +750,7 @@ server <- function(input, output, session) {
                                        warn = F))
     
     validate(
-      need(!inherits(p, 'try-error'), 'No fecal coliform data available for selection')
+      need(!inherits(p, 'try-error'), 'No FIB data available for selection')
     )
     
     out <- mataddyr_fun(p, yrsel = yrsel3)
@@ -824,6 +905,178 @@ server <- function(input, output, session) {
     
   })
   
+  # pasco fib matrix
+  pascofibmatrix <- reactive({
+    
+    # inputs
+    areasel4 <- input$areasel4
+    yrsel4 <- input$yrsel4
+    
+    stas <- pascofibdata %>%
+      dplyr::filter(area %in% areasel4) %>%
+      dplyr::select(pasco_station) %>%
+      dplyr::distinct() %>%
+      dplyr::pull()
+    
+    p <- try(tbeptools::show_fibmatrix(pascofibdata, stas = stas, yrrng = c(yrmin4, maxyr), 
+                                       warn = F))
+    
+    validate(
+      need(!inherits(p, 'try-error'), 'No FIB data available for selection')
+    )
+    
+    out <- mataddyr_fun(p, yrsel = yrsel4)
+    
+    return(out)
+    
+  })
+  
+  # data for pasco fib map, yr
+  yrtomap4 <- reactive({
+    
+    yrsel4 <- input$yrsel4
+    areasel4 <- input$areasel4
+    
+    req(areasel4)
+    
+    out <- tbeptools::show_fibmatmap(pascofibdata, yrsel = yrsel4, areasel = areasel4, 
+                                     listout = T, warn = F)
+    
+    return(out)
+    
+  }) 
+  
+  # pasco fib data to map, yr
+  observe({
+    
+    # inputs
+    yrtomap4 <- try(yrtomap4())
+    
+    # create map
+    if(inherits(yrtomap4, 'try-error'))
+      out <- leaflet::leafletProxy("pascofibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
+    
+    if(!inherits(yrtomap4, 'try-error')){
+      if(nrow(yrtomap4$tomapsta) == 0)
+        out <- leaflet::leafletProxy("pascofibmapyr") %>%
+          leaflet::clearMarkers() |> 
+          leaflet::clearShapes()
+      else
+        out <- leaflet::leafletProxy("pascofibmapyr") %>%
+          leaflet::clearMarkers() |>
+          leaflet::clearShapes() |> 
+          leaflet::addMarkers(
+            data = yrtomap4$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            icon = ~yrtomap4$icons[as.numeric(cat)],
+            label = ~lapply(as.list(lab), tbeptools::util_html)
+          )
+      
+      if(input$addsta6)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap4$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # pasco fib data to map, yr mo
+  pascofibtomap <- reactive({
+    
+    # inputs
+    yrsel4 <- input$yrsel4
+    mosel4 <- input$mosel4
+    areasel4 <- input$areasel4
+    
+    req(mosel4)
+    
+    mosel4 <- mos[[mosel4]]
+    
+    tomap <- tbeptools::anlz_fibmap(pascofibdata, yrsel4, mosel4, areasel4, assf = T)
+
+    return(tomap)
+    
+  })
+  
+  # pasco fib map
+  observe({
+    
+    # inputs
+    pascofibtomap <- try(pascofibtomap())
+    browser()
+    # create map
+    if(inherits(pascofibtomap, 'try-error'))
+      out <- leaflet::leafletProxy('pascofibmap') |> 
+        leaflet::clearMarkers()
+    
+    if(!inherits(pascofibtomap, 'try-error')){
+      out <- leaflet::leafletProxy('pascofibmap') |> 
+        leaflet::clearMarkers() |> 
+        leaflet::addMarkers(
+          data = pascofibtomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~fibicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+      
+      if(input$addsta7)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = pascofibtomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # pasco fibmap popup modal
+  observeEvent(input$pascofibmap_marker_click, {
+    
+    showModal(modalDialog(
+      plotly::plotlyOutput('pascofibmappopup', height = "500px"),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+    
+  })
+  
+  # create plot on pasco fibmap click
+  pascofibmappopup <- eventReactive(input$pascofibmap_marker_click, {
+    
+    yrsel4 <- input$yrsel4
+    mosel4 <- input$mosel4
+    station <- input$pascofibmap_marker_click$id
+    
+    req(mosel4)
+    mosel4 <- mos[[mosel4]]
+    
+    out <- fibmappopup_plo(pascofibdata, station, yrsel4, mosel4)
+    
+    return(out)
+    
+  })
+  
   # download data
   dldat <- reactive({
     
@@ -933,17 +1186,42 @@ server <- function(input, output, session) {
   # manco fib map popup
   output$mancofibmappopup <- plotly::renderPlotly(mancofibmappopup())
   
+  # pasco fib matrix
+  output$pascofibmatrix <- plotly::renderPlotly(pascofibmatrix())
+  
+  # pasco fib map, yr
+  output$pascofibmapyr <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmatmap(pascofibdata, yrsel = maxyr, 
+                              areasel = areas4,
+                              precipdata = catchprecip, warn = F, addsta = T)
+    
+  })
+  
+  # pasco fib map, yr mo
+  output$pascofibmap <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmap(pascofibdata, yrsel = maxyr, mosel = 7, 
+                           areasel = areas4, addsta = T)
+    
+  })
+  
+  # pasco fib map popup
+  output$pascofibmappopup <- plotly::renderPlotly(pascofibmappopup())
+  
   # year slider range for download
   output$yrseldl <- renderUI({
     
     typseldl <- input$typseldl
     
-    if(!grepl('Hillsborough|Manatee', typseldl))
+    if(!grepl('Hillsborough|Manatee|Pasco', typseldl))
       minyr <- yrmin1
     if(grepl('Hillsborough', typseldl))
       minyr <- yrmin2
     if(grepl('Manatee', typseldl))
       minyr <- yrmin3
+    if(grepl('Pasco', typseldl))
+      minyr <- yrmin4
     
     sliderInput('yrseldl', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
     
