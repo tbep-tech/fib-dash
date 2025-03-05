@@ -50,20 +50,31 @@ dldatproc_fun <- function(typseldl, yrseldl){
     dplyr::rename(`Station` = epchc_station) |> 
     dplyr::select(-Total_Depth_m, -Sample_Depth_m, -totcol, -totcol_q)
   
-  if(typseldl == 'Manatee County station score categories')
-    out <- tbeptools::anlz_fibmatrix(mancofibdata, stas = unique(mancofibdata$manco_station), yrrng = yrseldl, 
+  if(grepl('Manatee|Polk|Pasco', typseldl)){
+    
+    if(grepl('Manatee', typseldl))
+      dat <- mancofibdata
+    if(grepl('Polk', typseldl))
+      dat <- polcofibdata
+    if(grepl('Pasco', typseldl))
+      dat <- pascofibdata
+    
+    if(grepl('score\\scategories$', typseldl))
+    
+      out <- tbeptools::anlz_fibmatrix(dat, stas = unique(dat$station), yrrng = yrseldl, 
                                      warn = F) |> 
-      dplyr::rename(`Station` = grp)
+        dplyr::rename(`Station` = grp)
+    
+    if(grepl('raw', typseldl))
+    
+      out <- dat |> 
+        dplyr::filter(!is.na(val)) |>
+        dplyr::rename_with(~ "Station", dplyr::matches("^(manco|pasco|polco)_station$")) |>
+        dplyr::select(-Sample_Depth_m) |> 
+        dplyr::select(area, dplyr::everything())
   
-  if(typseldl == 'Manatee County raw data')
-    out <- mancofibdata |> 
-      dplyr::filter(!is.na(val)) |> 
-      dplyr::rename(
-        `Station` = manco_station
-      ) |> 
-      dplyr::select(-Sample_Depth_m) |> 
-      dplyr::select(area, dplyr::everything())
-
+  }
+     
   out <- out |> 
     dplyr::filter(yr >= yrseldl[1] & yr <= yrseldl[2]) |> 
     dplyr::rename(
@@ -168,8 +179,8 @@ fibmappopup_plo <- function(dat, station, yr, mo){
   
   levs <- tbeptools::util_fiblevs()
 
-  lkup <- c(station = 'epchc_station', station = 'manco_station')
-  
+  lkup <- c(station = 'epchc_station', station = 'manco_station', station = 'pasco_station', station = 'polco_station')
+
   toplo <- dat |> 
     dplyr::rename(dplyr::any_of(lkup)) |> 
     dplyr::filter(station == !!station) 
@@ -194,7 +205,7 @@ fibmappopup_plo <- function(dat, station, yr, mo){
     labs <- levs$enterolbs
   }
   
-  # wrangle manco
+  # wrangle manco, pasco, polco
   if(clss %in% c('Fresh', 'Marine'))
     toplo <- toplo |> 
       dplyr::filter(var %in% indic) |> 

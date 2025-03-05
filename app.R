@@ -352,12 +352,86 @@ ui <- page_navbar(
         )
       )
     ),
+    
+    # Polk County
+    nav_panel(
+      title = "POLK COUNTY",
+      value = 'polk-county',
+      class = 'fill-height',
+      layout_columns(
+        fill = F,
+        card(
+          height = 'auto',
+          width = 12,
+          div(
+            style = 'display: flex; gap: 0rem; align-items: flex-end;',
+            div(
+              style = 'width: 33.33%;',
+              div(
+                style = "display: flex; flex-direction: column;",
+                div(style = "height: 25px;", "Select year:"), 
+                sliderInput('yrsel5', NULL, min = yrmin5, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              )
+            ),
+            div(
+              style = 'width: 66.66%;',
+              div(
+                style = 'display: flex; flex-direction: column;',
+                div(style = "height: 50px;", "Select area:"), 
+                selectizeInput('areasel5', NULL, choices = areas5, selected = areas5, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+              )
+            )
+          )
+        )
+      ),
+      div(
+        class = 'resizable-row',
+        div(
+          class = 'resizable-column',
+          style = 'width: 33.33%',
+          navset_card_underline(
+            full_screen = TRUE,
+            nav_panel(
+              "REPORT CARD",
+              plotly::plotlyOutput('polcofibmatrix', height = '100%')
+            ),
+            nav_panel(
+              "Using this tab",
+              shiny::includeMarkdown('www/countyusing.md')
+            )
+          )
+        ),
+        
+        div(
+          class='right-column', 
+          style = 'width: 66.66%',
+          navset_card_underline(
+            full_screen = T,
+            nav_panel(
+              "MAP BY YEAR",
+              shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+              leaflet::leafletOutput('polcofibmapyr')
+            ),
+            nav_panel(
+              "MAP BY YEAR AND MONTH",
+              div(
+                style = "display: flex; align-items: center; gap: 1rem;",
+                shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
+                span('Click on a station to view a complete time series')
+              ),
+              leaflet::leafletOutput('polcofibmap')
+            )
+          )
+        )
+      )
+    )
   
   ),
   
-  # Fifth nav item - Data Downloads
+  # Third nav item - Data Downloads
   nav_panel(
-    title = "4 DATA DOWNLOADS",
+    title = "3 DATA DOWNLOADS",
     value = 'data-downloads',
     navset_card_underline(
       full_screen = TRUE,
@@ -371,7 +445,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; flex-direction: column;",
               div(style = "height: 50px;", "Select type:"), 
-              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data', 'Pasco County station score categories', 'Pasco County raw data'), width = '95%')
+              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data', 'Pasco County station score categories', 'Pasco County raw data', 'Polk County station score categories', 'Polk County raw data'), width = '95%')
             )
           ),
           div(
@@ -1014,7 +1088,7 @@ server <- function(input, output, session) {
     
     # inputs
     pascofibtomap <- try(pascofibtomap())
-    browser()
+
     # create map
     if(inherits(pascofibtomap, 'try-error'))
       out <- leaflet::leafletProxy('pascofibmap') |> 
@@ -1072,6 +1146,178 @@ server <- function(input, output, session) {
     mosel4 <- mos[[mosel4]]
     
     out <- fibmappopup_plo(pascofibdata, station, yrsel4, mosel4)
+    
+    return(out)
+    
+  })
+
+  # polco fib matrix
+  polcofibmatrix <- reactive({
+    
+    # inputs
+    areasel5 <- input$areasel5
+    yrsel5 <- input$yrsel5
+    
+    stas <- polcofibdata %>%
+      dplyr::filter(area %in% areasel5) %>%
+      dplyr::select(polco_station) %>%
+      dplyr::distinct() %>%
+      dplyr::pull()
+    
+    p <- try(tbeptools::show_fibmatrix(polcofibdata, stas = stas, yrrng = c(yrmin5, maxyr), 
+                                       warn = F))
+    
+    validate(
+      need(!inherits(p, 'try-error'), 'No FIB data available for selection')
+    )
+    
+    out <- mataddyr_fun(p, yrsel = yrsel5)
+    
+    return(out)
+    
+  })
+  
+  # data for polco fib map, yr
+  yrtomap5 <- reactive({
+    
+    yrsel5 <- input$yrsel5
+    areasel5 <- input$areasel5
+    
+    req(areasel5)
+    
+    out <- tbeptools::show_fibmatmap(polcofibdata, yrsel = yrsel5, areasel = areasel5, 
+                                     listout = T, warn = F)
+    
+    return(out)
+    
+  }) 
+  
+  # polco fib data to map, yr
+  observe({
+    
+    # inputs
+    yrtomap5 <- try(yrtomap5())
+    
+    # create map
+    if(inherits(yrtomap5, 'try-error'))
+      out <- leaflet::leafletProxy("polcofibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
+    
+    if(!inherits(yrtomap5, 'try-error')){
+      if(nrow(yrtomap5$tomapsta) == 0)
+        out <- leaflet::leafletProxy("polcofibmapyr") %>%
+          leaflet::clearMarkers() |> 
+          leaflet::clearShapes()
+      else
+        out <- leaflet::leafletProxy("polcofibmapyr") %>%
+          leaflet::clearMarkers() |>
+          leaflet::clearShapes() |> 
+          leaflet::addMarkers(
+            data = yrtomap5$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            icon = ~yrtomap5$icons[as.numeric(cat)],
+            label = ~lapply(as.list(lab), tbeptools::util_html)
+          )
+      
+      if(input$addsta7)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap5$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # polco fib data to map, yr mo
+  polcofibtomap <- reactive({
+    
+    # inputs
+    yrsel5 <- input$yrsel5
+    mosel5 <- input$mosel5
+    areasel5 <- input$areasel5
+    
+    req(mosel5)
+    
+    mosel5 <- mos[[mosel5]]
+    
+    tomap <- tbeptools::anlz_fibmap(polcofibdata, yrsel5, mosel5, areasel5, assf = T)
+    
+    return(tomap)
+    
+  })
+  
+  # polco fib map
+  observe({
+    
+    # inputs
+    polcofibtomap <- try(polcofibtomap())
+    
+    # create map
+    if(inherits(polcofibtomap, 'try-error'))
+      out <- leaflet::leafletProxy('polcofibmap') |> 
+        leaflet::clearMarkers()
+    
+    if(!inherits(polcofibtomap, 'try-error')){
+      out <- leaflet::leafletProxy('polcofibmap') |> 
+        leaflet::clearMarkers() |> 
+        leaflet::addMarkers(
+          data = polcofibtomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~fibicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+      
+      if(input$addsta8)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = polcofibtomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # polco fibmap popup modal
+  observeEvent(input$polcofibmap_marker_click, {
+    
+    showModal(modalDialog(
+      plotly::plotlyOutput('polcofibmappopup', height = "500px"),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+    
+  })
+  
+  # create plot on polco fibmap click
+  polcofibmappopup <- eventReactive(input$polcofibmap_marker_click, {
+    
+    yrsel5 <- input$yrsel5
+    mosel5 <- input$mosel5
+    station <- input$polcofibmap_marker_click$id
+    
+    req(mosel5)
+    mosel5 <- mos[[mosel5]]
+    
+    out <- fibmappopup_plo(polcofibdata, station, yrsel5, mosel5)
     
     return(out)
     
@@ -1209,12 +1455,35 @@ server <- function(input, output, session) {
   # pasco fib map popup
   output$pascofibmappopup <- plotly::renderPlotly(pascofibmappopup())
   
+  # polco fib matrix
+  output$polcofibmatrix <- plotly::renderPlotly(polcofibmatrix())
+  
+  # polco fib map, yr
+  output$polcofibmapyr <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmatmap(polcofibdata, yrsel = maxyr, 
+                              areasel = areas5,
+                              precipdata = catchprecip, warn = F, addsta = T)
+    
+  })
+  
+  # polco fib map, yr mo
+  output$polcofibmap <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmap(polcofibdata, yrsel = maxyr, mosel = 7, 
+                           areasel = areas5, addsta = T)
+    
+  })
+  
+  # polco fib map popup
+  output$polcofibmappopup <- plotly::renderPlotly(polcofibmappopup())
+  
   # year slider range for download
   output$yrseldl <- renderUI({
     
     typseldl <- input$typseldl
     
-    if(!grepl('Hillsborough|Manatee|Pasco', typseldl))
+    if(!grepl('Hillsborough|Manatee|Pasco|Polk', typseldl))
       minyr <- yrmin1
     if(grepl('Hillsborough', typseldl))
       minyr <- yrmin2
@@ -1222,6 +1491,8 @@ server <- function(input, output, session) {
       minyr <- yrmin3
     if(grepl('Pasco', typseldl))
       minyr <- yrmin4
+    if(grepl('Polk', typseldl))
+      minyr <- yrmin5
     
     sliderInput('yrseldl', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
     
