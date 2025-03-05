@@ -296,7 +296,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = 2023, step = 1, sep = '', width = '90%') # must start at 2023 to initiate pascofibmap
               )
             ),
             div(
@@ -335,15 +335,15 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
               leaflet::leafletOutput('pascofibmapyr')
             ),
             nav_panel(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Feb', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
+                shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('pascofibmap')
@@ -409,7 +409,7 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
               leaflet::leafletOutput('polcofibmapyr')
             ),
             nav_panel(
@@ -417,7 +417,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
                 shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
+                shinyWidgets::materialSwitch('addsta10', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('polcofibmap')
@@ -1049,7 +1049,7 @@ server <- function(input, output, session) {
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta6)
+      if(input$addsta7)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap4$tomapsta,
@@ -1067,47 +1067,47 @@ server <- function(input, output, session) {
   
   # pasco fib data to map, yr mo
   pascofibtomap <- reactive({
-    
+
     # inputs
     yrsel4 <- input$yrsel4
     mosel4 <- input$mosel4
     areasel4 <- input$areasel4
-    
+
     req(mosel4)
-    
+
     mosel4 <- mos[[mosel4]]
-    
+
     tomap <- tbeptools::anlz_fibmap(pascofibdata, yrsel4, mosel4, areasel4, assf = T)
 
     return(tomap)
-    
+
   })
-  
+
   # pasco fib map
   observe({
-    
+
     # inputs
     pascofibtomap <- try(pascofibtomap())
 
     # create map
     if(inherits(pascofibtomap, 'try-error'))
-      out <- leaflet::leafletProxy('pascofibmap') |> 
+      out <- leaflet::leafletProxy('pascofibmap') |>
         leaflet::clearMarkers()
-    
+
     if(!inherits(pascofibtomap, 'try-error')){
-      out <- leaflet::leafletProxy('pascofibmap') |> 
-        leaflet::clearMarkers() |> 
+      out <- leaflet::leafletProxy('pascofibmap') |>
+        leaflet::clearMarkers() |>
         leaflet::addMarkers(
           data = pascofibtomap,
           lng = ~Longitude,
           lat = ~Latitude,
           icon = ~fibicons[as.numeric(grp)],
-          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          label = ~lapply(as.list(lab), tbeptools::util_html),
           layerId = ~station
         )
-      
-      if(input$addsta7)
-        out <- out |> 
+
+      if(input$addsta8)
+        out <- out |>
           leaflet::addLabelOnlyMarkers(
             data = pascofibtomap,
             lng = ~Longitude,
@@ -1115,40 +1115,40 @@ server <- function(input, output, session) {
             label = ~station,
             labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
           )
-      
+
     }
-    
+
     return(out)
-    
+
   })
-  
+
   # pasco fibmap popup modal
   observeEvent(input$pascofibmap_marker_click, {
-    
+
     showModal(modalDialog(
       plotly::plotlyOutput('pascofibmappopup', height = "500px"),
       easyClose = T,
       fade = F,
-      footer = NULL, 
+      footer = NULL,
       size = 'l'
     ))
-    
+
   })
-  
+
   # create plot on pasco fibmap click
   pascofibmappopup <- eventReactive(input$pascofibmap_marker_click, {
-    
+
     yrsel4 <- input$yrsel4
     mosel4 <- input$mosel4
     station <- input$pascofibmap_marker_click$id
-    
+
     req(mosel4)
     mosel4 <- mos[[mosel4]]
-    
+
     out <- fibmappopup_plo(pascofibdata, station, yrsel4, mosel4)
-    
+
     return(out)
-    
+
   })
 
   # polco fib matrix
@@ -1221,7 +1221,7 @@ server <- function(input, output, session) {
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta7)
+      if(input$addsta9)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap5$tomapsta,
@@ -1278,7 +1278,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta8)
+      if(input$addsta10)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = polcofibtomap,
@@ -1444,10 +1444,11 @@ server <- function(input, output, session) {
     
   })
   
-  # pasco fib map, yr mo
+  # manco fib map, yr mo
   output$pascofibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(pascofibdata, yrsel = maxyr, mosel = 7, 
+    # initiate the map with this year, mo combo. It has at least two samples and the map won't initiate with one.
+    tbeptools::show_fibmap(pascofibdata, yrsel = 2023, mosel = 2, 
                            areasel = areas4, addsta = T)
     
   })
