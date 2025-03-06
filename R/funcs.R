@@ -168,7 +168,12 @@ entmappopup_plo <- function(dat, station, yr, mo){
 
   out <- plotly::ggplotly(out) |> 
     plotly::add_segments(x = ~as.numeric(ln), xend = ~as.numeric(ln), y = 0, yend = 2 * max(toplo$entero, na.rm = T), 
-                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none')
+                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none') |>
+    plotly::config(
+      displaylogo = F,
+      modeBarButtonsToRemove = modrm
+    )
+    
   
   return(out)
   
@@ -247,7 +252,11 @@ fibmappopup_plo <- function(dat, station, yr, mo){
   
   out <- plotly::ggplotly(out) |> 
     plotly::add_segments(x = ~as.numeric(ln), xend = ~as.numeric(ln), y = 0, yend = 2 * max(toplo$Value, na.rm = T), 
-                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none')
+                         line = list(dash = 'dash', color = 'black'), name = 'Selection', hoverinfo = 'none') |>
+    plotly::config(
+      displaylogo = F,
+      modeBarButtonsToRemove = modrm
+    )
   
   return(out)
   

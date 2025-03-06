@@ -15,7 +15,7 @@ This dashboard summarizes fecal indicator bacteria (FIB) data for a baywide asse
                     
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a <a href='https://help.plot.ly/zoom-pan-hover-controls/' target='_blank'>control menu</a> on the bottom left with different options for viewing the data.  For example, click the camera icon to download a plot.
                     
-<img src='plotcontrols.PNG' style='width: 30%; display: block; margin: 0 auto;'>   
+<img src='plotcontrols.PNG' style='width: 20%; display: block; margin: 0 auto;'>   
 <br>
 
 <h2 style = 'text-align: center;'>DATA SOURCES</h2>

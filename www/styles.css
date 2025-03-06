@@ -297,14 +297,7 @@ body.modal-open .modal {
 }
 
 /* plotly modebar on bottom */
-/* Target the modebar specifically with higher specificity */
-body .js-plotly-plot .plotly .modebar {
-  position: absolute !important;
-  top: unset !important;
-  bottom: -2px !important;
-}
 
-/* Sometimes we need to target the container as well */
 body .js-plotly-plot .plotly .modebar {
   position: absolute !important;
   top: unset !important;
@@ -313,7 +306,6 @@ body .js-plotly-plot .plotly .modebar {
   right: unset !important; /* Remove right positioning */
 }
 
-/* Sometimes we need to target the container as well */
 body .js-plotly-plot .plotly .modebar-container {
   position: absolute !important;
   top: unset !important;
