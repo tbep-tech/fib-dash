@@ -48,20 +48,20 @@ __Baywide raw data__: Raw FIB data for Tampa Bay
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 
-__Hillsborough County station score categories__: Hillsborough County FIB score categories summarized by station
+__Hillsborough County (EPC) station score categories__: Hillsborough County (EPC) FIB score categories summarized by station
 
 * *Year*: Year of the assessment
-* *Station*: Hillsborough County station name
+* *Station*: Hillsborough County (EPC) station name
 * *class*: Site classification as marine or freshwater
 * *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
 * *Latitude*: Station latitude, WGS84
 * *Longitude*: Station longitude, WGS84
 * *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for *Enterococcus* in a given year. 
 
-__Hillsborough County raw data__: Raw Hillsborough County FIB data
+__Hillsborough County (EPC) raw data__: Raw Hillsborough County (EPC) FIB data
 
-* *area*: Hillsborough County sampling area
-* *Station*: Hillsborough County station name
+* *area*: Hillsborough County (EPC) sampling area
+* *Station*: Hillsborough County (EPC) station name
 * *class*: Site classification as marine (3M, 2) or freshwater (3F, 1)
 * *SampleTime*: Time of sample
 * *Year*: Year of sample
@@ -74,6 +74,31 @@ __Hillsborough County raw data__: Raw Hillsborough County FIB data
 * *entero_q*: *Enterococcus* cell concentration quality flag, see link above
 * *fcolif*: Fecal coliform cell concentration as #/100 mL
 * *fcolif_q*: Fecal coliform cell concentration quality flag, see link above
+
+__Hillsborough County (ESD) station score categories__: Hillsborough County (ESD) FIB score categories summarized by station
+
+* *Year*: Year of the assessment
+* *Station*: Hillsborough County (ESD) station name
+* *class*: Site classification as marine or freshwater
+* *Geometric mean*: Geometric mean of *Enterococcus* cell concentrations
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+* *Score category*: A, B, C, D, or E from Microbial Water Quality Assessment (MWQA) categories, where breakpoints are <10%, 10-30%, 30-50%, 50-75%, and >75% as the likelihood of exceeding 400 CFU / 100 mL for *Enterococcus* in a given year. 
+
+__Hillsborough County (ESD) raw data__: Raw Hillsborough County (ESD) FIB data
+
+* *area*: Hillsborough County (ESD) sampling area
+* *Station*: Hillsborough County (ESD) station name
+* *SampleTime*: Time of sample
+* *class*: Site classification as marine or freshwater
+* *Year*: Year of sample
+* *Month*: Month of sample
+* *Latitude*: Station latitude, WGS84
+* *Longitude*: Station longitude, WGS84
+* *var*: Indicator as ecoli for *E. coli* or entero for *Enterococcus*
+* *val*: Cell concentration
+* *uni*: Units for the cell concentration
+* *qual*: Quality flag for the cell concentration
 
 __Manatee County station score categories__: Manatee County FIB score categories summarized by station
 

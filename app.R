@@ -131,10 +131,10 @@ ui <- page_navbar(
     title = "2 BY COUNTY",
     value = 'by-county',
   
-    # Hillsborough County
+    # Hillsborough County EPC
     nav_panel(
-      title = "HILLSBOROUGH COUNTY",
-      value = 'hillsborough-county', 
+      title = "HILLSBOROUGH COUNTY (EPC)",
+      value = 'hillsborough-county-epc', 
       class = 'fill-height',
       layout_columns(
         fill = F,
@@ -205,10 +205,10 @@ ui <- page_navbar(
       )
     ),
     
-    # Manatee County
+    # Hillsborough County ESD
     nav_panel(
-      title = "MANATEE COUNTY",
-      value = 'manatee-county',
+      title = "HILLSBOROUGH COUNTY (ESD)",
+      value = 'hillsborough-county-esd', 
       class = 'fill-height',
       layout_columns(
         fill = F,
@@ -230,7 +230,81 @@ ui <- page_navbar(
               div(
                 style = 'display: flex; flex-direction: column;',
                 div(style = "height: 50px;", "Select area:"), 
-                selectizeInput('areasel3', NULL, choices = areas3, selected = c('Braden River', 'Manatee River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+                selectizeInput('areasel3', NULL, choices = areas3, selected = areas3, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+              )
+            )
+          )
+        )
+      ),
+      div(
+        class = 'resizable-row',
+        div(
+          class = 'resizable-column',
+          style = 'width: 33.33%',
+          navset_card_underline(
+            full_screen = TRUE,
+            nav_panel(
+              "REPORT CARD",
+              plotly::plotlyOutput('hcesdfibmatrix', height = '100%')
+            ),
+            nav_panel(
+              "Using this tab",
+              shiny::includeMarkdown('www/countyusing.md')
+            )
+          )
+        ),
+        
+        div(
+          class='right-column', 
+          style = 'width: 66.66%',
+          navset_card_underline(
+            full_screen = T,
+            nav_panel(
+              "MAP BY YEAR",
+              shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
+              leaflet::leafletOutput('hcesdfibmapyr')
+            ),
+            nav_panel(
+              "MAP BY YEAR AND MONTH",
+              div(
+                style = "display: flex; align-items: center; gap: 1rem;",
+                shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
+                span('Click on a station to view a complete time series')
+              ),
+              leaflet::leafletOutput('hcesdfibmap')
+            )
+          )
+        )
+      )
+    ),
+    
+    # Manatee County
+    nav_panel(
+      title = "MANATEE COUNTY",
+      value = 'manatee-county',
+      class = 'fill-height',
+      layout_columns(
+        fill = F,
+        card(
+          height = 'auto',
+          width = 12,
+          div(
+            style = 'display: flex; gap: 0rem; align-items: flex-end;',
+            div(
+              style = 'width: 33.33%;',
+              div(
+                style = "display: flex; flex-direction: column;",
+                div(style = "height: 25px;", "Select year:"), 
+                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              )
+            ),
+            div(
+              style = 'width: 66.66%;',
+              div(
+                style = 'display: flex; flex-direction: column;',
+                div(style = "height: 50px;", "Select area:"), 
+                selectizeInput('areasel4', NULL, choices = areas4, selected = c('Braden River', 'Manatee River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
               )
             )
           )
@@ -261,15 +335,15 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
               leaflet::leafletOutput('mancofibmapyr')
             ),
             nav_panel(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
+                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('mancofibmap')
@@ -296,7 +370,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = 2023, step = 1, sep = '', width = '90%') # must start at 2023 to initiate pascofibmap
+                sliderInput('yrsel5', NULL, min = yrmin5, max = maxyr, value = 2023, step = 1, sep = '', width = '90%') # must start at 2023 to initiate pascofibmap
               )
             ),
             div(
@@ -304,7 +378,7 @@ ui <- page_navbar(
               div(
                 style = 'display: flex; flex-direction: column;',
                 div(style = "height: 50px;", "Select area:"), 
-                selectizeInput('areasel4', NULL, choices = areas4, selected = areas4, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+                selectizeInput('areasel5', NULL, choices = areas5, selected = areas5, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
               )
             )
           )
@@ -335,15 +409,15 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
               leaflet::leafletOutput('pascofibmapyr')
             ),
             nav_panel(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Feb', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
-                shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
+                shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Feb', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
+                shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('pascofibmap')
@@ -370,7 +444,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel5', NULL, min = yrmin5, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel6', NULL, min = yrmin6, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -378,7 +452,7 @@ ui <- page_navbar(
               div(
                 style = 'display: flex; flex-direction: column;',
                 div(style = "height: 50px;", "Select area:"), 
-                selectizeInput('areasel5', NULL, choices = areas5, selected = areas5, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+                selectizeInput('areasel6', NULL, choices = areas6, selected = areas6, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
               )
             )
           )
@@ -409,15 +483,15 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta10', 'Add station labels', value = T),
               leaflet::leafletOutput('polcofibmapyr')
             ),
             nav_panel(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta10', 'Add station labels', value = T),
+                shinyWidgets::sliderTextInput('mosel6', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::materialSwitch('addsta11', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('polcofibmap')
@@ -445,7 +519,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; flex-direction: column;",
               div(style = "height: 50px;", "Select type:"), 
-              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County station score categories', 'Hillsborough County raw data', 'Manatee County station score categories', 'Manatee County raw data', 'Pasco County station score categories', 'Pasco County raw data', 'Polk County station score categories', 'Polk County raw data'), width = '95%')
+              selectInput('typseldl', NULL, choices = c('Baywide segment score categories', 'Baywide station score categories', 'Baywide raw data', 'Hillsborough County (EPC) station score categories', 'Hillsborough County (EPC) raw data', 'Hillsborough County (ESD) station score categories', 'Hillsborough County (ESD) raw data', 'Manatee County station score categories', 'Manatee County raw data', 'Pasco County station score categories', 'Pasco County raw data', 'Polk County station score categories', 'Polk County raw data'), width = '95%')
             )
           ),
           div(
@@ -807,20 +881,20 @@ server <- function(input, output, session) {
     
   })
   
-  # manco fib matrix
-  mancofibmatrix <- reactive({
+  # esd fib matrix
+  hcesdfibmatrix <- reactive({
     
     # inputs
     areasel3 <- input$areasel3
     yrsel3 <- input$yrsel3
     
-    stas <- mancofibdata %>%
+    stas <- fibdata %>%
       dplyr::filter(area %in% areasel3) %>%
-      dplyr::select(manco_station) %>%
+      dplyr::select(hcesd_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
-
-    p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
+    
+    p <- try(tbeptools::show_fibmatrix(hcesdfibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
                                        warn = F))
     
     validate(
@@ -833,15 +907,182 @@ server <- function(input, output, session) {
     
   })
   
-  # data for manco fib map, yr
+  # data for esd fib map, yr
   yrtomap3 <- reactive({
     
     yrsel3 <- input$yrsel3
     areasel3 <- input$areasel3
     
     req(areasel3)
+    
+    out <- tbeptools::show_fibmatmap(hcesdfibdata, yrsel = yrsel3, areasel = areasel3, 
+                                     listout = T, warn = F)
+    
+    return(out)
+    
+  }) 
+  
+  # esd fib data to map, yr
+  observe({
+    
+    # inputs
+    yrtomap3 <- try(yrtomap3())
+    
+    # create map
+    if(inherits(yrtomap3, 'try-error'))
+      out <- leaflet::leafletProxy("hcesdfibmapyr") %>%
+        leaflet::clearMarkers() |> 
+        leaflet::clearShapes()
+    
+    if(!inherits(yrtomap3, 'try-error')){
+      out <- leaflet::leafletProxy("hcesdfibmapyr") %>%
+        leaflet::clearMarkers() |>
+        leaflet::clearShapes() |> 
+        leaflet::addMarkers(
+          data = yrtomap3$tomapsta,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~yrtomap3$icons[as.numeric(cat)],
+          label = ~lapply(as.list(lab), tbeptools::util_html)
+        )
+      
+      if(input$addsta4)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = yrtomap3$tomapsta,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~grp,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # esd fib data to map, yr mo
+  hcesdfibtomap <- reactive({
+    
+    # inputs
+    yrsel3 <- input$yrsel3
+    mosel3 <- input$mosel3
+    areasel3 <- input$areasel3
+    
+    req(mosel3)
+    
+    mosel3 <- mos[[mosel3]]
+    
+    tomap <- tbeptools::anlz_fibmap(hcesdfibdata, yrsel3, mosel3, areasel3, assf = T)
+    
+    return(tomap)
+    
+  })
+  
+  # esd fib map
+  observe({
+    
+    # inputs
+    hcesdfibtomap <- try(hcesdfibtomap())
+    
+    # create map
+    if(inherits(hcesdfibtomap, 'try-error'))
+      out <- leaflet::leafletProxy('hcesdfibmap') |> 
+        leaflet::clearMarkers()
+    
+    if(!inherits(hcesdfibtomap, 'try-error')){
+      out <- leaflet::leafletProxy('hcesdfibmap') |> 
+        leaflet::clearMarkers() |> 
+        leaflet::addMarkers(
+          data = hcesdfibtomap,
+          lng = ~Longitude,
+          lat = ~Latitude,
+          icon = ~fibicons[as.numeric(grp)],
+          label = ~lapply(as.list(lab), tbeptools::util_html), 
+          layerId = ~station
+        )
+      
+      if(input$addsta5)
+        out <- out |> 
+          leaflet::addLabelOnlyMarkers(
+            data = hcesdfibtomap,
+            lng = ~Longitude,
+            lat = ~Latitude,
+            label = ~station,
+            labelOptions = leaflet::labelOptions(noHide = TRUE, textOnly = TRUE)
+          )
+      
+    }
+    
+    return(out)
+    
+  })
+  
+  # hcesdfibmap popup modal
+  observeEvent(input$hcesdfibmap_marker_click, {
+    
+    showModal(modalDialog(
+      plotly::plotlyOutput('hcesdfibmappopup', height = "500px"),
+      easyClose = T,
+      fade = F,
+      footer = NULL, 
+      size = 'l'
+    ))
+    
+  })
+  
+  # create plot on fibmap click
+  hcesdfibmappopup <- eventReactive(input$hcesdfibmap_marker_click, {
+    
+    yrsel3 <- input$yrsel3
+    mosel3 <- input$mosel3
+    station <- input$hcesdfibmap_marker_click$id
+    
+    req(mosel3)
+    mosel3 <- mos[[mosel3]]
+    
+    out <- fibmappopup_plo(hcesdfibdata, station, yrsel3, mosel3)
+    
+    return(out)
+    
+  })
+  
+  # manco fib matrix
+  mancofibmatrix <- reactive({
+    
+    # inputs
+    areasel4 <- input$areasel4
+    yrsel4 <- input$yrsel4
+    
+    stas <- mancofibdata %>%
+      dplyr::filter(area %in% areasel4) %>%
+      dplyr::select(manco_station) %>%
+      dplyr::distinct() %>%
+      dplyr::pull()
 
-    out <- tbeptools::show_fibmatmap(mancofibdata, yrsel = yrsel3, areasel = areasel3, 
+    p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin4, maxyr), 
+                                       warn = F))
+    
+    validate(
+      need(!inherits(p, 'try-error'), 'No FIB data available for selection')
+    )
+    
+    out <- mataddyr_fun(p, yrsel = yrsel4)
+    
+    return(out)
+    
+  })
+  
+  # data for manco fib map, yr
+  yrtomap4 <- reactive({
+    
+    yrsel4 <- input$yrsel4
+    areasel4 <- input$areasel4
+    
+    req(areasel4)
+
+    out <- tbeptools::show_fibmatmap(mancofibdata, yrsel = yrsel4, areasel = areasel4, 
                                      listout = T, warn = F)
     
     return(out)
@@ -852,16 +1093,16 @@ server <- function(input, output, session) {
   observe({
     
     # inputs
-    yrtomap3 <- try(yrtomap3())
+    yrtomap4 <- try(yrtomap4())
     
     # create map
-    if(inherits(yrtomap3, 'try-error'))
+    if(inherits(yrtomap4, 'try-error'))
       out <- leaflet::leafletProxy("mancofibmapyr") %>%
         leaflet::clearMarkers() |> 
         leaflet::clearShapes()
     
-    if(!inherits(yrtomap3, 'try-error')){
-      if(nrow(yrtomap3$tomapsta) == 0)
+    if(!inherits(yrtomap4, 'try-error')){
+      if(nrow(yrtomap4$tomapsta) == 0)
         out <- leaflet::leafletProxy("mancofibmapyr") %>%
           leaflet::clearMarkers() |> 
           leaflet::clearShapes()
@@ -870,17 +1111,17 @@ server <- function(input, output, session) {
           leaflet::clearMarkers() |>
           leaflet::clearShapes() |> 
           leaflet::addMarkers(
-            data = yrtomap3$tomapsta,
+            data = yrtomap4$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
-            icon = ~yrtomap3$icons[as.numeric(cat)],
+            icon = ~yrtomap4$icons[as.numeric(cat)],
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta5)
+      if(input$addsta6)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
-            data = yrtomap3$tomapsta,
+            data = yrtomap4$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
             label = ~grp,
@@ -897,15 +1138,15 @@ server <- function(input, output, session) {
   mancofibtomap <- reactive({
     
     # inputs
-    yrsel3 <- input$yrsel3
-    mosel3 <- input$mosel3
-    areasel3 <- input$areasel3
+    yrsel4 <- input$yrsel4
+    mosel4 <- input$mosel4
+    areasel4 <- input$areasel4
     
-    req(mosel3)
+    req(mosel4)
     
-    mosel3 <- mos[[mosel3]]
+    mosel4 <- mos[[mosel4]]
     
-    tomap <- tbeptools::anlz_fibmap(mancofibdata, yrsel3, mosel3, areasel3, assf = T)
+    tomap <- tbeptools::anlz_fibmap(mancofibdata, yrsel4, mosel4, areasel4, assf = T)
     
     return(tomap)
     
@@ -934,7 +1175,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta6)
+      if(input$addsta7)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = mancofibtomap,
@@ -966,14 +1207,14 @@ server <- function(input, output, session) {
   # create plot on manco fibmap click
   mancofibmappopup <- eventReactive(input$mancofibmap_marker_click, {
     
-    yrsel3 <- input$yrsel3
-    mosel3 <- input$mosel3
+    yrsel4 <- input$yrsel4
+    mosel4 <- input$mosel4
     station <- input$mancofibmap_marker_click$id
     
-    req(mosel3)
-    mosel3 <- mos[[mosel3]]
+    req(mosel4)
+    mosel4 <- mos[[mosel4]]
     
-    out <- fibmappopup_plo(mancofibdata, station, yrsel3, mosel3)
+    out <- fibmappopup_plo(mancofibdata, station, yrsel4, mosel4)
     
     return(out)
     
@@ -983,37 +1224,37 @@ server <- function(input, output, session) {
   pascofibmatrix <- reactive({
     
     # inputs
-    areasel4 <- input$areasel4
-    yrsel4 <- input$yrsel4
+    areasel5 <- input$areasel5
+    yrsel5 <- input$yrsel5
     
     stas <- pascofibdata %>%
-      dplyr::filter(area %in% areasel4) %>%
+      dplyr::filter(area %in% areasel5) %>%
       dplyr::select(pasco_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
     
-    p <- try(tbeptools::show_fibmatrix(pascofibdata, stas = stas, yrrng = c(yrmin4, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(pascofibdata, stas = stas, yrrng = c(yrmin5, maxyr), 
                                        warn = F))
     
     validate(
       need(!inherits(p, 'try-error'), 'No FIB data available for selection')
     )
     
-    out <- mataddyr_fun(p, yrsel = yrsel4)
+    out <- mataddyr_fun(p, yrsel = yrsel5)
     
     return(out)
     
   })
   
   # data for pasco fib map, yr
-  yrtomap4 <- reactive({
+  yrtomap5 <- reactive({
     
-    yrsel4 <- input$yrsel4
-    areasel4 <- input$areasel4
+    yrsel5 <- input$yrsel5
+    areasel5 <- input$areasel5
     
-    req(areasel4)
+    req(areasel5)
     
-    out <- tbeptools::show_fibmatmap(pascofibdata, yrsel = yrsel4, areasel = areasel4, 
+    out <- tbeptools::show_fibmatmap(pascofibdata, yrsel = yrsel5, areasel = areasel5, 
                                      listout = T, warn = F)
     
     return(out)
@@ -1024,16 +1265,16 @@ server <- function(input, output, session) {
   observe({
     
     # inputs
-    yrtomap4 <- try(yrtomap4())
+    yrtomap5 <- try(yrtomap5())
     
     # create map
-    if(inherits(yrtomap4, 'try-error'))
+    if(inherits(yrtomap5, 'try-error'))
       out <- leaflet::leafletProxy("pascofibmapyr") %>%
         leaflet::clearMarkers() |> 
         leaflet::clearShapes()
     
-    if(!inherits(yrtomap4, 'try-error')){
-      if(nrow(yrtomap4$tomapsta) == 0)
+    if(!inherits(yrtomap5, 'try-error')){
+      if(nrow(yrtomap5$tomapsta) == 0)
         out <- leaflet::leafletProxy("pascofibmapyr") %>%
           leaflet::clearMarkers() |> 
           leaflet::clearShapes()
@@ -1042,17 +1283,17 @@ server <- function(input, output, session) {
           leaflet::clearMarkers() |>
           leaflet::clearShapes() |> 
           leaflet::addMarkers(
-            data = yrtomap4$tomapsta,
+            data = yrtomap5$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
-            icon = ~yrtomap4$icons[as.numeric(cat)],
+            icon = ~yrtomap5$icons[as.numeric(cat)],
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta7)
+      if(input$addsta8)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
-            data = yrtomap4$tomapsta,
+            data = yrtomap5$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
             label = ~grp,
@@ -1069,15 +1310,15 @@ server <- function(input, output, session) {
   pascofibtomap <- reactive({
 
     # inputs
-    yrsel4 <- input$yrsel4
-    mosel4 <- input$mosel4
-    areasel4 <- input$areasel4
+    yrsel5 <- input$yrsel5
+    mosel5 <- input$mosel5
+    areasel5 <- input$areasel5
 
-    req(mosel4)
+    req(mosel5)
 
-    mosel4 <- mos[[mosel4]]
+    mosel5 <- mos[[mosel5]]
 
-    tomap <- tbeptools::anlz_fibmap(pascofibdata, yrsel4, mosel4, areasel4, assf = T)
+    tomap <- tbeptools::anlz_fibmap(pascofibdata, yrsel5, mosel5, areasel5, assf = T)
 
     return(tomap)
 
@@ -1106,7 +1347,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
 
-      if(input$addsta8)
+      if(input$addsta9)
         out <- out |>
           leaflet::addLabelOnlyMarkers(
             data = pascofibtomap,
@@ -1138,14 +1379,14 @@ server <- function(input, output, session) {
   # create plot on pasco fibmap click
   pascofibmappopup <- eventReactive(input$pascofibmap_marker_click, {
 
-    yrsel4 <- input$yrsel4
-    mosel4 <- input$mosel4
+    yrsel5 <- input$yrsel5
+    mosel5 <- input$mosel5
     station <- input$pascofibmap_marker_click$id
 
-    req(mosel4)
-    mosel4 <- mos[[mosel4]]
+    req(mosel5)
+    mosel5 <- mos[[mosel5]]
 
-    out <- fibmappopup_plo(pascofibdata, station, yrsel4, mosel4)
+    out <- fibmappopup_plo(pascofibdata, station, yrsel5, mosel5)
 
     return(out)
 
@@ -1155,37 +1396,37 @@ server <- function(input, output, session) {
   polcofibmatrix <- reactive({
     
     # inputs
-    areasel5 <- input$areasel5
-    yrsel5 <- input$yrsel5
+    areasel6 <- input$areasel6
+    yrsel6 <- input$yrsel6
     
     stas <- polcofibdata %>%
-      dplyr::filter(area %in% areasel5) %>%
+      dplyr::filter(area %in% areasel6) %>%
       dplyr::select(polco_station) %>%
       dplyr::distinct() %>%
       dplyr::pull()
     
-    p <- try(tbeptools::show_fibmatrix(polcofibdata, stas = stas, yrrng = c(yrmin5, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(polcofibdata, stas = stas, yrrng = c(yrmin6, maxyr), 
                                        warn = F))
     
     validate(
       need(!inherits(p, 'try-error'), 'No FIB data available for selection')
     )
     
-    out <- mataddyr_fun(p, yrsel = yrsel5)
+    out <- mataddyr_fun(p, yrsel = yrsel6)
     
     return(out)
     
   })
   
   # data for polco fib map, yr
-  yrtomap5 <- reactive({
+  yrtomap6 <- reactive({
     
-    yrsel5 <- input$yrsel5
-    areasel5 <- input$areasel5
+    yrsel6 <- input$yrsel6
+    areasel6 <- input$areasel6
     
-    req(areasel5)
+    req(areasel6)
     
-    out <- tbeptools::show_fibmatmap(polcofibdata, yrsel = yrsel5, areasel = areasel5, 
+    out <- tbeptools::show_fibmatmap(polcofibdata, yrsel = yrsel6, areasel = areasel6, 
                                      listout = T, warn = F)
     
     return(out)
@@ -1196,16 +1437,16 @@ server <- function(input, output, session) {
   observe({
     
     # inputs
-    yrtomap5 <- try(yrtomap5())
+    yrtomap6 <- try(yrtomap6())
     
     # create map
-    if(inherits(yrtomap5, 'try-error'))
+    if(inherits(yrtomap6, 'try-error'))
       out <- leaflet::leafletProxy("polcofibmapyr") %>%
         leaflet::clearMarkers() |> 
         leaflet::clearShapes()
     
-    if(!inherits(yrtomap5, 'try-error')){
-      if(nrow(yrtomap5$tomapsta) == 0)
+    if(!inherits(yrtomap6, 'try-error')){
+      if(nrow(yrtomap6$tomapsta) == 0)
         out <- leaflet::leafletProxy("polcofibmapyr") %>%
           leaflet::clearMarkers() |> 
           leaflet::clearShapes()
@@ -1214,17 +1455,17 @@ server <- function(input, output, session) {
           leaflet::clearMarkers() |>
           leaflet::clearShapes() |> 
           leaflet::addMarkers(
-            data = yrtomap5$tomapsta,
+            data = yrtomap6$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
-            icon = ~yrtomap5$icons[as.numeric(cat)],
+            icon = ~yrtomap6$icons[as.numeric(cat)],
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta9)
+      if(input$addsta10)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
-            data = yrtomap5$tomapsta,
+            data = yrtomap6$tomapsta,
             lng = ~Longitude,
             lat = ~Latitude,
             label = ~grp,
@@ -1241,15 +1482,15 @@ server <- function(input, output, session) {
   polcofibtomap <- reactive({
     
     # inputs
-    yrsel5 <- input$yrsel5
-    mosel5 <- input$mosel5
-    areasel5 <- input$areasel5
+    yrsel6 <- input$yrsel6
+    mosel6 <- input$mosel6
+    areasel6 <- input$areasel6
     
-    req(mosel5)
+    req(mosel6)
     
-    mosel5 <- mos[[mosel5]]
+    mosel6 <- mos[[mosel6]]
     
-    tomap <- tbeptools::anlz_fibmap(polcofibdata, yrsel5, mosel5, areasel5, assf = T)
+    tomap <- tbeptools::anlz_fibmap(polcofibdata, yrsel6, mosel6, areasel6, assf = T)
     
     return(tomap)
     
@@ -1278,7 +1519,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta10)
+      if(input$addsta11)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = polcofibtomap,
@@ -1310,14 +1551,14 @@ server <- function(input, output, session) {
   # create plot on polco fibmap click
   polcofibmappopup <- eventReactive(input$polcofibmap_marker_click, {
     
-    yrsel5 <- input$yrsel5
-    mosel5 <- input$mosel5
+    yrsel6 <- input$yrsel6
+    mosel6 <- input$mosel6
     station <- input$polcofibmap_marker_click$id
     
-    req(mosel5)
-    mosel5 <- mos[[mosel5]]
+    req(mosel6)
+    mosel6 <- mos[[mosel6]]
     
-    out <- fibmappopup_plo(polcofibdata, station, yrsel5, mosel5)
+    out <- fibmappopup_plo(polcofibdata, station, yrsel6, mosel6)
     
     return(out)
     
@@ -1409,6 +1650,29 @@ server <- function(input, output, session) {
   # epc fib map popup
   output$fibmappopup <- plotly::renderPlotly(fibmappopup())
   
+  # esd fib matrix
+  output$hcesdfibmatrix <- plotly::renderPlotly(hcesdfibmatrix())
+  
+  # esd fib map, yr
+  output$hcesdfibmapyr <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmatmap(hcesdfibdata, yrsel = maxyr, 
+                              areasel = areas3,
+                              precipdata = catchprecip, warn = F, addsta = T)
+    
+  })
+  
+  # esd fib map, yr mo
+  output$hcesdfibmap <- leaflet::renderLeaflet({
+    
+    tbeptools::show_fibmap(hcesdfibdata, yrsel = maxyr, mosel = 7, 
+                           areasel = areas3, addsta = T)
+    
+  })
+  
+  # esd fib map popup
+  output$hcesdfibmappopup <- plotly::renderPlotly(hcesdfibmappopup())
+  
   # manco fib matrix
   output$mancofibmatrix <- plotly::renderPlotly(mancofibmatrix())
   
@@ -1439,17 +1703,17 @@ server <- function(input, output, session) {
   output$pascofibmapyr <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmatmap(pascofibdata, yrsel = maxyr, 
-                              areasel = areas4,
+                              areasel = areas5,
                               precipdata = catchprecip, warn = F, addsta = T)
     
   })
   
-  # manco fib map, yr mo
+  # pasco fib map, yr mo
   output$pascofibmap <- leaflet::renderLeaflet({
     
     # initiate the map with this year, mo combo. It has at least two samples and the map won't initiate with one.
     tbeptools::show_fibmap(pascofibdata, yrsel = 2023, mosel = 2, 
-                           areasel = areas4, addsta = T)
+                           areasel = areas5, addsta = T)
     
   })
   
@@ -1463,7 +1727,7 @@ server <- function(input, output, session) {
   output$polcofibmapyr <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmatmap(polcofibdata, yrsel = maxyr, 
-                              areasel = areas5,
+                              areasel = areas6,
                               precipdata = catchprecip, warn = F, addsta = T)
     
   })
@@ -1472,7 +1736,7 @@ server <- function(input, output, session) {
   output$polcofibmap <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmap(polcofibdata, yrsel = maxyr, mosel = 7, 
-                           areasel = areas5, addsta = T)
+                           areasel = areas6, addsta = T)
     
   })
   
@@ -1484,16 +1748,18 @@ server <- function(input, output, session) {
     
     typseldl <- input$typseldl
     
-    if(!grepl('Hillsborough|Manatee|Pasco|Polk', typseldl))
+    if(!grepl('EPC|ESD|Manatee|Pasco|Polk', typseldl))
       minyr <- yrmin1
-    if(grepl('Hillsborough', typseldl))
+    if(grepl('EPC', typseldl))
       minyr <- yrmin2
-    if(grepl('Manatee', typseldl))
+    if(grepl('ESD', typseldl))
       minyr <- yrmin3
-    if(grepl('Pasco', typseldl))
+    if(grepl('Manatee', typseldl))
       minyr <- yrmin4
-    if(grepl('Polk', typseldl))
+    if(grepl('Pasco', typseldl))
       minyr <- yrmin5
+    if(grepl('Polk', typseldl))
+      minyr <- yrmin6
     
     sliderInput('yrseldl', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
     

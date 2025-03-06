@@ -50,7 +50,7 @@ dldatproc_fun <- function(typseldl, yrseldl){
     dplyr::rename(`Station` = epchc_station) |> 
     dplyr::select(-Total_Depth_m, -Sample_Depth_m, -totcol, -totcol_q)
   
-  if(grepl('Manatee|Polk|Pasco', typseldl)){
+  if(grepl('Manatee|Polk|Pasco|ESD', typseldl)){
     
     if(grepl('Manatee', typseldl))
       dat <- mancofibdata
@@ -58,6 +58,8 @@ dldatproc_fun <- function(typseldl, yrseldl){
       dat <- polcofibdata
     if(grepl('Pasco', typseldl))
       dat <- pascofibdata
+    if(grepl('ESD', typseldl))
+      dat <- hcesdfibdata
     
     if(grepl('score\\scategories$', typseldl))
     
@@ -69,7 +71,7 @@ dldatproc_fun <- function(typseldl, yrseldl){
     
       out <- dat |> 
         dplyr::filter(!is.na(val)) |>
-        dplyr::rename_with(~ "Station", dplyr::matches("^(manco|pasco|polco)_station$")) |>
+        dplyr::rename_with(~ "Station", dplyr::matches("^(manco|pasco|polco|hcesd)_station$")) |>
         dplyr::select(-Sample_Depth_m) |> 
         dplyr::select(area, dplyr::everything())
   
@@ -184,7 +186,8 @@ fibmappopup_plo <- function(dat, station, yr, mo){
   
   levs <- tbeptools::util_fiblevs()
 
-  lkup <- c(station = 'epchc_station', station = 'manco_station', station = 'pasco_station', station = 'polco_station')
+  lkup <- c(station = 'epchc_station', station = 'manco_station', station = 'pasco_station', 
+            station = 'polco_station', station = 'hcesd_station')
 
   toplo <- dat |> 
     dplyr::rename(dplyr::any_of(lkup)) |> 
@@ -210,7 +213,7 @@ fibmappopup_plo <- function(dat, station, yr, mo){
     labs <- levs$enterolbs
   }
   
-  # wrangle manco, pasco, polco
+  # wrangle manco, pasco, polco, hcesd
   if(clss %in% c('Fresh', 'Marine'))
     toplo <- toplo |> 
       dplyr::filter(var %in% indic) |> 
