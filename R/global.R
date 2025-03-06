@@ -16,7 +16,7 @@ cols <- c('#CC3231', '#E9C318', '#2DC938')
 
 yrmin1 <- 2002
 yrmin2 <- 2001
-yrmin3 <- 2013
+yrmin3 <- 2018
 yrmin4 <- 2017
 yrmin5 <- 2017
 maxyr <- 2023
