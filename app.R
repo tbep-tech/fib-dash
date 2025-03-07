@@ -304,7 +304,7 @@ ui <- page_navbar(
               div(
                 style = 'display: flex; flex-direction: column;',
                 div(style = "height: 50px;", "Select area:"), 
-                selectizeInput('areasel4', NULL, choices = areas4, selected = c('Braden River', 'Manatee River'), multiple = T, width = '100%', options = list(dropdownParent = 'body')),
+                selectizeInput('areasel4', NULL, choices = areas4, selected = areas4, multiple = T, width = '100%', options = list(dropdownParent = 'body')),
               )
             )
           )
@@ -888,7 +888,7 @@ server <- function(input, output, session) {
     areasel3 <- input$areasel3
     yrsel3 <- input$yrsel3
     
-    stas <- fibdata %>%
+    stas <- hcesdfibdata %>%
       dplyr::filter(area %in% areasel3) %>%
       dplyr::select(hcesd_station) %>%
       dplyr::distinct() %>%
@@ -1680,7 +1680,7 @@ server <- function(input, output, session) {
   output$mancofibmapyr <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr, 
-                              areasel = c('Braden River', 'Manatee River'),
+                              areasel = areas4,
                               precipdata = catchprecip, warn = F, addsta = T)
     
   })
@@ -1689,7 +1689,7 @@ server <- function(input, output, session) {
   output$mancofibmap <- leaflet::renderLeaflet({
     
     tbeptools::show_fibmap(mancofibdata, yrsel = maxyr, mosel = 7, 
-                           areasel = c('Braden River', 'Manatee River'), addsta = T)
+                           areasel = areas4, addsta = T)
     
   })
   
