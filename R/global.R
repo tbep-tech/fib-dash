@@ -2,14 +2,22 @@ box::use(
   dplyr[`%>%`]
 )
 
-data('enterodata', package = 'tbeptools')
-data('fibdata', package = 'tbeptools')
-data('hcesdfibdata', package = 'tbeptools')
-data('mancofibdata', package = 'tbeptools')
-data('pascofibdata', package = 'tbeptools')
-data('polcofibdata', package = 'tbeptools')
-data('catchprecip', package = 'tbeptools')
-data('tbsegdetail', package = 'tbeptools')
+
+# all files from tbeptools, but saved locally so the image doesnt have to be recreated with data updates
+
+# updated annually
+load(url('https://tbep-tech.github.io/fib-dash/data/enterodata.RData'))
+load(url('https://tbep-tech.github.io/fib-dash/data/catchprecip.RData'))
+
+# updated by github actions
+load(url('https://tbep-tech.github.io/fib-dash/data/fibdata.RData'))
+load(url('https://tbep-tech.github.io/fib-dash/data/hcesdfibdata.RData'))
+load(url('https://tbep-tech.github.io/fib-dash/data/mancofibdata.RData'))
+load(url('https://tbep-tech.github.io/fib-dash/data/pascofibdata.RData'))
+load(url('https://tbep-tech.github.io/fib-dash/data/polcofibdata.RData'))
+
+# never updated
+load(url('https://tbep-tech.github.io/data/tbsegdetail.RData'))
 
 enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_window = 2, wet_threshold = 0.5)
 
@@ -22,6 +30,7 @@ yrmin4 <- 2018
 yrmin5 <- 2017
 yrmin6 <- 2017
 maxyr <- 2023
+epcmaxyr <- max(fibdata$yr)
 
 lwid <- 1.5
 

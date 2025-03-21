@@ -148,7 +148,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel2', NULL, min = yrmin2, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel2', NULL, min = yrmin2, max = epcmaxyr, value = epcmaxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -727,7 +727,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
 
-    p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, epcmaxyr), 
                                        warn = F))
     
     validate(
