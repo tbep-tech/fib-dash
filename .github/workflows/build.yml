@@ -1,10 +1,7 @@
 on:
-  push:
-    branches:
-      - main
-      - master
   schedule:
-    - cron: "0 0 * * *"
+    # runs midnight every saturday
+    - cron: "0 0 * * 6"
     
 name: build 
 
