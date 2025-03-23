@@ -27,7 +27,7 @@ jobs:
             tbeptools
 
       - name: Pull data
-        run: Rscript -e 'source("build.R")'
+        run: Rscript -e 'source(".github/workflows/build.R")'
       - name: Commit results
         run: |
           git config --local user.email "actions@github.com"
