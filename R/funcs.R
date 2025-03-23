@@ -27,28 +27,28 @@ dldatproc_fun <- function(typseldl, yrseldl){
   if(typseldl == 'Baywide segment score categories')
     out <- tbeptools::anlz_fibmatrix(enterodata, bay_segment = unlist(areas1), yrrng = yrseldl, 
                                      warn = F) |> 
-    dplyr::rename(bay_segment = grp) |> 
-    dplyr::select(-Latitude, -Longitude)
-  
+      dplyr::rename(bay_segment = grp) |> 
+      dplyr::select(-Latitude, -Longitude)
+    
   if(typseldl ==  'Baywide station score categories')
     out <- tbeptools::anlz_fibmatrix(enterodata, stas = unique(enterodata$station), yrrng = yrseldl, 
                                      warn = F) |> 
-    dplyr::rename(Station = grp)
+      dplyr::rename(Station = grp)
   
   if(typseldl == 'Baywide raw data')
     out <- enterodata |> 
-    dplyr::rename(Station = station) |> 
-    dplyr::select(-time, -time_zone, -long_name, -qualifier, -LabComments)
-  
-  if(typseldl == 'Hillsborough County station score categories')
+      dplyr::rename(Station = station) |> 
+      dplyr::select(-time, -time_zone, -long_name, -qualifier, -LabComments)
+
+  if(typseldl == 'Hillsborough County (EPC) station score categories')
     out <- tbeptools::anlz_fibmatrix(fibdata, stas = unique(fibdata$epchc_station), yrrng = yrseldl, 
                                      warn = F) |> 
-    dplyr::rename(`Station` = grp)
+      dplyr::rename(`Station` = grp)
   
-  if(typseldl == 'Hillsborough County raw data')
+  if(typseldl == 'Hillsborough County (EPC) raw data')
     out <- fibdata |> 
-    dplyr::rename(`Station` = epchc_station) |> 
-    dplyr::select(-Total_Depth_m, -Sample_Depth_m, -totcol, -totcol_q)
+      dplyr::rename(`Station` = epchc_station) |> 
+      dplyr::select(-Total_Depth_m, -Sample_Depth_m, -totcol, -totcol_q)
   
   if(grepl('Manatee|Polk|Pasco|ESD', typseldl)){
     

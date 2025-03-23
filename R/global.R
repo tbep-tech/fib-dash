@@ -2,14 +2,14 @@ box::use(
   dplyr[`%>%`]
 )
 
-
+##
 # all files from tbeptools, but saved locally so the image doesnt have to be recreated with data updates
 
 # updated annually
 load(url('https://tbep-tech.github.io/fib-dash/data/enterodata.RData'))
 load(url('https://tbep-tech.github.io/fib-dash/data/catchprecip.RData'))
 
-# updated by github actions
+# updated by github actions weekly
 load(url('https://tbep-tech.github.io/fib-dash/data/fibdata.RData'))
 load(url('https://tbep-tech.github.io/fib-dash/data/hcesdfibdata.RData'))
 load(url('https://tbep-tech.github.io/fib-dash/data/mancofibdata.RData'))
@@ -23,14 +23,18 @@ enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_wind
 
 cols <- c('#CC3231', '#E9C318', '#2DC938')
 
-yrmin1 <- 2002
-yrmin2 <- 2001
-yrmin3 <- 2019
-yrmin4 <- 2018
-yrmin5 <- 2017
-yrmin6 <- 2017
-maxyr <- 2023
+entminyr <- 2002
+epcminyr <- 2001
+esdminyr <- 2019
+manminyr <- 2018
+pasminyr <- 2017
+polminyr <- 2017
+entmaxyr <- max(enterodata$yr)
 epcmaxyr <- max(fibdata$yr)
+esdmaxyr <- max(hcesdfibdata$yr)
+manmaxyr <- max(mancofibdata$yr)
+pasmaxyr <- max(pascofibdata$yr)
+polmaxyr <- max(polcofibdata$yr)
 
 lwid <- 1.5
 

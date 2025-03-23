@@ -68,7 +68,7 @@ ui <- page_navbar(
             div(
               style = "display: flex; flex-direction: column;",
               div(style = "height: 25px;", "Select year:"), 
-              sliderInput('yrsel1', NULL, min = yrmin1, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+              sliderInput('yrsel1', NULL, min = entminyr, max = entmaxyr, value = entmaxyr, step = 1, sep = '', width = '90%')
             )
           ),
           div(
@@ -115,7 +115,7 @@ ui <- page_navbar(
           "MAP BY YEAR AND MONTH",
           div(
             style = "display: flex; align-items: center; gap: 1rem;",
-            shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+            shinyWidgets::sliderTextInput('mosel1', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
             shinyWidgets::materialSwitch('addsta2', 'Add station labels', value = T),
             span('Click on a station to view a complete time series')
           ),
@@ -148,7 +148,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel2', NULL, min = yrmin2, max = epcmaxyr, value = epcmaxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel2', NULL, min = epcminyr, max = epcmaxyr, value = epcmaxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -194,7 +194,7 @@ ui <- page_navbar(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::sliderTextInput('mosel2', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
                 shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
@@ -222,7 +222,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel3', NULL, min = yrmin3, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel3', NULL, min = esdminyr, max = esdmaxyr, value = esdmaxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -268,7 +268,7 @@ ui <- page_navbar(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
                 shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
@@ -296,7 +296,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel4', NULL, min = yrmin4, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel4', NULL, min = manminyr, max = manmaxyr, value = manmaxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -342,7 +342,7 @@ ui <- page_navbar(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
                 shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
@@ -370,7 +370,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel5', NULL, min = yrmin5, max = maxyr, value = 2023, step = 1, sep = '', width = '90%') # must start at 2023 to initiate pascofibmap
+                sliderInput('yrsel5', NULL, min = pasminyr, max = pasmaxyr, value = 2023, step = 1, sep = '', width = '90%') # must start at 2023 to initiate pascofibmap
               )
             ),
             div(
@@ -416,7 +416,7 @@ ui <- page_navbar(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Feb', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
+                shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
                 shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
@@ -444,7 +444,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; flex-direction: column;",
                 div(style = "height: 25px;", "Select year:"), 
-                sliderInput('yrsel6', NULL, min = yrmin6, max = maxyr, value = maxyr, step = 1, sep = '', width = '90%')
+                sliderInput('yrsel6', NULL, min = polminyr, max = polmaxyr, value = polmaxyr, step = 1, sep = '', width = '90%')
               )
             ),
             div(
@@ -490,7 +490,7 @@ ui <- page_navbar(
               "MAP BY YEAR AND MONTH",
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
-                shinyWidgets::sliderTextInput('mosel6', 'Select month:', choices = names(mos), selected = 'Jul', force_edges = T, grid = T, width = '50%'),
+                shinyWidgets::sliderTextInput('mosel6', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
                 shinyWidgets::materialSwitch('addsta11', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
@@ -569,7 +569,7 @@ server <- function(input, output, session) {
         dplyr::distinct() %>%
         dplyr::pull()
 
-      p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(yrmin1, maxyr),
+      p <- try(tbeptools::show_fibmatrix(enterodata, stas = stas, yrrng = c(entminyr, entmaxyr),
                                          warn = F))
 
     }
@@ -577,7 +577,7 @@ server <- function(input, output, session) {
     if(segsel1){
 
       p <- try(tbeptools::show_fibmatrix(enterodata, stas = NULL, bay_segment = areasel1,
-                                         yrrng = c(yrmin1, maxyr), warn = F))
+                                         yrrng = c(entminyr, entmaxyr), warn = F))
 
     }
 
@@ -727,7 +727,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
 
-    p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(yrmin2, epcmaxyr), 
+    p <- try(tbeptools::show_fibmatrix(fibdata, stas = stas, yrrng = c(epcminyr, epcmaxyr), 
                                        warn = F))
     
     validate(
@@ -894,7 +894,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
     
-    p <- try(tbeptools::show_fibmatrix(hcesdfibdata, stas = stas, yrrng = c(yrmin3, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(hcesdfibdata, stas = stas, yrrng = c(esdminyr, esdmaxyr), 
                                        warn = F))
     
     validate(
@@ -1061,7 +1061,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
 
-    p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(yrmin4, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(mancofibdata, stas = stas, yrrng = c(manminyr, manmaxyr), 
                                        warn = F))
     
     validate(
@@ -1233,7 +1233,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
     
-    p <- try(tbeptools::show_fibmatrix(pascofibdata, stas = stas, yrrng = c(yrmin5, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(pascofibdata, stas = stas, yrrng = c(pasminyr, pasmaxyr), 
                                        warn = F))
     
     validate(
@@ -1405,7 +1405,7 @@ server <- function(input, output, session) {
       dplyr::distinct() %>%
       dplyr::pull()
     
-    p <- try(tbeptools::show_fibmatrix(polcofibdata, stas = stas, yrrng = c(yrmin6, maxyr), 
+    p <- try(tbeptools::show_fibmatrix(polcofibdata, stas = stas, yrrng = c(polminyr, polmaxyr), 
                                        warn = F))
     
     validate(
@@ -1610,7 +1610,7 @@ server <- function(input, output, session) {
   # baywide ent map, yr
   output$entmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(enterodata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(enterodata, yrsel = entmaxyr, 
                               areasel = c('OTB', 'HB', 'MTB', 'LTB', 'BCB', 'MR'),
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1619,7 +1619,7 @@ server <- function(input, output, session) {
   # baywide ent map, yr mo
   output$entmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_enteromap(enterodata, yrsel = maxyr, mosel = 7, areasel = c('Hillsborough Bay', 'Old Tampa Bay', 'Middle Tampa Bay', 'Lower Tampa Bay', 'Boca Ciega Bay', 'Manatee River'),
+    tbeptools::show_enteromap(enterodata, yrsel = entmaxyr, mosel = 1, areasel = c('Hillsborough Bay', 'Old Tampa Bay', 'Middle Tampa Bay', 'Lower Tampa Bay', 'Boca Ciega Bay', 'Manatee River'),
                               wetdry = T, precipdata = catchprecip, temporal_window = 2, wet_threshold = 0.5, addsta = T)
     
   })
@@ -1633,7 +1633,7 @@ server <- function(input, output, session) {
   # epc fib map, yr
   output$fibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(fibdata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(fibdata, yrsel = epcmaxyr, 
                               areasel = c('Alafia River', 'Hillsborough River'),
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1642,7 +1642,7 @@ server <- function(input, output, session) {
   # epc fib map, yr mo
   output$fibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(fibdata, yrsel = maxyr, mosel = 7, 
+    tbeptools::show_fibmap(fibdata, yrsel = epcmaxyr, mosel = 1, 
                            areasel = c('Alafia River', 'Hillsborough River'), addsta = T)
     
   })
@@ -1656,7 +1656,7 @@ server <- function(input, output, session) {
   # esd fib map, yr
   output$hcesdfibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(hcesdfibdata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(hcesdfibdata, yrsel = esdmaxyr, 
                               areasel = areas3,
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1665,7 +1665,7 @@ server <- function(input, output, session) {
   # esd fib map, yr mo
   output$hcesdfibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(hcesdfibdata, yrsel = maxyr, mosel = 7, 
+    tbeptools::show_fibmap(hcesdfibdata, yrsel = esdmaxyr, mosel = 1, 
                            areasel = areas3, addsta = T)
     
   })
@@ -1679,7 +1679,7 @@ server <- function(input, output, session) {
   # manco fib map, yr
   output$mancofibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(mancofibdata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(mancofibdata, yrsel = manmaxyr, 
                               areasel = areas4,
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1688,7 +1688,7 @@ server <- function(input, output, session) {
   # manco fib map, yr mo
   output$mancofibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(mancofibdata, yrsel = maxyr, mosel = 7, 
+    tbeptools::show_fibmap(mancofibdata, yrsel = manmaxyr, mosel = 1, 
                            areasel = areas4, addsta = T)
     
   })
@@ -1702,7 +1702,7 @@ server <- function(input, output, session) {
   # pasco fib map, yr
   output$pascofibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(pascofibdata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(pascofibdata, yrsel = 2023, # must start at 2023 to initiate
                               areasel = areas5,
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1726,7 +1726,7 @@ server <- function(input, output, session) {
   # polco fib map, yr
   output$polcofibmapyr <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmatmap(polcofibdata, yrsel = maxyr, 
+    tbeptools::show_fibmatmap(polcofibdata, yrsel = polmaxyr, 
                               areasel = areas6,
                               precipdata = catchprecip, warn = F, addsta = T)
     
@@ -1735,7 +1735,7 @@ server <- function(input, output, session) {
   # polco fib map, yr mo
   output$polcofibmap <- leaflet::renderLeaflet({
     
-    tbeptools::show_fibmap(polcofibdata, yrsel = maxyr, mosel = 7, 
+    tbeptools::show_fibmap(polcofibdata, yrsel = polmaxyr, mosel = 1, 
                            areasel = areas6, addsta = T)
     
   })
@@ -1748,18 +1748,30 @@ server <- function(input, output, session) {
     
     typseldl <- input$typseldl
     
-    if(!grepl('EPC|ESD|Manatee|Pasco|Polk', typseldl))
-      minyr <- yrmin1
-    if(grepl('EPC', typseldl))
-      minyr <- yrmin2
-    if(grepl('ESD', typseldl))
-      minyr <- yrmin3
-    if(grepl('Manatee', typseldl))
-      minyr <- yrmin4
-    if(grepl('Pasco', typseldl))
-      minyr <- yrmin5
-    if(grepl('Polk', typseldl))
-      minyr <- yrmin6
+    if(!grepl('EPC|ESD|Manatee|Pasco|Polk', typseldl)){
+      minyr <- entminyr
+      maxyr <- entmaxyr
+    }
+    if(grepl('EPC', typseldl)){
+      minyr <- epcminyr
+      maxyr <- epcmaxyr
+    }
+    if(grepl('ESD', typseldl)){
+      minyr <- esdminyr
+      maxyr <- esdmaxyr
+    }
+    if(grepl('Manatee', typseldl)){
+      minyr <- manminyr
+      maxyr <- manmaxyr
+    }
+    if(grepl('Pasco', typseldl)){
+      minyr <- pasminyr
+      maxyr <- pasmaxyr
+    }
+    if(grepl('Polk', typseldl)){
+      minyr <- polminyr
+      maxyr <- polmaxyr
+    }
     
     sliderInput('yrseldl', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
     
