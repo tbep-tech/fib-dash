@@ -2,13 +2,14 @@ on:
   schedule:
     # runs midnight every saturday
     - cron: "0 0 * * 6"
+  workflow_dispatch:
     
 name: build 
 
 jobs:
   render:
     name: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
