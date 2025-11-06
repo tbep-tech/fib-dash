@@ -261,7 +261,7 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta4', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
               leaflet::leafletOutput('hcesdfibmapyr')
             ),
             nav_panel(
@@ -269,7 +269,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
                 shinyWidgets::sliderTextInput('mosel3', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta5', 'Add station labels', value = T),
+                shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('hcesdfibmap')
@@ -335,7 +335,7 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta6', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
               leaflet::leafletOutput('mancofibmapyr')
             ),
             nav_panel(
@@ -343,7 +343,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
                 shinyWidgets::sliderTextInput('mosel4', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta7', 'Add station labels', value = T),
+                shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('mancofibmap')
@@ -409,7 +409,7 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta8', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
               leaflet::leafletOutput('pascofibmapyr')
             ),
             nav_panel(
@@ -417,7 +417,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
                 shinyWidgets::sliderTextInput('mosel5', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'), # must start at Feb to initiate pascofibmap
-                shinyWidgets::materialSwitch('addsta9', 'Add station labels', value = T),
+                shinyWidgets::materialSwitch('addsta10', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('pascofibmap')
@@ -483,7 +483,7 @@ ui <- page_navbar(
             full_screen = T,
             nav_panel(
               "MAP BY YEAR",
-              shinyWidgets::materialSwitch('addsta10', 'Add station labels', value = T),
+              shinyWidgets::materialSwitch('addsta11', 'Add station labels', value = T),
               leaflet::leafletOutput('polcofibmapyr')
             ),
             nav_panel(
@@ -491,7 +491,7 @@ ui <- page_navbar(
               div(
                 style = "display: flex; align-items: center; gap: 1rem;",
                 shinyWidgets::sliderTextInput('mosel6', 'Select month:', choices = names(mos), selected = 'Jan', force_edges = T, grid = T, width = '50%'),
-                shinyWidgets::materialSwitch('addsta11', 'Add station labels', value = T),
+                shinyWidgets::materialSwitch('addsta12', 'Add station labels', value = T),
                 span('Click on a station to view a complete time series')
               ),
               leaflet::leafletOutput('polcofibmap')
@@ -946,7 +946,7 @@ server <- function(input, output, session) {
           label = ~lapply(as.list(lab), tbeptools::util_html)
         )
       
-      if(input$addsta4)
+      if(input$addsta5)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap3$tomapsta,
@@ -1003,7 +1003,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta5)
+      if(input$addsta6)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = hcesdfibtomap,
@@ -1118,7 +1118,7 @@ server <- function(input, output, session) {
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta6)
+      if(input$addsta7)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap4$tomapsta,
@@ -1175,7 +1175,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta7)
+      if(input$addsta8)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = mancofibtomap,
@@ -1290,7 +1290,7 @@ server <- function(input, output, session) {
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta8)
+      if(input$addsta9)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap5$tomapsta,
@@ -1347,7 +1347,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
 
-      if(input$addsta9)
+      if(input$addsta10)
         out <- out |>
           leaflet::addLabelOnlyMarkers(
             data = pascofibtomap,
@@ -1462,7 +1462,7 @@ server <- function(input, output, session) {
             label = ~lapply(as.list(lab), tbeptools::util_html)
           )
       
-      if(input$addsta10)
+      if(input$addsta11)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = yrtomap6$tomapsta,
@@ -1519,7 +1519,7 @@ server <- function(input, output, session) {
           layerId = ~station
         )
       
-      if(input$addsta11)
+      if(input$addsta12)
         out <- out |> 
           leaflet::addLabelOnlyMarkers(
             data = polcofibtomap,
