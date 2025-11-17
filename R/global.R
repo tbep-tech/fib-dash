@@ -70,12 +70,12 @@ areas5 <- c("Anclote River", "Bear Creek", "Cypress Creek", "Hillsborough River"
 
 # polk
 areas6 <- c("Alafia River", "Bear Creek", "Blackwater Creek", "Boggy Branch", 
-            "Charlie Creek", "English Creek", "Fox Branch", "Gator Creek", 
+            "Bowlegs Creek", "Charlie Creek", "English Creek", "Fox Branch", "Gator Creek", 
             "Hamwet", "Horse Creek", "Itchepack Creek", "Lena Run", "Livingston Creek", 
             "Marion Creek", "Old Town Creek", "PC Canal", "Peace River", 
             "Poley Creek", "Pony Creek", "Reedy Inflow", "Saddle Creek", 
             "Scenic", "Simmers-Young Canal", "Thirtymile Creek", "Tiger Creek", 
-            "Tiger Inflow", "W Bowlegs Creek", "Wahneta Canal", "Weohyakapka Creek", 
+            "Tiger Inflow", "Wahneta Canal", "Weohyakapka Creek", 
             "Withlacoochee River")
 
 # create custom icon list for fib categories
