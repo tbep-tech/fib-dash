@@ -6,7 +6,7 @@
 
 Fecal Indicator Bacteria (FIB) provide information on the potential exposure risk from contact recreation or fish/shellfish consumption from surface waters with high fecal loads.  These indicators are imperfect and provide only a general overview of the potential risk.  Presence of FIBs does not necessarily indicate the presence of fecal pathogens, but their presence can be used to prioritize areas for further investigation or remediation. 
 
-The FIBs used in this dashboard are *Enterococcus* cell concentrations for the baywide assessment and a mix of *Enterococcus* (marine) and *E. coli* (freshwater) pathogens the county assessments.
+The FIBs used in this dashboard are *Enterococcus* cell concentrations for the baywide assessment and a mix of *Enterococcus* (marine) and *E. coli* (freshwater) pathogens for the county assessments.
 
 #### Report card score categories
 
