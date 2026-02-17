@@ -6,11 +6,11 @@
 
 Fecal Indicator Bacteria (FIB) provide information on the potential exposure risk from contact recreation or fish/shellfish consumption from surface waters with high fecal loads.  These indicators are imperfect and provide only a general overview of the potential risk.  Presence of FIBs does not necessarily indicate the presence of fecal pathogens, but their presence can be used to prioritize areas for further investigation or remediation. 
 
-The FIBs used in this dashboard are *Enterococcus* cell concentrations for the baywide assessment and a mix of *Enterococcus* (marine) and *E. coli* (freshwater) pathogens for the EPCHC and Manatee County data.
+The FIBs used in this dashboard are *Enterococcus* cell concentrations for the baywide assessment and a mix of *Enterococcus* (marine) and *E. coli* (freshwater) pathogens the county assessments.
 
 #### Report card score categories
 
-The report cards on each page use similar methods for defining overall risk categories for the FIBs.  The scores are applied to individual monitoring stations or as a baywide total and describe the likelihood that the samples in a given year exceed a relevant cell concentration threshold.  The thresholds are 130 CFU / 100 mL of *Enterococcus* for the baywide assessments and 410 CFU / 100 mL of *E. coli*.  The score categories are as follows: 
+The report cards on each page use similar methods for defining overall risk categories for the FIBs.  The scores are applied to individual monitoring stations or as a baywide total and describe the likelihood that the samples in a given year exceed a relevant cell concentration threshold.  The thresholds are 130 CFU / 100 mL of *Enterococcus* for the baywide assessments and 410 CFU / 100 mL of *E. coli* for the other assessments.  The score categories are as follows: 
 
 * <span style='color:#2DC938'>__A__</span>: < 10% likelihood that the samples exceed the threshold
 * <span style='color:#E9C318'>__B__</span>: 10-30% likelihood that the samples exceed the threshold
@@ -18,11 +18,13 @@ The report cards on each page use similar methods for defining overall risk cate
 * <span style='color:#CC3231'>__D__</span>: 50-75% likelihood that the samples exceed the threshold
 * <span style='color:#800080'>__E__</span>: > 75% likelihood that the samples exceed the threshold
 
-For the baywide assessments, the score categories are assigned to both individual stations and for each bay segment, whereas scores are only assigned to stations for the EPCHC and Manatee County data.  The stations for the baywide assessments were chosen specifically as downstream endpoints that drain directly into each bay segment and rely only on *Enterococcus* data as a marine FIB.  The EPCHC and Manatee County stations are more distributed throughout the watershed and use both *Enterococcus* (marine) and *E. coli* (freshwater) depending on the site classification.  The bay segment score categories are based on the aggregate of all samples from each station that drain into that segment.
+For the baywide assessments, the score categories are assigned to both individual stations and for each bay segment, whereas scores are only assigned to stations for the county data.  The stations for the baywide assessments were chosen specifically as downstream endpoints that drain directly into each bay segment and rely only on *Enterococcus* data as a marine FIB.  The county data are more spatially distributed and use both *Enterococcus* (marine) and *E. coli* (freshwater) depending on the site classification.  
+
+The bay segment score categories are based on the aggregate of all samples from each station that drain into that segment. __Care should be taken when communicating results at the bay segment scale to ensure appropriate messaging. Baywide scores could be misleading by using a handful of stations to communicate results at the bay segment scale. Reporting at this scale is meant to support assessments that are comparable to other similar indicators used by TBEP. A low grade for a bay segment does not imply hazardous conditions, rather the score reflects the aggregate likelihood for all stations selected for that bay segment. Remediation of conditions that contribute to fecal contamination is best handled at the site scale.__
 
 #### Map summaries
 
-The maps on each tab show year or year/month summaries for FIBs.  The annual maps show the same score categories for the report cards described above for each station and bay segment for the baywide assessments and for stations only for the EPCHC and Manatee County data. 
+The maps on each tab show year or year/month summaries for FIBs.  The annual maps show the same score categories for the report cards described above for each station and bay segment for the baywide assessments and for stations only for the county data. 
 
 The year/month maps show the sample results for each station for a more detailed view of the data in each year.  The year/month summaries show the concentrations at each station using different threshold categories than the scores described above and separate the data differently depending on the dataset. 
 
@@ -33,16 +35,16 @@ The baywide dataset year/month maps show *Enterococcus* concentrations separatel
 * <span style='color:#EE7600'>__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
 * <span style='color:#CC3231'>__Red__</span>: Cell concentrations > 999 CFU / 100 mL
 
-Similar thresholds are applied to station samples for the year/month maps for the EPCHC and Manatee County data.  However, samples are not distinguished as wet/dry and the FIB varies depending on the location of the sample.  *Enterococcus* is used for tidally-influenced (marine) locations and *E. coli* is used for freshwater locations.
+Similar thresholds are applied to station samples for the year/month maps for the county data.  However, samples are not distinguished as wet/dry and the FIB varies depending on the location of the sample.  *Enterococcus* is used for tidally-influenced (marine) locations and *E. coli* is used for freshwater locations.
 
-Marine *Enterococcus* thresholds for EPCHC/Manatee County year/month maps: 
+Marine *Enterococcus* thresholds for year/month maps: 
   
 * <span style='color:#2DC938'>__Green__</span>: Cell concentrations < 35 CFU / 100 mL
 * <span style='color:#E9C318'>__Yellow__</span>: Cell concentrations 35 - 129 CFU / 100 mL
 * <span style='color:#EE7600'>__Orange__</span>: Cell concentrations 130 - 999 CFU / 100 mL
 * <span style='color:#CC3231'>__Red__</span>: Cell concentrations > 999 CFU / 100 mL
 
-Freshwater *E. coli* thresholds for EPCHC/Manatee County year/month maps: 
+Freshwater *E. coli* thresholds for year/month maps: 
   
 * <span style='color:#2DC938'>__Green__</span>: Cell concentrations < 126 CFU / 100 mL
 * <span style='color:#E9C318'>__Yellow__</span>: Cell concentrations 126 - 409 CFU / 100 mL

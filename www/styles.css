@@ -132,12 +132,11 @@ h6 {
   background: #00806E!important; 
 }
 
-.irs-bar-edge, .irs-bar{
-  background: #E5E5E5 !important; 
-  border: 1px #E5E5E5 !important;
+.irs-bar {
+  background: #E5E5E5 !important;
 }
 
-.js-irs-6 .irs-bar-edge, .js-irs-6 .irs-bar {
+.js-irs-12 .irs-bar {
   background: #00806E!important; 
   border: 1px #00806E !important;
 }
@@ -261,7 +260,7 @@ a:hover {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-},
+}
 .modal-backdrop.show {
   z-index: 2056 !important;
 }

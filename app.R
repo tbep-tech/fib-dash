@@ -13,7 +13,6 @@ ga_tag <- tags$head(
 ui <- page_navbar(
   title = "TAMPA BAY FIB DASHBOARD",
   id = "main-nav",
-  # bg = '#00806E',
   
   # initialize shinyjs for JavaScript handling
   shinyjs::useShinyjs(),
@@ -617,6 +616,13 @@ server <- function(input, output, session) {
       entmapyr_proxy  %>%
         leaflet::clearMarkers() |>
         leaflet::clearShapes() |> 
+        leaflet::addPolygons(
+            data = yrtomap1$bayseg,
+            fillColor = 'transparent',
+            color = 'black',
+            weight = 2,
+            label = ~lapply(as.list(long_name), tbeptools::util_html)
+          ) |>
         leaflet::addMarkers(
           data = yrtomap1$tomapsta,
           lng = ~Longitude,
@@ -1568,11 +1574,11 @@ server <- function(input, output, session) {
   dldat <- reactive({
     
     typseldl <- input$typseldl
-    yrseldl <- input$yrseldl
+    yrseldlpck <- input$yrseldlpck
     
-    req(yrseldl)
+    req(yrseldlpck)
     
-    out <- dldatproc_fun(typseldl, yrseldl)
+    out <- dldatproc_fun(typseldl, yrseldlpck)
     
     return(out)
     
@@ -1773,7 +1779,7 @@ server <- function(input, output, session) {
       maxyr <- polmaxyr
     }
     
-    sliderInput('yrseldl', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
+    sliderInput('yrseldlpck', NULL, min = minyr, max = maxyr, value = c(minyr, maxyr), step = 1, sep = '', width = '95%')
     
   })
 

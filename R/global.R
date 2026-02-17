@@ -17,7 +17,8 @@ load(url('https://tbep-tech.github.io/fib-dash/data/pascofibdata.RData'))
 load(url('https://tbep-tech.github.io/fib-dash/data/polcofibdata.RData'))
 
 # never updated
-load(url('https://tbep-tech.github.io/fib-dash/data/tbsegdetail.RData'))
+data('tbsegdetail', package = 'tbeptools')
+data('dbasin', package = 'tbeptools')
 
 enterowetdry <- tbeptools::anlz_fibwetdry(enterodata, catchprecip, temporal_window = 2, wet_threshold = 0.5)
 
